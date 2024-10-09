@@ -9,8 +9,8 @@ public class Platform {
     private Map<Integer, Integer> locationInRack;
     private Dimension dimension;
 
-    public void getLocation() {
-        // TODO - implement Platform.getLocation
-        throw new UnsupportedOperationException();
+    public Map<Integer, Integer> getLocation() {
+        return locationInRack;
     }
+    
 }

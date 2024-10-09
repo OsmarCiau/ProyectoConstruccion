@@ -1,3 +1,5 @@
+package StoreKeeper;
+
 import java.util.Scanner;
 import java.util.SortedMap;
 
@@ -60,6 +62,8 @@ public class Cell extends Container{
         System.out.print("\tHeight: ");
         data = scan.nextFloat();
         dimension.setHeight(data);
+
+        scan.close(); //  Cerrar el scanner
     }
 
     public int getCellNumber() {
