@@ -2,9 +2,7 @@ package StoreKeeper;
 
 import java.util.ArrayList;
 import java.util.Date;
-
 import Inventory.Furniture;
-
 import java.time.Duration;
 
 public class Order {
@@ -24,8 +22,11 @@ public class Order {
     }
 
     public void findPlatforms() {
-        //! Duda con esto
-        // return platformUsed;
+        for (Platform platform : platformUsed) {
+            System.out.println("Platform ID: " + platform.getPlatformID());
+            System.out.println("Location in Rack: " + platform.getLocation());
+            System.out.println("Dimension: " + platform.getDimension());
+        }
     }
 
     public Duration getTotalAssemblyTime() {

@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class StoreKeeper {
     private int employeeId = 0;
-    private FurnitureRegistry entry;
+    // private FurnitureRegistry entry;
     private boolean isCellAvailable;
     private ArrayList<Rack> racks;
 
