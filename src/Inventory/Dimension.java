@@ -1,15 +1,13 @@
 package Inventory;
-
 public class Dimension {
-
     private float length;
     private float height;
     private float width;
 
-    public Dimension(){
-        length = 0;
-        height = 0;
-        width = 0;
+    public Dimension(float length, float height, float width){
+        this.length = length;
+        this.height = height;
+        this.width = width;
     }
 
     public float getHeight() {
@@ -17,23 +15,21 @@ public class Dimension {
     }
 
     public void setHeight(float height) {
-        if (height > 0) {
-            this.height = height;
-        } else {
-            System.out.println("Error: height must be a positive value.");
+        if (height < 0) {
+            throw new IllegalArgumentException("Height cannot be negative");
         }
+        this.height = height;
     }
 
     public float getWidth() {
         return width;
     }
 
-    public void setWidth(float width) {
-        if (width > 0) {
-            this.width = width;
-        } else {
-            System.out.println("Error: width must be a positive value.");
+    public void setWidth(float width){
+        if (width < 0) {
+            throw new IllegalArgumentException("Width cannot be negative");
         }
+        this.width = width;
     }
 
     public float getLength() {
@@ -41,11 +37,10 @@ public class Dimension {
     }
 
     public void setLength(float length) {
-        if (length > 0) {
-            this.length = length;
-        } else {
-            System.out.println("Error: length must be a positive value.");
+        if (length < 0) {
+            throw new IllegalArgumentException("Length cannot be negative");
         }
+        this.length = length;
     }
 }
 

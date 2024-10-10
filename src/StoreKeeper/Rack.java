@@ -1,10 +1,11 @@
 package StoreKeeper;
 
+import Container.Container;
+
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.SortedMap;
 
-public class Rack extends Container{
+public class Rack extends Container {
     private int rackNumber;
     private int cellCounter;
     private ArrayList<Cell> rackCells;

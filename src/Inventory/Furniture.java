@@ -2,7 +2,7 @@ package Inventory;
 
 import java.util.Scanner;
 
-public class Furniture {
+public class Furniture{
 
     private int furnitureId;
     private String type;
@@ -30,10 +30,9 @@ public class Furniture {
         if (furnitureId > 0) {
             this.furnitureId = furnitureId;
         } else {
-            System.out.println("Error: furnitureId must be a positive number.");
+            throw new IllegalArgumentException("Error: furnitureId must be a positive number.");
         }
     }
-
     public String getType() {
         return type;
     }
@@ -42,7 +41,7 @@ public class Furniture {
         if (type != null && !type.isEmpty()) {
             this.type = type;
         } else {
-            System.out.println("Error: type cannot be empty.");
+            throw new IllegalArgumentException("Error: Type cannot be null or empty.");
         }
     }
 
@@ -54,7 +53,7 @@ public class Furniture {
         if (brand != null && !brand.isEmpty()) {
             this.brand = brand;
         } else {
-            System.out.println("Error: brand cannot be empty.");
+            throw new IllegalArgumentException("Error: brand cannot be empty.");
         }
     }
 
@@ -66,7 +65,7 @@ public class Furniture {
         if (color != null && !color.isEmpty()) {
             this.color = color;
         } else {
-            System.out.println("Error: color cannot be empty.");
+            throw new IllegalArgumentException("Error: color cannot be empty.");
         }
     }
 
@@ -75,21 +74,10 @@ public class Furniture {
     }
 
     public void setDimension(Dimension dimension) {
-        Scanner scan = new Scanner(System.in);
-        System.out.println("Setting dimension (cm): ");
-        System.out.print("\tLenght: ");
-        float data = scan.nextFloat();
-        dimension.setLength(data);
-
-        System.out.print("\tWidth: ");
-        data = scan.nextFloat();
-        dimension.setWidth(data);
-
-        System.out.print("\tHeight: ");
-        data = scan.nextFloat();
-        dimension.setHeight(data);
-
-        scan.close(); 
+        if (dimension == null) {
+            throw new IllegalArgumentException("Error: Dimension cannot be null.");
+        }
+        this.dimension = dimension;
     }
 
     public int getQuantity() {
@@ -100,7 +88,7 @@ public class Furniture {
         if (quantity > 0) {
             this.quantity = quantity;
         } else {
-            System.out.println("Error: quantity must be a positive number.");
+            throw new IllegalArgumentException("Error: quantity must be a positive number.");
         }
     }
 
@@ -112,7 +100,7 @@ public class Furniture {
         if (buildTime > 0) {
             this.buildTime = buildTime;
         } else {
-            System.out.println("Error: buildTime must be a positive number.");
+            throw new IllegalArgumentException("Error: buildTime must be a positive number.");
         }
     }
 

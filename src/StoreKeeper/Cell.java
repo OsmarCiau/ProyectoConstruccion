@@ -1,22 +1,24 @@
 package StoreKeeper;
 
-import java.util.Scanner;
-import java.util.SortedMap;
+import Container.Container;
+import Inventory.Dimension;
 
-public class Cell extends Container{
+import java.util.Scanner;
+
+public class Cell extends Container {
     private Dimension dimension;
     private int cellNumber;
     private float ocupiedSpace; //  espacio restante a lo largo
 
     public Cell(int cellNumber){
         setAvailable(true);
-        dimension = new Dimension();
+        dimension = new Dimension(0,0,0);
         this.cellNumber = cellNumber;
         ocupiedSpace = 0;
     }
     public void getInfo(){
         System.out.println("Cell number: " + cellNumber + "\n" +
-                            "Dimension: " + dimension.getLenght() + " x " + dimension.getWidth() + " x " + dimension.getHeight() + "\n" +
+                            "Dimension: " + dimension.getLength() + " x " + dimension.getWidth() + " x " + dimension.getHeight() + "\n" +
                             "Occupied space (lenght): " + ocupiedSpace + "\n" +
                             "Available: " + isAvailable()
         );
@@ -24,11 +26,11 @@ public class Cell extends Container{
 
     public void setInfo(){
         //System.out.println("\nSetting info of the cell\n");
-        setDimension();
+        //setDimension();
     }
     @Override
     public boolean isAvailable() {
-        if( (dimension.getLenght() - ocupiedSpace) >0 ){
+        if( (dimension.getLength() - ocupiedSpace) >0 ){
             return true;
         }
         else{
@@ -39,7 +41,7 @@ public class Cell extends Container{
 
     public float getAvailableSpace(){
         if(isAvailable()){
-            return dimension.getLenght() - ocupiedSpace;
+            return dimension.getLength() - ocupiedSpace;
         }
         else{
             return 0;
@@ -50,20 +52,11 @@ public class Cell extends Container{
         return dimension;
     }
 
-    public void setDimension() {
-        Scanner scan = new Scanner(System.in);
-        System.out.println("Setting dimension (cm): ");
-        System.out.print("\tLenght: ");
-        float data = scan.nextFloat();
-        dimension.setLenght(data);
-        System.out.print("\tWidth: ");
-        data = scan.nextFloat();
-        dimension.setWidth(data);
-        System.out.print("\tHeight: ");
-        data = scan.nextFloat();
-        dimension.setHeight(data);
-
-        scan.close(); //  Cerrar el scanner
+    public void setDimension(Dimension dimension) {
+        if (dimension == null) {
+            throw new IllegalArgumentException("Error: Dimension cannot be null.");
+        }
+        this.dimension = dimension;
     }
 
     public int getCellNumber() {
