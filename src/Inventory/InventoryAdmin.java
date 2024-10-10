@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 public class InventoryAdmin {
 
+    /* Se comentan las líneas que manejan la BD para evitar errores por el momento hasta concretar la BD */
+
     public void addFurniture(PackingList packingList) {
         ArrayList<Furniture> productsToAdd = packingList.getProducts();
         if (productsToAdd != null && !productsToAdd.isEmpty()) {
