@@ -2,6 +2,9 @@ package StoreKeeper;
 
 import java.util.ArrayList;
 import java.util.Date;
+
+import Inventory.Furniture;
+
 import java.time.Duration;
 
 public class Order {
@@ -32,7 +35,9 @@ public class Order {
     private void setAssemblyTime() {
         Duration assemblyTime = Duration.ofMinutes(0);
         for (Furniture furniture : this.orderContent) {
-            assemblyTime = assemblyTime.plus(furniture.getBuildTime());
+            int buildTimeMinutes = furniture.getBuildTime();
+            Duration buildTimeDuration = Duration.ofMinutes(buildTimeMinutes);
+            assemblyTime = assemblyTime.plus(buildTimeDuration);
         }
         this.assemblyTime = assemblyTime;
     }
