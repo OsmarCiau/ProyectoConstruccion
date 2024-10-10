@@ -12,6 +12,16 @@ public class Furniture {
     private int quantity;
     private int buildTime;
 
+    public Furniture(int furnitureId, String type, String brand, String color, Dimension dimension, int quantity, int buildTime) {
+        setFurnitureId(furnitureId);
+        setType(type);
+        setBrand(brand);
+        setColor(color);
+        setDimension(dimension);
+        setQuantity(quantity);
+        setBuildTime(buildTime);
+    }
+
     public int getFurnitureId() {
         return furnitureId;
     }
