@@ -1,34 +1,30 @@
 package StoreKeeper;
 
 import Container.Container;
-
 import java.util.ArrayList;
-import java.util.Scanner;
+
 
 public class Rack extends Container {
-    private int rackNumber;
-    private int cellCounter;
-    private ArrayList<Cell> rackCells;
+    private int rackNumber = 0;
+    private int cellCounter = 0;
+    private ArrayList<Cell> rackCells = new ArrayList<>();
 
     public Rack(int rackNumber){
-        this.rackNumber = rackNumber;
+        setRackNumber(rackNumber);
+        setCellCounter(6); // cambiar la cantidad de celdas cuando se defina en equipo
         setAvailable(true);
-        rackCells = new ArrayList<>();
     }
 
-    public void setInfo(){
-        Scanner scan = new Scanner(System.in);
-        System.out.print("Number of cells in the rack: ");
-        cellCounter = scan.nextInt();
+    public void setInfo(int rackNumber){
+        setRackNumber(rackNumber);
+        setCellCounter(9);
         /*
         En este punto se estám creando las celdas y se insertan en el arrayList
                 PENDIENTE --> ¿Hacemos un metodo que lo haga?
          */
         System.out.println("Creating cells...");
         for(int actualCellNumber=1;actualCellNumber<=cellCounter;actualCellNumber++){
-            Cell cell = new Cell(actualCellNumber);
-            System.out.println("Cell " + actualCellNumber);
-            cell.setInfo();
+            Cell cell = new Cell(actualCellNumber, 0);
             rackCells.add(cell);
         }
         System.out.println("Process finished (creating cells)");
@@ -43,8 +39,8 @@ public class Rack extends Container {
     @Override
     public boolean isAvailable() {
         int cellsNotAvailable = 0;
+        //determinando cuantas celdas no estan disponibles
         for(Cell cell:rackCells){
-
             if(!cell.isAvailable()){
                 cellsNotAvailable++;
             }
@@ -52,10 +48,7 @@ public class Rack extends Container {
 
         if(cellsNotAvailable == cellCounter){
             return false;
-        }
-        else{
-            return true;
-        }
+        } else{ return true;}
 
     }
 
@@ -63,11 +56,25 @@ public class Rack extends Container {
         return rackNumber;
     }
 
+    public void setRackNumber(int rackNumber) {
+        this.rackNumber = rackNumber;
+    }
+
     public int getCellCounter() {
         return cellCounter;
+    }
+
+    public void setCellCounter(int cellCounter) {
+        this.cellCounter = cellCounter;
     }
 
     public ArrayList<Cell> getRackCells() {
         return rackCells;
     }
+
+    public void setRackCells(ArrayList<Cell> rackCells) {
+        this.rackCells = rackCells;
+    }
 }
+
+
