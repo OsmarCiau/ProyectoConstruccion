@@ -1,36 +1,46 @@
 package proyecto.mueblesdelgado.Inventory;
 
-import java.util.ArrayList;
+import org.springframework.web.bind.annotation.*;
+import proyecto.mueblesdelgado.Repositories.InventoryAdminRepository;
 
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/inventory")
 public class InventoryAdmin {
 
-    // Base de datos simulada para almacenar muebles
-    private ArrayList<Furniture> furnitureDatabase = new ArrayList<>();
+    private final InventoryAdminRepository inventoryAdminRepository;
 
-    public void addFurniture(PackingList packingList) {
-        ArrayList<Furniture> productsToAdd = packingList.getProducts();
+    public InventoryAdmin(InventoryAdminRepository inventoryAdminRepository) {
+        this.inventoryAdminRepository = inventoryAdminRepository;
+    }
+
+    @PostMapping("/add")
+    public void addFurniture(@RequestBody PackingList packingList) {
+        List<Furniture> productsToAdd = packingList.getProducts();
         if (productsToAdd != null && !productsToAdd.isEmpty()) {
-            furnitureDatabase.addAll(productsToAdd);
+            inventoryAdminRepository.saveAll(productsToAdd);
             System.out.println("Added " + productsToAdd.size() + " items to the inventory.");
         } else {
             System.out.println("PackingList is empty or null.");
         }
     }
 
-    public void removeFurniture(PackingList packingList) {
-        ArrayList<Furniture> productsToRemove = packingList.getProducts();
+    @PostMapping("/remove")
+    public void removeFurniture(@RequestBody PackingList packingList) {
+        List<Furniture> productsToRemove = packingList.getProducts();
         if (productsToRemove != null && !productsToRemove.isEmpty()) {
-            furnitureDatabase.removeAll(productsToRemove);
+            inventoryAdminRepository.deleteAll(productsToRemove);
             System.out.println("Removed " + productsToRemove.size() + " items from the inventory.");
         } else {
             System.out.println("PackingList is empty or null.");
         }
     }
 
-    public void updateFurniture(PackingList packingList) {
-        ArrayList<Furniture> productsToUpdate = packingList.getProducts();
+    @PutMapping("/update")
+    public void updateFurniture(@RequestBody PackingList packingList) {
+        List<Furniture> productsToUpdate = packingList.getProducts();
         if (productsToUpdate != null && !productsToUpdate.isEmpty()) {
-
             for (Furniture furniture : productsToUpdate) {
                 updateFurnitureItem(furniture);
             }
@@ -40,20 +50,12 @@ public class InventoryAdmin {
         }
     }
 
-    // Método para actualizar un mueble específico
-    /*AGREGAR AL DIAGRAMA DE CLASES */
     private void updateFurnitureItem(Furniture furniture) {
-        // Implementar la lógica para encontrar el mueble en la base de datos
-        // Verificar si el ID del mueble existe en la base de datos.
-
-        // Ejemplo simplificado:
-        int index = furnitureDatabase.indexOf(furniture); // Asume que `equals` está sobreescrito en Furniture
-        if (index >= 0) {
-            furnitureDatabase.set(index, furniture); // Actualiza el mueble
+        if (inventoryAdminRepository.existsById(furniture.getFurnitureId())) {
+            inventoryAdminRepository.save(furniture); // Guarda el mueble (crea o actualiza)
             System.out.println("Updated furniture with ID: " + furniture.getFurnitureId());
         } else {
             System.out.println("Furniture with ID " + furniture.getFurnitureId() + " does not exist in the inventory.");
         }
     }
-
 }

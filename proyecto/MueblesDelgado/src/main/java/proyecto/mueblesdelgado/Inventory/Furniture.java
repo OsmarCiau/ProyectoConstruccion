@@ -1,15 +1,33 @@
 package proyecto.mueblesdelgado.Inventory;
 
-public class Furniture{
+import jakarta.persistence.*;  // Importa las anotaciones de JPA
 
+@Entity  // Define que esta clase es una entidad de JPA
+@Table(name = "Furniture")  // Opcional: establece el nombre de la tabla en la base de datos
+public class Furniture {
+
+    @Id  // Indica que este campo es la clave primaria
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Auto-incremento de la clave primaria
     private int furnitureId;
+
     private String type;
+
     private String brand;
+
     private String color;
+
+    @Embedded  // Indica que esta clase está embebida en la entidad (usado para objetos complejos)
     private Dimension dimension;
+
     private int quantity;
+
     private int buildTime;
 
+    // Constructor sin parámetros (requerido por JPA)
+    public Furniture() {
+    }
+
+    // Constructor completo
     public Furniture(int furnitureId, String type, String brand, String color, Dimension dimension, int quantity, int buildTime) {
         setFurnitureId(furnitureId);
         setType(type);
@@ -20,6 +38,7 @@ public class Furniture{
         setBuildTime(buildTime);
     }
 
+    // Getters y Setters con validaciones
     public int getFurnitureId() {
         return furnitureId;
     }
@@ -31,6 +50,7 @@ public class Furniture{
             throw new IllegalArgumentException("Error: furnitureId must be a positive number.");
         }
     }
+
     public String getType() {
         return type;
     }
