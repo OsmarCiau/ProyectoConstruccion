@@ -1,7 +1,9 @@
 package proyecto.mueblesdelgado.Inventory;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import proyecto.mueblesdelgado.Repositories.InventoryAdminRepository;
+import proyecto.mueblesdelgado.Repositories.FurnitureRepository;
+import proyecto.mueblesdelgado.Repositories.PackingListRepository;
 
 import java.util.List;
 
@@ -9,20 +11,27 @@ import java.util.List;
 @RequestMapping("/api/inventory")
 public class InventoryAdmin {
 
-    private final InventoryAdminRepository inventoryAdminRepository;
+    private final FurnitureRepository furnitureRepository;
+    private final PackingListRepository packingListRepository;
 
-    public InventoryAdmin(InventoryAdminRepository inventoryAdminRepository) {
-        this.inventoryAdminRepository = inventoryAdminRepository;
+    @Autowired
+    public InventoryAdmin(FurnitureRepository furnitureRepository, PackingListRepository packingListRepository) {
+        this.furnitureRepository = furnitureRepository;
+        this.packingListRepository = packingListRepository;
     }
 
     @PostMapping("/add")
-    public void addFurniture(@RequestBody PackingList packingList) {
-        List<Furniture> productsToAdd = packingList.getProducts();
-        if (productsToAdd != null && !productsToAdd.isEmpty()) {
-            inventoryAdminRepository.saveAll(productsToAdd);
-            System.out.println("Added " + productsToAdd.size() + " items to the inventory.");
+    public String addPackingList(@RequestBody PackingList packingList) {
+        if (packingList != null && packingList.getProducts() != null && !packingList.getProducts().isEmpty()) {
+            // Establecer la relación bidireccional
+            for (Furniture furniture : packingList.getProducts()) {
+                furniture.setPackingList(packingList);
+            }
+            // Guardar el PackingList, lo que también guarda los Furniture debido a CascadeType.ALL
+            packingListRepository.save(packingList);
+            return "Added " + packingList.getProducts().size() + " items to the inventory from PackingList with folio: " + packingList.getFolio();
         } else {
-            System.out.println("PackingList is empty or null.");
+            return "PackingList is empty or null.";
         }
     }
 
@@ -30,7 +39,7 @@ public class InventoryAdmin {
     public void removeFurniture(@RequestBody PackingList packingList) {
         List<Furniture> productsToRemove = packingList.getProducts();
         if (productsToRemove != null && !productsToRemove.isEmpty()) {
-            inventoryAdminRepository.deleteAll(productsToRemove);
+            furnitureRepository.deleteAll(productsToRemove);
             System.out.println("Removed " + productsToRemove.size() + " items from the inventory.");
         } else {
             System.out.println("PackingList is empty or null.");
@@ -51,8 +60,8 @@ public class InventoryAdmin {
     }
 
     private void updateFurnitureItem(Furniture furniture) {
-        if (inventoryAdminRepository.existsById(furniture.getFurnitureId())) {
-            inventoryAdminRepository.save(furniture); // Guarda el mueble (crea o actualiza)
+        if (furnitureRepository.existsById(furniture.getFurnitureId())) {
+            furnitureRepository.save(furniture); // Guarda el mueble (crea o actualiza)
             System.out.println("Updated furniture with ID: " + furniture.getFurnitureId());
         } else {
             System.out.println("Furniture with ID " + furniture.getFurnitureId() + " does not exist in the inventory.");

@@ -1,35 +1,35 @@
 package proyecto.mueblesdelgado.Inventory;
 
-import jakarta.persistence.*;  // Importa las anotaciones de JPA
+import jakarta.persistence.*;
 
-@Entity  // Define que esta clase es una entidad de JPA
-@Table(name = "Furniture")  // Opcional: establece el nombre de la tabla en la base de datos
+@Entity // Define que esta clase es una entidad de JPA
+@Table(name = "Furniture") // Establece el nombre de la tabla en la base de datos
 public class Furniture {
 
-    @Id  // Indica que este campo es la clave primaria
-    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Auto-incremento de la clave primaria
+    @Id // Indica que este campo es la clave primaria
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-incremento de la clave primaria
     private int furnitureId;
 
     private String type;
-
     private String brand;
-
     private String color;
 
-    @Embedded  // Indica que esta clase está embebida en la entidad (usado para objetos complejos)
+    @Embedded // Indica que esta clase está embebida en la entidad
     private Dimension dimension;
 
     private int quantity;
-
     private int buildTime;
+
+    @ManyToOne // Relación muchos a uno con PackingList
+    @JoinColumn(name = "packing_list_folio") // Especifica la columna de unión
+    private PackingList packingList;
 
     // Constructor sin parámetros (requerido por JPA)
     public Furniture() {
     }
 
     // Constructor completo
-    public Furniture(int furnitureId, String type, String brand, String color, Dimension dimension, int quantity, int buildTime) {
-        setFurnitureId(furnitureId);
+    public Furniture(String type, String brand, String color, Dimension dimension, int quantity, int buildTime) {
         setType(type);
         setBrand(brand);
         setColor(color);
@@ -122,4 +122,12 @@ public class Furniture {
         }
     }
 
+    // Métodos para manejar la relación, con visibilidad restringida
+    void setPackingList(PackingList packingList) {
+        this.packingList = packingList;
+    }
+
+    PackingList getPackingList() {
+        return packingList;
+    }
 }

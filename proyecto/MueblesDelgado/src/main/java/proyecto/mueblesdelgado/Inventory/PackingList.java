@@ -4,44 +4,41 @@ import jakarta.persistence.*;
 import java.util.Date;
 import java.util.List;
 
-@Entity // Indica que esta clase es una entidad JPA
+@Entity
 public class PackingList {
 
-	@Id // Marca el campo 'folio' como la clave primaria
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY) // Autogenerar el ID
 	private int folio;
 
-	@OneToMany // Indica una relación uno a muchos con la entidad Furniture
+	@OneToMany(mappedBy = "packingList", cascade = CascadeType.ALL, orphanRemoval = true) // Relación bidireccional
 	private List<Furniture> products;
 
-	@Temporal(TemporalType.DATE) // Indica que este campo debe ser tratado como una fecha
+	@Temporal(TemporalType.DATE)
 	private Date arrivalDate;
 
-	// Constructor vacío requerido por JPA
-	public PackingList() {
-	}
+	public PackingList() {}
 
-	// Constructor completo
-	public PackingList(int folio, List<Furniture> products, Date arrivalDate) {
-		setFolio(folio);
-		setProducts(products);
-		setArrivalDate(arrivalDate);
+	public PackingList(List<Furniture> products, Date arrivalDate) {
+		this.products = products;
+		this.arrivalDate = arrivalDate;
 	}
 
 	// Getters y Setters
-	public List<Furniture> getProducts() {
-		return products;
-	}
-
-	public void setProducts(List<Furniture> products) {
-		this.products = products;
-	}
-
 	public int getFolio() {
 		return folio;
 	}
 
 	public void setFolio(int folio) {
 		this.folio = folio;
+	}
+
+	public List<Furniture> getProducts() {
+		return products;
+	}
+
+	public void setProducts(List<Furniture> products) {
+		this.products = products;
 	}
 
 	public Date getArrivalDate() {
