@@ -6,10 +6,14 @@ import Inventory.Dimension;
 
 
 public class Platform {
-    private Order order;
+    private Order order ;
     private int platformID;
-    private Map<Integer, Integer> locationInRack;
+    private storageKeys locationInRack;
     private Dimension dimension;
+
+    public Platform(){
+
+    }
 
     public Platform(Order order, int platformID, Map<Integer, Integer> locationInRack, Dimension dimension) {
         setOrder(order);
@@ -18,7 +22,7 @@ public class Platform {
         setDimension(dimension);
     }
 
-    public Map<Integer, Integer> getLocation() {
+    public storageKeys getLocation() {
         return locationInRack;
     }
 
@@ -36,8 +40,8 @@ public class Platform {
         this.platformID = platformID;
     }
 
-    public void setLocationInRack(Map<Integer, Integer> locationInRack) {
-        if (locationInRack == null || locationInRack.isEmpty()) {
+    public void setLocationInRack(storageKeys locationInRack) {
+        if (locationInRack.getRackNumber()==0 || locationInRack.getCellNumber()==0) {
             throw new IllegalArgumentException("Location in rack cannot be null or empty");
         }
         this.locationInRack = locationInRack;

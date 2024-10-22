@@ -13,14 +13,10 @@ public class Rack extends Container {
         setRackNumber(rackNumber);
         setCellCounter(6); // cambiar la cantidad de celdas cuando se defina en equipo
         setAvailable(true);
-    }
 
-    public void setInfo(int rackNumber){
-        setRackNumber(rackNumber);
-        setCellCounter(9);
-        /*
+         /*
         En este punto se estám creando las celdas y se insertan en el arrayList
-                PENDIENTE --> ¿Hacemos un metodo que lo haga?
+                PENDIENTE --> ¿Cómo y donde debe de estar implementado esto?
          */
         System.out.println("Creating cells...");
         for(int actualCellNumber=1;actualCellNumber<=cellCounter;actualCellNumber++){
@@ -75,6 +71,12 @@ public class Rack extends Container {
     public void setRackCells(ArrayList<Cell> rackCells) {
         this.rackCells = rackCells;
     }
+
+    public static void main(String[] args) {
+        Rack rack1 = new Rack(1);
+        rack1.getInfo();
+    }
+
 }
 
 
