@@ -24,6 +24,31 @@ public class Cell extends Container {
         );
     }
 
+    public Dimension getDimension() {
+        return dimension;
+    }
+
+    public void setDimension() {
+        this.dimension.setLength(5);
+        this.dimension.setWidth(5);
+        this.dimension.setHeight(5);
+    }
+
+    public int getCellNumber() {
+        return cellNumber;
+    }
+
+    public void setCellNumber(int cellNumber) {
+        this.cellNumber = cellNumber;
+    }
+
+    public float getOcupiedSpace() {
+        return ocupiedSpace;
+    }
+
+    public void setOcupiedSpace(float ocupiedSpace) {
+        this.ocupiedSpace = ocupiedSpace;
+    }
 
     @Override
     public boolean isAvailable() {
@@ -45,30 +70,13 @@ public class Cell extends Container {
         }
     }
 
-    public Dimension getDimension() {
-        return dimension;
+    public void addSpaceOccupiedInCell(float platformLength){
+        ocupiedSpace += platformLength;
     }
 
-    public void setDimension() {
-        this.dimension.setLength(5);
-        this.dimension.setWidth(5);
-        this.dimension.setHeight(5);
-    }
-
-    public int getCellNumber() {
-        return cellNumber;
+    public void removeSpaceOccupiedInCell(float platformLength){
+        ocupiedSpace -= platformLength;
     }
 
 
-    public void setCellNumber(int cellNumber) {
-        this.cellNumber = cellNumber;
-    }
-
-    public float getOcupiedSpace() {
-        return ocupiedSpace;
-    }
-
-    public void setOcupiedSpace(float ocupiedSpace) {
-        this.ocupiedSpace = ocupiedSpace;
-    }
 }
