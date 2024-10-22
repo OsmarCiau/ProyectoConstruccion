@@ -15,7 +15,7 @@ public class Platform {
 
     }
 
-    public Platform(Order order, int platformID, Map<Integer, Integer> locationInRack, Dimension dimension) {
+    public Platform(Order order, int platformID, storageKeys locationInRack, Dimension dimension) {
         setOrder(order);
         setPlatformID(platformID);
         setLocationInRack(locationInRack);
