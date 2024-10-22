@@ -42,5 +42,11 @@ public class Dimension {
         }
         this.length = length;
     }
+
+    public void swapLenghtAndWidth(){
+        float box = width;
+        width = length;
+        length = box;
+    }
 }
 
