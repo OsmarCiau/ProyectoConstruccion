@@ -15,10 +15,10 @@ public class Platform {
 
     }
 
-    public Platform(Order order, int platformID, storageKeys locationInRack, Dimension dimension) {
+    public Platform(Order order, int platformID,  Dimension dimension) { //storageKeys locationInRack,
         setOrder(order);
         setPlatformID(platformID);
-        setLocationInRack(locationInRack);
+        //setLocationInRack(locationInRack);
         setDimension(dimension);
     }
 

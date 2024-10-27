@@ -1,16 +1,18 @@
 package StoreKeeper;
 
 import Container.Container;
+import Container.ContainerList;
 import java.util.ArrayList;
 
 
 public class Rack extends Container {
-    private int rackNumber = 0;
+    //private int rackNumber = 0;
     private int cellCounter = 0;
-    private ArrayList<Cell> rackCells = new ArrayList<>();
+    private ContainerList<Cell> rackCells = new ContainerList<Cell>();
 
     public Rack(int rackNumber){
-        setRackNumber(rackNumber);
+        setNumber(rackNumber);
+        //setRackNumber(rackNumber);
         setCellCounter(6); // cambiar la cantidad de celdas cuando se defina en equipo
         setAvailable(true);
 
@@ -18,16 +20,16 @@ public class Rack extends Container {
         En este punto se estám creando las celdas y se insertan en el arrayList
                 PENDIENTE --> ¿Cómo y donde debe de estar implementado esto?
          */
-        System.out.println("Creating cells...");
+        System.out.print("Creating cells for Rack " + rackNumber + "...");
         for(int actualCellNumber=1;actualCellNumber<=cellCounter;actualCellNumber++){
             Cell cell = new Cell(actualCellNumber, 0);
             rackCells.add(cell);
         }
-        System.out.println("Process finished (creating cells)");
+        System.out.println("Process finished.");
     }
 
     public void getInfo(){
-        System.out.println("Rack number: " + rackNumber);
+        System.out.println("Rack number: "  + number); //rackNumber
         System.out.println("Cell counter: " + cellCounter);
         System.out.println("Rack available: " + isAvailable());
     }
@@ -47,7 +49,7 @@ public class Rack extends Container {
         } else{ return true;}
 
     }
-
+    /*
     public int getRackNumber() {
         return rackNumber;
     }
@@ -55,7 +57,7 @@ public class Rack extends Container {
     public void setRackNumber(int rackNumber) {
         this.rackNumber = rackNumber;
     }
-
+*/
     public int getCellCounter() {
         return cellCounter;
     }
@@ -64,11 +66,11 @@ public class Rack extends Container {
         this.cellCounter = cellCounter;
     }
 
-    public ArrayList<Cell> getRackCells() {
+    public ContainerList<Cell> getRackCells() {
         return rackCells;
     }
 
-    public void setRackCells(ArrayList<Cell> rackCells) {
+    public void setRackCells(ContainerList<Cell> rackCells) {
         this.rackCells = rackCells;
     }
 

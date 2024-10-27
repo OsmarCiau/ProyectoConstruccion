@@ -7,17 +7,18 @@ import java.util.Scanner;
 
 public class Cell extends Container {
     private Dimension dimension = new Dimension(0,0,0);
-    private int cellNumber=0;
+   // private int cellNumber=0;
     private float ocupiedSpace=0; //  espacio restante a lo largo
 
     public Cell(int cellNumber, float ocupiedSpace){
         setAvailable(true);
-        setCellNumber(cellNumber);
+        setNumber(cellNumber);
+        //setCellNumber(cellNumber);
         setDimension(); // los valores son iguales para todas las celdas. Ya están definidos en el setter.
         setOcupiedSpace(ocupiedSpace);
     }
     public void getInfo(){
-        System.out.println("Cell number: " + cellNumber + "\n" +
+        System.out.println("Cell number: " + number + "\n" + //celNumber
                 "Dimension: " + dimension. getLength() + " x " + dimension.getWidth() + " x " + dimension.getHeight() + "\n" +
                 "Occupied space (lenght): " + ocupiedSpace + "\n" +
                 "Available: " + isAvailable()
@@ -33,6 +34,7 @@ public class Cell extends Container {
         this.dimension.setWidth(5);
         this.dimension.setHeight(5);
     }
+    /*
 
     public int getCellNumber() {
         return cellNumber;
@@ -41,7 +43,7 @@ public class Cell extends Container {
     public void setCellNumber(int cellNumber) {
         this.cellNumber = cellNumber;
     }
-
+*/
     public float getOcupiedSpace() {
         return ocupiedSpace;
     }
