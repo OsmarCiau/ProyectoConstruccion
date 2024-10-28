@@ -3,8 +3,6 @@ package StoreKeeper;
 import Container.Container;
 import Inventory.Dimension;
 
-import java.util.Scanner;
-
 public class Cell extends Container {
     private Dimension dimension = new Dimension(0,0,0);
    // private int cellNumber=0;
@@ -19,7 +17,7 @@ public class Cell extends Container {
     }
     public void getInfo(){
         System.out.println("Cell number: " + number + "\n" + //celNumber
-                "Dimension: " + dimension. getLength() + " x " + dimension.getWidth() + " x " + dimension.getHeight() + "\n" +
+                "Dimension: " + dimension.getLength() + " x " + dimension.getWidth() + " x " + dimension.getHeight() + "\n" +
                 "Occupied space (lenght): " + ocupiedSpace + "\n" +
                 "Available: " + isAvailable()
         );
