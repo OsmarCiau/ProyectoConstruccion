@@ -1,14 +1,14 @@
 package StoreKeeper;
 
-public class storageKeys {
+public class StorageKeys {
     private int cellNumber = 0;
     private int rackNumber = 0;
 
-    public storageKeys(){
+    public StorageKeys(){
 
     }
 
-    public storageKeys(int cellNumber, int rackNumber){
+    public StorageKeys(int cellNumber, int rackNumber){
         this.cellNumber = cellNumber;
         this.rackNumber = rackNumber;
     }

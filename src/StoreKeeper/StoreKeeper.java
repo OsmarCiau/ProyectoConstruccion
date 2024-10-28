@@ -63,7 +63,7 @@ public class StoreKeeper {
     }
 
     public void placePlatformInCell(Platform platform) {
-        storageKeys spotKey = findSpotForPlatform(platform);
+        StorageKeys spotKey = findSpotForPlatform(platform);
         //System.out.println("Place platform in cell: Spot: rack " + spotKey.getRackNumber() + ", celda "+ spotKey.getCellNumber());
         platform.setLocationInRack(spotKey);
 
@@ -80,7 +80,7 @@ public class StoreKeeper {
     }
 
     public void retirePlatformInCell(Platform platform) {
-        storageKeys spotKey = platform.getLocation();
+        StorageKeys spotKey = platform.getLocation();
 
         Rack rack = racksList.getByNumber(spotKey.getRackNumber());
         ContainerList<Cell> cellList = rack.getRackCells();
@@ -91,7 +91,7 @@ public class StoreKeeper {
 
     }
 
-    public storageKeys findPlatform(int platformId) {
+    public StorageKeys findPlatform(int platformId) {
         for(Platform platform: platformsList){
             if(platform.getPlatformID() == platformId){
                 return platform.getLocation();
@@ -100,7 +100,7 @@ public class StoreKeeper {
         return null; //si no encontró plataforma con el id
     }
 
-    public storageKeys findSpotForPlatform(Platform platform){
+    public StorageKeys findSpotForPlatform(Platform platform){
 
         // Retorna el primer espacio adecuado encontrado
         ArrayList<Rack> availableRacksList = findAvailableRack();
@@ -111,7 +111,7 @@ public class StoreKeeper {
 
             for(Cell availableCell: availableCellsList){
                 if(doesPlatformFitsInCell(availableCell, platform)){
-                    storageKeys spotForPlatform = new storageKeys(availableRack.getNumber(), availableCell.getNumber());
+                    StorageKeys spotForPlatform = new StorageKeys(availableRack.getNumber(), availableCell.getNumber());
                     return spotForPlatform;
                 }
             }
