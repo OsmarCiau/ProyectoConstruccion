@@ -129,4 +129,5 @@ public class Furniture{
             return false;
         return a_furnitureId == furniture.a_furnitureId;
     }
+    
 }
