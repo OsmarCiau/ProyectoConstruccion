@@ -1,11 +1,8 @@
 package StoreKeeper;
 
-import Inventory.Dimension;
-import Inventory.Furniture;
 import Container.ContainerList;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -127,7 +124,7 @@ public class StoreKeeper {
         }
         else if((platform.getDimension().getWidth() <= cell.getDimension().getLength())  && (platform.getDimension().getLength() <= cell.getDimension().getWidth()) ){
             //cambiar ancho por largo de plaforma
-             platform.getDimension().swapLenghtAndWidth();
+             platform.getDimension().swapLengthAndWidth();
              return true;
         }
       return false;
