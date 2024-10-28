@@ -1,14 +1,14 @@
 package Inventory;
 
 public class Dimension {
-    private float a_length;
-    private float a_height;
-    private float a_width;
+    private float a_length = 0.0f;
+    private float a_height = 0.0f;
+    private float a_width = 0.0f;
 
     public Dimension(float p_length, float p_height, float p_width){
-        this.a_length = p_length;
-        this.a_height = p_height;
-        this.a_width = p_width;
+        setLength(p_length);
+        setHeight(p_height);
+        setWidth(p_width);
     }
 
     public float getHeight() {
@@ -16,14 +16,8 @@ public class Dimension {
     }
 
     public void setHeight(float p_height) {
-        validateHeight(p_height);
-        this.a_height = p_height;
-    }
-
-    private void validateHeight(float p_height) {
-        if (p_height < 0) {
-            throw new IllegalArgumentException("Height cannot be negative");
-        }
+        DimensionValidationUtils.validateHeight(p_height);
+        a_height = p_height;
     }
 
     public float getWidth() {
@@ -31,14 +25,8 @@ public class Dimension {
     }
 
     public void setWidth(float p_width){
-        validateWidth(p_width);
-        this.a_width = p_width;
-    }
-
-    private void validateWidth(float p_width) {
-        if (p_width < 0) {
-            throw new IllegalArgumentException("Width cannot be negative");
-        }
+        DimensionValidationUtils.validateWidth(p_width);
+        a_width = p_width;
     }
 
     public float getLength() {
@@ -46,14 +34,8 @@ public class Dimension {
     }
 
     public void setLength(float p_length) {
-        validateLength(p_length);
-        this.a_length = p_length;
-    }
-
-    private void validateLength(float p_length) {
-        if (p_length < 0) {
-            throw new IllegalArgumentException("Length cannot be negative");
-        }
+        DimensionValidationUtils.validateLength(p_length);
+        a_length = p_length;
     }
 
     public void swapLengthAndWidth(){
