@@ -47,5 +47,4 @@ public class InventoryAdmin {
             throw new IllegalArgumentException("Error: PackingList is empty or null.");
         }
     }
-
 }
