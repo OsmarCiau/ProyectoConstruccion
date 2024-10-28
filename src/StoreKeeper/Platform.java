@@ -1,15 +1,13 @@
 package StoreKeeper;
 
-import java.util.Map;
-
 import Inventory.Dimension;
 
 
 public class Platform {
-    private Order order ;
-    private int platformID;
-    private StorageKeys locationInRack;
-    private Dimension dimension;
+    private Order a_order ;
+    private int a_platformID;
+    private StorageKeys a_locationInRack;
+    private Dimension a_dimension;
 
     public Platform(){
 
@@ -22,47 +20,39 @@ public class Platform {
         setDimension(dimension);
     }
 
-    public StorageKeys getLocation() {
-        return locationInRack;
-    }
-
-    public void setOrder(Order order) {
-        if (order == null) {
-            throw new IllegalArgumentException("Order cannot be null");
-        }
-        this.order = order;
-    }
-
-    public void setPlatformID(int platformID) {
-        if (platformID <= 0) {
-            throw new IllegalArgumentException("Platform ID must be positive");
-        }
-        this.platformID = platformID;
-    }
-
-    public void setLocationInRack(StorageKeys locationInRack) {
-        if (locationInRack.getRackNumber()==0 || locationInRack.getCellNumber()==0) {
-            throw new IllegalArgumentException("Location in rack cannot be null or empty");
-        }
-        this.locationInRack = locationInRack;
-    }
-
-    public void setDimension(Dimension dimension) {
-        if (dimension == null) {
-            throw new IllegalArgumentException("Dimension cannot be null");
-        }
-        this.dimension = dimension;
-    }
-
-    public int getPlatformID() {
-        return platformID;
-    }
-
-    public Dimension getDimension() {
-        return dimension;
+    public void setOrder(Order p_order) {
+        PlatformValidationUtils.validateNonNull(p_order, "Order");
+        this.a_order = p_order;
     }
 
     public Order getOrder() {
-        return order;
+        return a_order;
+    }
+
+    public void setPlatformID(int p_platformID) {
+        PlatformValidationUtils.validatePlatformID(p_platformID);
+        this.a_platformID = p_platformID;
+    }
+
+    public int getPlatformID() {
+        return a_platformID;
+    }
+
+    public void setLocationInRack(StorageKeys p_locationInRack) {
+        PlatformValidationUtils.validateLocationInRack(p_locationInRack);
+        this.a_locationInRack = p_locationInRack;
+    }
+
+    public StorageKeys getLocationInRack() {
+        return a_locationInRack;
+    }
+
+    public void setDimension(Dimension p_dimension) {
+        PlatformValidationUtils.validateNonNull(p_dimension, "Dimension");
+        this.a_dimension = p_dimension;
+    }
+
+    public Dimension getDimension() {
+        return a_dimension;
     }
 }

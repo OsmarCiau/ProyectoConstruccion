@@ -24,7 +24,7 @@ public class Order {
     public void findPlatforms() {
         for (Platform platform : a_platformUsed) {
             System.out.println("Platform ID: " + platform.getPlatformID());
-            System.out.println("Location in Rack: " + platform.getLocation());
+            System.out.println("Location in Rack: " + platform.getLocationInRack());
             System.out.println("Dimension: " + platform.getDimension());
         }
     }

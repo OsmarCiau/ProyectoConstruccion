@@ -77,7 +77,7 @@ public class StoreKeeper {
     }
 
     public void retirePlatformInCell(Platform platform) {
-        StorageKeys spotKey = platform.getLocation();
+        StorageKeys spotKey = platform.getLocationInRack();
 
         Rack rack = racksList.getByNumber(spotKey.getRackNumber());
         ContainerList<Cell> cellList = rack.getRackCells();
@@ -91,7 +91,7 @@ public class StoreKeeper {
     public StorageKeys findPlatform(int platformId) {
         for(Platform platform: platformsList){
             if(platform.getPlatformID() == platformId){
-                return platform.getLocation();
+                return platform.getLocationInRack();
             }
         }
         return null; //si no encontró plataforma con el id
