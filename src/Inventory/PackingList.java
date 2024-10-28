@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class PackingList {
-	private int a_folio;
-	private ArrayList<Furniture> a_products;
-	private Date a_arrivalDate;
+	private int a_folio = 0;
+	private ArrayList<Furniture> a_products = new ArrayList<>();
+	private Date a_arrivalDate = new Date();
 
 	public PackingList(int p_folio, ArrayList<Furniture> p_products, Date p_arrivalDate) {
 		setFolio(p_folio);
@@ -19,7 +19,8 @@ public class PackingList {
 	}
 
 	public void setProducts(ArrayList<Furniture> p_products) {
-		this.a_products = p_products;
+		PackingListValidationUtils.isPackingListNotEmpty(p_products);
+		a_products = p_products;
 	}
 
 	public int getFolio() {
@@ -27,14 +28,8 @@ public class PackingList {
 	}
 
 	public void setFolio(int p_folio) {
-		validateFolio(p_folio);
+		PackingListValidationUtils.validateFolio(p_folio);
 		this.a_folio = p_folio;
-	}
-
-	private void validateFolio(int p_folio) {
-		if (p_folio <= 0) {
-			throw new IllegalArgumentException("Error: folio must be a positive number.");
-		}
 	}
 
 	public Date getArrivalDate() {
@@ -42,13 +37,7 @@ public class PackingList {
 	}
 
 	public void setArrivalDate(Date p_arrivalDate) {
-		validateArrivalDate(p_arrivalDate);
+		PackingListValidationUtils.validateArrivalDate(p_arrivalDate);
 		this.a_arrivalDate = p_arrivalDate;
-	}
-
-	private void validateArrivalDate(Date p_arrivalDate) {
-		if (p_arrivalDate == null) {
-			throw new IllegalArgumentException("Error: arrivalDate cannot be null.");
-		}
 	}
 }
