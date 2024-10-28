@@ -4,17 +4,17 @@ import Inventory.Dimension;
 
 
 public class Platform {
-    private Order a_order ;
-    private int a_platformID;
-    private StorageKeys a_locationInRack;
-    private Dimension a_dimension;
+    private Order a_order = null;
+    private int a_platformID = 0;
+    private StorageKeys a_locationInRack = null;
+    private Dimension a_dimension = null;
 
     public Platform(){
 
     }
 
     public Platform(Order order, int platformID,  Dimension dimension) { //storageKeys locationInRack,
-        setOrder(order);
+        assignOrder(order);
         setPlatformID(platformID);
         //setLocationInRack(locationInRack);
         setDimension(dimension);
@@ -22,7 +22,13 @@ public class Platform {
 
     public void setOrder(Order p_order) {
         PlatformValidationUtils.validateNonNull(p_order, "Order");
+        PlatformValidationUtils.validateUnassignedOrder(a_order);
         this.a_order = p_order;
+    }
+
+    private void assignOrder(Order p_order) {
+        setOrder(p_order);
+        p_order.addPlatformUsed(this); //* relación bidireccional
     }
 
     public Order getOrder() {

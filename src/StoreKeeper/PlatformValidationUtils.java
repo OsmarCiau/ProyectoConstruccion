@@ -19,5 +19,11 @@ public class PlatformValidationUtils {
             throw new IllegalArgumentException("Platform ID must be positive");
         }
     }
+
+    public static void validateUnassignedOrder(Order order) {
+        if (order != null) {
+            throw new IllegalStateException("Platform is already assigned to an order.");
+        }
+    }
     
 }

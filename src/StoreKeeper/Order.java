@@ -23,6 +23,7 @@ public class Order {
 
     public void findPlatforms() {
         for (Platform platform : a_platformUsed) {
+            OrderValidationUtils.validateNonNull(platform.getLocationInRack(), "Location In Rack");
             System.out.println("Platform ID: " + platform.getPlatformID());
             System.out.println("Location in Rack: " + platform.getLocationInRack());
             System.out.println("Dimension: " + platform.getDimension());
@@ -40,6 +41,10 @@ public class Order {
     private Duration calculateFurnitureBuildTime(Furniture  p_furniture) {
         int buildTimeMinutes =  p_furniture.getBuildTime() *  p_furniture.getQuantity();
         return Duration.ofMinutes(buildTimeMinutes);
+    }
+
+    public void addPlatformUsed(Platform p_platform) {
+        a_platformUsed.add(p_platform);
     }
 
     public Duration getTotalAssemblyTime() {
