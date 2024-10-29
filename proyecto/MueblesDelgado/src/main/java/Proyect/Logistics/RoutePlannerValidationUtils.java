@@ -1,4 +1,4 @@
-package Logistics;
+package Proyect.Logistics;
 
 import java.time.LocalTime;
 
