@@ -1,4 +1,4 @@
-package Logistics;
+package Proyect.Logistics;
 
 public class TruckDriverValidationUtils {
     public boolean validateName(String p_name){
