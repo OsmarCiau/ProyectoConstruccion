@@ -11,8 +11,8 @@ public class LogisticsAdmin {
     private ArrayList<DeliveryTruck> trucksAvailable = new ArrayList<>(); //nuevo atributo
     private RoutePlanner routePlanner;
 
-    LogisticsAdminValidationUtils logisticsAdminValidator = new LogisticsAdminValidationUtils();
-
+    private static final LogisticsAdminValidationUtils logisticsAdminValidator = new LogisticsAdminValidationUtils();
+    
     public LogisticsAdmin(ArrayList<Order> p_orders, RoutePlanner p_routePlanner, ArrayList<DeliveryTruck> p_trucksAvailable){
         setOrders(p_orders);
         setRoutePlanner(p_routePlanner);
@@ -20,10 +20,8 @@ public class LogisticsAdmin {
     }
 
     private void setOrders(ArrayList<Order> p_orders) {
-        boolean ordersIsValid = logisticsAdminValidator.validateOrders(p_orders);
-        if(ordersIsValid){
-            this.orders = p_orders;
-        }
+        logisticsAdminValidator.validateTrucks(p_trucksAvailable);
+        this.trucksAvailable = p_trucksAvailable;
     }
 
 
