@@ -23,9 +23,14 @@ public class Furniture{
         return a_furnitureId;
     }
 
+    private static final FurnitureValidationUtils furnitureValidator = new FurnitureValidationUtils();
+
     public void setFurnitureId(int p_furnitureId) {
-        FurnitureValidationUtils.validateNonNegative(p_furnitureId, "Furniture ID");
-        a_furnitureId = p_furnitureId;
+        boolean isFurnitureIdValid = furnitureValidator.validateNonNegative(p_furnitureId, "Furniture ID");
+
+        if (isFurnitureIdValid) {
+            a_furnitureId = p_furnitureId;
+        }
     }
 
     public String getType() {
@@ -33,8 +38,11 @@ public class Furniture{
     }
 
     public void setType(String p_type) {
-        FurnitureValidationUtils.validateNonNull(p_type, "Type");
-        a_type = p_type;
+        boolean isTypeValid = furnitureValidator.validateNonNull(p_type, "Type");
+
+        if (isTypeValid) {
+            a_type = p_type;
+        }
     }
 
     public String getBrand() {
@@ -42,8 +50,11 @@ public class Furniture{
     }
 
     public void setBrand(String p_brand) {
-        FurnitureValidationUtils.validateNonNull(p_brand, "Brand");
-        a_brand = p_brand;
+        boolean isBrandValid = furnitureValidator.validateNonNull(p_brand, "Brand");
+
+        if (isBrandValid) {
+            a_brand = p_brand;
+        }
     }
 
     public String getColor() {
@@ -51,8 +62,11 @@ public class Furniture{
     }
 
     public void setColor(String p_color) {
-        FurnitureValidationUtils.validateNonNull(p_color, "Color");
-        a_color = p_color;
+        boolean isColorValid = furnitureValidator.validateNonNull(p_color, "Color");
+
+        if (isColorValid) {
+            a_color = p_color;
+        }
     }
 
     public Dimension getDimension() {
@@ -60,8 +74,11 @@ public class Furniture{
     }
 
     public void setDimension(Dimension p_dimension) {
-        FurnitureValidationUtils.validateDimension(p_dimension);
-        a_dimension = p_dimension;
+        boolean isDimensionValid = furnitureValidator.validateDimension(p_dimension);
+
+        if (isDimensionValid) {
+            a_dimension = p_dimension;
+        }
     }
 
     public int getQuantity() {
@@ -69,8 +86,11 @@ public class Furniture{
     }
 
     public void setQuantity(int p_quantity) {
-        FurnitureValidationUtils.validateQuantity(p_quantity);
-        a_quantity = p_quantity;
+        boolean isQuantityValid = furnitureValidator.validateQuantity(p_quantity);
+
+        if (isQuantityValid) {
+            a_quantity = p_quantity;
+        }
     }
 
     public int getBuildTime() {
@@ -78,8 +98,11 @@ public class Furniture{
     }
 
     public void setBuildTime(int p_buildTime) {
-        FurnitureValidationUtils.validateNonNegative(p_buildTime, "Build Time");
-        a_buildTime = p_buildTime;
+        boolean isBuildTimeValid = furnitureValidator.validateNonNegative(p_buildTime, "Build Time");
+
+        if (isBuildTimeValid) {
+            a_buildTime = p_buildTime;
+        }
     }
 
     public boolean equals(Object p_object) {

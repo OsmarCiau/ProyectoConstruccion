@@ -4,27 +4,39 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class PackingListValidationUtils {
-    public static void validateFolio(int p_folio) {
-        if (p_folio <= 0) {
-            throw new IllegalArgumentException("Error: folio must be a positive number.");
+    public boolean validateFolio(int p_folio) {
+        boolean isValid = false;
+
+        if (p_folio > 0) {
+            isValid = true;
+        } else {
+            throw new IllegalArgumentException("Folio cannot be negative.");
         }
+
+        return isValid;
     }
 
-    public static void validateFurnitureIndex(int p_index, int p_furnitureId) {
-        if (p_index < 0) {
-            throw new IllegalArgumentException("Furniture with ID " + p_furnitureId + " does not exist in the inventory.");
-        }
-    }
+    public boolean validateArrivalDate(Date p_arrivalDate) {
+        boolean isValid = false;
 
-    public static void validateArrivalDate(Date p_arrivalDate) {
         if (p_arrivalDate == null) {
             throw new IllegalArgumentException("Error: arrivalDate cannot be null.");
+        } else {
+            isValid = true;
         }
+
+        return isValid;
     }
 
-    public static void isPackingListNotEmpty(ArrayList<Furniture> p_products) {
+    public boolean isPackingListEmpty(ArrayList<Furniture> p_products) {
+        boolean isValid = false;
+
         if (p_products == null || p_products.isEmpty()) {
             throw new IllegalArgumentException("Error: PackingList is empty or null.");
+        } else {
+            isValid = true;
         }
+
+        return isValid;
     }
 }

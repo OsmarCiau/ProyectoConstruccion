@@ -18,9 +18,14 @@ public class PackingList {
 		return a_products;
 	}
 
+	private static final PackingListValidationUtils packingListValidator = new PackingListValidationUtils();
+
 	public void setProducts(ArrayList<Furniture> p_products) {
-		PackingListValidationUtils.isPackingListNotEmpty(p_products);
-		a_products = p_products;
+		boolean isPackingListValid = packingListValidator.isPackingListEmpty(p_products);
+
+		if (isPackingListValid) {
+			a_products = p_products;
+		}
 	}
 
 	public int getFolio() {
@@ -28,8 +33,11 @@ public class PackingList {
 	}
 
 	public void setFolio(int p_folio) {
-		PackingListValidationUtils.validateFolio(p_folio);
-		this.a_folio = p_folio;
+		boolean isFolioValid = packingListValidator.validateFolio(p_folio);
+
+		if (isFolioValid) {
+			a_folio = p_folio;
+		}
 	}
 
 	public Date getArrivalDate() {
@@ -37,7 +45,10 @@ public class PackingList {
 	}
 
 	public void setArrivalDate(Date p_arrivalDate) {
-		PackingListValidationUtils.validateArrivalDate(p_arrivalDate);
-		this.a_arrivalDate = p_arrivalDate;
+		boolean isArrivalDateValid = packingListValidator.validateArrivalDate(p_arrivalDate);
+
+		if (isArrivalDateValid) {
+			a_arrivalDate = p_arrivalDate;
+		}
 	}
 }
