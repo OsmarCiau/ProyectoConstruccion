@@ -1,6 +1,7 @@
 package StoreKeeper;
 
 import Inventory.Dimension;
+import Validations.ValidationUtils;
 
 
 public class Platform {
@@ -21,7 +22,7 @@ public class Platform {
     }
 
     public void setOrder(Order p_order) {
-        PlatformValidationUtils.validateNonNull(p_order, "Order");
+        ValidationUtils.validateNonNull(p_order, "Order");
         PlatformValidationUtils.validateUnassignedOrder(this.order);
         this.order = p_order;
     }
@@ -36,6 +37,7 @@ public class Platform {
     }
 
     public void setPlatformID(int p_platformID) {
+        ValidationUtils.validatePositiveNumber(p_platformID, "Platform ID");
         PlatformValidationUtils.validatePlatformID(p_platformID);
         this.platformID = p_platformID;
     }
@@ -45,7 +47,7 @@ public class Platform {
     }
 
     public void setLocationInRack(StorageKeys p_locationInRack) {
-        PlatformValidationUtils.validateLocationInRack(p_locationInRack);
+        ValidationUtils.validateLocationInRack(p_locationInRack);
         this.locationInRack = p_locationInRack;
     }
 
@@ -54,7 +56,7 @@ public class Platform {
     }
 
     public void setDimension(Dimension p_dimension) {
-        PlatformValidationUtils.validateNonNull(p_dimension, "Dimension");
+        ValidationUtils.validateNonNull(p_dimension, "Dimension");
         this.dimension = p_dimension;
     }
 

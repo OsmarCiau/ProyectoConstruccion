@@ -1,4 +1,7 @@
 package Container;
+
+import Validations.ValidationUtils;
+
 public abstract class Container {
     private boolean available = false;
     protected int number = 0;
@@ -13,6 +16,7 @@ public abstract class Container {
     }
 
     public void setNumber(int p_number) {
+        ValidationUtils.validatePositiveNumber(p_number, "Number");
         this.number = p_number;
     }
 

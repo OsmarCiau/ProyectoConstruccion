@@ -1,6 +1,7 @@
 package StoreKeeper;
 
 public class OrderValidationUtils {
+    /*
     public static void validateOrderID(int orderID) {
         if (orderID <= 0) {
             throw new IllegalArgumentException("Order ID must be positive.");
@@ -13,9 +14,12 @@ public class OrderValidationUtils {
         }
     }
 
+
     public static void validateNonNull(Object value, String fieldName) {
         if (value == null) {
             throw new IllegalArgumentException(fieldName + " cannot be null.");
         }
     }
+
+     */
 }

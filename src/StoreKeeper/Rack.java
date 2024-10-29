@@ -2,7 +2,7 @@ package StoreKeeper;
 
 import Container.Container;
 import Container.ContainerList;
-
+import Validations.ValidationUtils;
 
 public class Rack extends Container {
     private int cellCounter = 0;
@@ -22,6 +22,7 @@ public class Rack extends Container {
     }
 
     public void setCellCounter(int p_cellCounter) {
+        ValidationUtils.validatePositiveNumber(p_cellCounter, "Cell Counter");
         this.cellCounter = p_cellCounter;
     }
 
