@@ -21,7 +21,7 @@ public class Main {
         System.out.println(deliveryTruckAdmin.getAvailableDrivers());
 
         deliveryTruckAdmin.assignDriverToTruck(123, "Sandra");
-        System.out.println(deliveryTruckAdmin.getDeliveryTruckDriverMap());
+        //System.out.println(deliveryTruckAdmin.getDeliveryTruckDriverMap());
 
 
     }
