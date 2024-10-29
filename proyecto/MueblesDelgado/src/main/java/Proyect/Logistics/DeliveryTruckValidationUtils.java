@@ -16,8 +16,8 @@ public class DeliveryTruckValidationUtils {
 
     }
 
-    public boolean validateCapacity(float p_capacity){
-        float minimumCapacity = 0.0f; //definir capacidad minima
+    public boolean validateCapacity(double p_capacity){
+        double minimumCapacity = 0.0f; //definir capacidad minima
         boolean isValid = false;
 
         if(p_capacity > minimumCapacity){
@@ -29,8 +29,8 @@ public class DeliveryTruckValidationUtils {
         return isValid;
     }
 
-    public boolean validateMileage(float p_mileage){
-        float minimumMileage = 0.0f; //definir mileage minima
+    public boolean validateMileage(double p_mileage){
+        double minimumMileage = 0.0f; //definir mileage minima
         boolean isValid = false;
 
         if(p_mileage > minimumMileage){

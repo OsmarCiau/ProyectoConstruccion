@@ -10,17 +10,17 @@ public class Main {
         //System.out.println(truckDriver);
         //System.out.println(route);
 
-        DeliveryTruckAdmin deliveryTruckAdmin = new DeliveryTruckAdmin();
+        //DeliveryTruckAdmin deliveryTruckAdmin = new DeliveryTruckAdmin();
 
-        deliveryTruckAdmin.registerDeliveryTruck(123, 10.0f, 100.0f);
-        deliveryTruckAdmin.registerDeliveryTruck(456, 10.0f, 100.0f);
-        System.out.println(deliveryTruckAdmin.getAvailableTrucks());
+        //deliveryTruckAdmin.registerDeliveryTruck(123, 10.0f, 100.0f);
+        //deliveryTruckAdmin.registerDeliveryTruck(456, 10.0f, 100.0f);
+        //System.out.println(deliveryTruckAdmin.getAvailableTrucks());
 
-        deliveryTruckAdmin.registerTruckDriver("Robert", 100);
-        deliveryTruckAdmin.registerTruckDriver("Sandra", 200 );
-        System.out.println(deliveryTruckAdmin.getAvailableDrivers());
+        //deliveryTruckAdmin.registerTruckDriver("Robert", 100);
+        //deliveryTruckAdmin.registerTruckDriver("Sandra", 200 );
+        //System.out.println(deliveryTruckAdmin.getAvailableDrivers());
 
-        deliveryTruckAdmin.assignDriverToTruck(123, "Sandra");
+        //deliveryTruckAdmin.assignDriverToTruck(123, "Sandra");
         //System.out.println(deliveryTruckAdmin.getDeliveryTruckDriverMap());
 
 

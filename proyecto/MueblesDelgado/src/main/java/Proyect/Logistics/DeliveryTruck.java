@@ -1,28 +1,35 @@
 package Proyect.Logistics;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+
+@Entity
 public class DeliveryTruck {
+
+    @Id
     private int trackingNumber = 0;
-    private float capacity = 0.0f; //cambiar a double?
-    private float mileage = 0.0f;  //cambiar a double?
+    private double capacity = 0.0f; //cambiar a double?
+    private double mileage = 0.0f;  //cambiar a double?
 
-    DeliveryTruckValidationUtils deliveryTruckValidator = new DeliveryTruckValidationUtils();
+    private static final DeliveryTruckValidationUtils deliveryTruckValidator = new DeliveryTruckValidationUtils();
 
-    public DeliveryTruck(int p_trackingNumber, float capacity, float mileage){
+    public DeliveryTruck(){}
+    public DeliveryTruck(int p_trackingNumber, double capacity, double mileage){
         setTrackingNumber(p_trackingNumber);
         setCapacity(capacity);
         setMileage(mileage);
     }
 
-    private void setTrackingNumber(int p_trackingNumber) {
+    public void setTrackingNumber(int p_trackingNumber) {
         boolean trackingNumberIsValid = deliveryTruckValidator.validateTrackingNumber(p_trackingNumber);
 
         if(trackingNumberIsValid){
             this.trackingNumber = p_trackingNumber;
         }
     }
-   
 
-    private void setCapacity(float p_capacity){
+    public void setCapacity(double p_capacity){
         boolean capacityIsValid = deliveryTruckValidator.validateCapacity(p_capacity);
 
         if(capacityIsValid){
@@ -30,25 +37,22 @@ public class DeliveryTruck {
         }
     }
 
-
-    private void setMileage(float p_mileage){
+    public void setMileage(double p_mileage){
         boolean mileageIsValid = deliveryTruckValidator.validateMileage(p_mileage);
         if(mileageIsValid){
             this.mileage = p_mileage;
         }
     }
 
-
-
     public int getTrackingNumber() {
         return trackingNumber;
     }
 
-    public float getCapacity() {
+    public double getCapacity() {
         return capacity;
     }
 
-    public float getMileage() {
+    public double getMileage() {
         return mileage;
     }
 

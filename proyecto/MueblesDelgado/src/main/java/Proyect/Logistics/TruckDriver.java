@@ -1,26 +1,31 @@
 package Proyect.Logistics;
 
-public class TruckDriver {
-    private String name = null;
-    private int licenseNumber = 0;
-    
-    TruckDriverValidationUtils truckDriverValidator = new TruckDriverValidationUtils();
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
+@Entity
+public class TruckDriver {
+
+    @Id
+    private int licenseNumber = 0;
+    private String name = null;
+
+    private static final TruckDriverValidationUtils truckDriverValidator = new TruckDriverValidationUtils();
+    public TruckDriver() {}
 
     public TruckDriver(String p_name, int p_licenseNumber){
         setName(p_name);
         setLicenseNumber(p_licenseNumber);
     }
 
-    private void setName(String p_name) {
+    public void setName(String p_name) {
         boolean nameIsValid = truckDriverValidator.validateName(p_name);
         if(nameIsValid){
             this.name = p_name;
         }
     }
 
-
-    private void setLicenseNumber(int p_licenseNumber){
+    public void setLicenseNumber(int p_licenseNumber){
         boolean licenseNumberIsValid = truckDriverValidator.validateLicenseNumber(p_licenseNumber);
         if(licenseNumberIsValid){
             this.licenseNumber = p_licenseNumber;
