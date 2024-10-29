@@ -1,6 +1,6 @@
-package Logistics;
+package Proyect.Logistics;
 
-import StoreKeeper.Order;
+import Proyect.StoreKeeper.Order;
 
 import java.util.ArrayList;
 
