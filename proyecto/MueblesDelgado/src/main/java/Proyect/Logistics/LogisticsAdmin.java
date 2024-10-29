@@ -20,8 +20,8 @@ public class LogisticsAdmin {
     }
 
     private void setOrders(ArrayList<Order> p_orders) {
-        logisticsAdminValidator.validateTrucks(p_trucksAvailable);
-        this.trucksAvailable = p_trucksAvailable;
+        logisticsAdminValidator.validateOrders(p_orders);
+        this.orders = p_orders;
     }
 
 
@@ -30,10 +30,8 @@ public class LogisticsAdmin {
     }
 
     private void setTrucksAvailable(ArrayList<DeliveryTruck> p_trucksAvailable){
-        boolean truckAvailableIsValid = logisticsAdminValidator.validateTrucks(p_trucksAvailable);
-        if(truckAvailableIsValid){
-            this.trucksAvailable = p_trucksAvailable;
-        }
+        logisticsAdminValidator.validateTrucks(p_trucksAvailable);
+        this.trucksAvailable = p_trucksAvailable;
     }
 
 
