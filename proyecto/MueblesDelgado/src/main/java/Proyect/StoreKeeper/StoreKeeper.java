@@ -1,6 +1,7 @@
 package Proyect.StoreKeeper;
 
 import Proyect.Container.ContainerList;
+import Proyect.Validations.ValidationUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,9 +13,9 @@ public class StoreKeeper {
     private ArrayList<Platform> platformsList = new ArrayList<>();
     // private FurnitureRegistry entry;
 
-    public StoreKeeper(int employeeId, ContainerList<Rack> racksList){
-        this.employeeId = employeeId;
-        this.racksList = racksList;
+    public StoreKeeper(int p_employeeId, ContainerList<Rack> p_racksList){
+        this.employeeId = p_employeeId;
+        this.racksList = p_racksList;
     }
 
     public Map<Rack, ArrayList<Cell>> findAvailableSpace() {
@@ -39,7 +40,7 @@ public class StoreKeeper {
     private ArrayList<Rack> findAvailableRack() {
         ArrayList<Rack> availableRacksList = new ArrayList<>();
 
-        for(Rack rack: racksList){
+        for(Rack rack: this.racksList){
             if(rack.isAvailable()){
                 availableRacksList.add(rack);
             }
@@ -48,10 +49,10 @@ public class StoreKeeper {
         return availableRacksList;
     }
 
-    private ArrayList<Cell> findAvailableCell(Rack rack) {
+    private ArrayList<Cell> findAvailableCell(Rack p_rack) {
         ArrayList<Cell>  availableCellsList = new ArrayList<>();
 
-        for(Cell cell: rack.getRackCells()){
+        for(Cell cell: p_rack.getRackCells()){
             if(cell.isAvailable()){
                 availableCellsList.add(cell);
             }
@@ -59,10 +60,10 @@ public class StoreKeeper {
         return availableCellsList;
     }
 
-    public void placePlatformInCell(Platform platform) {
-        StorageKeys spotKey = findSpotForPlatform(platform);
+    public void placePlatformInCell(Platform p_platform) {
+        StorageKeys spotKey = findSpotForPlatform(p_platform);
         //System.out.println("Place platform in cell: Spot: rack " + spotKey.getRackNumber() + ", celda "+ spotKey.getCellNumber());
-        platform.setLocationInRack(spotKey);
+        p_platform.setLocationInRack(spotKey);
 
         //Asignando el espacio ocupado por la plataforma en la celda
 
@@ -70,34 +71,35 @@ public class StoreKeeper {
 
         ContainerList<Cell> cellList = rack.getRackCells();
         Cell cell = cellList.getByNumber(spotKey.getCellNumber());
-        platform.setLocationInRack(spotKey);
-        cell.addSpaceOccupiedInCell(platform.getDimension().getLength()); // refactorizar
-        System.out.println("La tarima " + platform.getPlatformID() + " se colocó en: Rack: " + rack.getNumber() + ", Celda: "+cell.getNumber());
-        System.out.println("Espacio restante en la celda " + cell.getNumber() + ": " + cell.getAvailableSpace());
+        p_platform.setLocationInRack(spotKey);
+        cell.addSpaceOccupiedInCell(p_platform.getDimension().getLength()); // refactorizar
+        //System.out.println("La tarima " + p_platform.getPlatformID() + " se colocó en: Rack: " + rack.getNumber() + ", Celda: "+cell.getNumber());
+        //System.out.println("Espacio restante en la celda " + cell.getNumber() + ": " + cell.getAvailableSpace());
+        this.platformsList.add((p_platform));
     }
 
-    public void retirePlatformInCell(Platform platform) {
-        StorageKeys spotKey = platform.getLocationInRack();
+    public void retirePlatformInCell(Platform p_platform) {
+        StorageKeys spotKey = p_platform.getLocationInRack();
 
-        Rack rack = racksList.getByNumber(spotKey.getRackNumber());
+        Rack rack = this.racksList.getByNumber(spotKey.getRackNumber());
         ContainerList<Cell> cellList = rack.getRackCells();
         Cell cell = cellList.getByNumber(spotKey.getCellNumber());
-        cell.removeSpaceOccupiedInCell(platform.getDimension().getLength());
-        System.out.println("La tarima " + platform.getPlatformID() + " se retiró de: Rack: " + rack.getNumber() + ", Celda: "+cell.getNumber());
+        cell.removeSpaceOccupiedInCell(p_platform.getDimension().getLength());
+        System.out.println("La tarima " + p_platform.getPlatformID() + " se retiró de: Rack: " + rack.getNumber() + ", Celda: "+cell.getNumber());
         System.out.println("Espacio restante en la celda " + cell.getNumber() + ": " + cell.getAvailableSpace());
 
     }
 
-    public StorageKeys findPlatform(int platformId) {
-        for(Platform platform: platformsList){
-            if(platform.getPlatformID() == platformId){
+    public StorageKeys findPlatform(int p_platformId) {
+        for(Platform platform: this.platformsList){
+            if(platform.getPlatformID() == p_platformId){
                 return platform.getLocationInRack();
             }
         }
         return null; //si no encontró plataforma con el id
     }
 
-    public StorageKeys findSpotForPlatform(Platform platform){
+    public StorageKeys findSpotForPlatform(Platform p_platform){
 
         // Retorna el primer espacio adecuado encontrado
         ArrayList<Rack> availableRacksList = findAvailableRack();
@@ -107,7 +109,7 @@ public class StoreKeeper {
             ArrayList<Cell> availableCellsList = findAvailableCell(availableRack);
 
             for(Cell availableCell: availableCellsList){
-                if(doesPlatformFitsInCell(availableCell, platform)){
+                if(doesPlatformFitsInCell(availableCell, p_platform)){
                     StorageKeys spotForPlatform = new StorageKeys(availableRack.getNumber(), availableCell.getNumber());
                     return spotForPlatform;
                 }
@@ -117,26 +119,34 @@ public class StoreKeeper {
     }
 
 
-    private boolean doesPlatformFitsInCell(Cell cell, Platform platform){
-        //cellHasSpaceForPlatform
-        if (platform.getDimension().getLength() <= cell.getDimension().getLength()){ //corregir llamadas en la refactorización
+    private boolean doesPlatformFitsInCell(Cell p_cell, Platform p_platform){
+
+        if (p_platform.getDimension().getLength() <= p_cell.getDimension().getLength()){ //corregir llamadas en la refactorización
             return true;
         }
-        else if((platform.getDimension().getWidth() <= cell.getDimension().getLength())  && (platform.getDimension().getLength() <= cell.getDimension().getWidth()) ){
+        else if((p_platform.getDimension().getWidth() <= p_cell.getDimension().getLength())  && (p_platform.getDimension().getLength() <= p_cell.getDimension().getWidth()) ){
             //cambiar ancho por largo de plaforma
-            platform.getDimension().swapLengthAndWidth();
+            p_platform.getDimension().swapLengthAndWidth();
             return true;
         }
         return false;
     }
 
-    private Rack getRackByNumber(int rackNumber){
-        for(Rack rack: racksList){
-            if(rack.getNumber() == rackNumber){
+    private Rack getRackByNumber(int p_rackNumber){
+        for(Rack rack: this.racksList){
+            if(rack.getNumber() == p_rackNumber){
                 return rack;
             }
         }
         return null;
     }
 
+    public ContainerList<Rack> getRacksList() {
+        return this.racksList;
+    }
+
+    public void setRacksList(ContainerList<Rack> p_racksList) {
+        ValidationUtils.validateContainerList(p_racksList, "Rack List");
+        this.racksList = p_racksList;
+    }
 }
