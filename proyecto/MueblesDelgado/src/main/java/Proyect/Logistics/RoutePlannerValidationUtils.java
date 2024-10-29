@@ -3,27 +3,20 @@ package Proyect.Logistics;
 import java.time.LocalTime;
 
 public class RoutePlannerValidationUtils {
-    public boolean validateWarehouseLocation(String p_warehouseLocation){
-        boolean isValid = false;
-        if(p_warehouseLocation != null){
-            isValid = true;
-        }else{
+    
+    public void validateWarehouseLocation(String p_warehouseLocation){
+        if(p_warehouseLocation == null){
             throw new IllegalArgumentException("WAREHOUSE LOCATION REQUIRED");
         }
-        return isValid;
-
     }
 
-    public boolean validateStartTime(LocalTime p_startTime){
-        boolean isValid = false;
+    public void validateStartTime(LocalTime p_startTime){
         LocalTime minimumTime = LocalTime.of(8,0);
 
-        if(p_startTime.isAfter(minimumTime)){
-            isValid = true;
-        }else{
+        if(p_startTime.isBefore(minimumTime)){
             throw new IllegalArgumentException("START TIME MUST BE AFTER 8:00 AM");
         }
-
-        return isValid;
     }
+    
+  
 }
