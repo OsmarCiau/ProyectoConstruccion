@@ -9,7 +9,7 @@ public class RoutePlanner {
     private String warehouseLocation = null;
     private LocalTime startTime = LocalTime.of(0, 0);
 
-    RoutePlannerValidationUtils routePlannerValidator = new RoutePlannerValidationUtils();
+    private static final RoutePlannerValidationUtils routePlannerValidator = new RoutePlannerValidationUtils();
 
 
     public RoutePlanner(String p_wareHouseLocation, LocalTime p_startTime){
@@ -18,19 +18,14 @@ public class RoutePlanner {
     }
 
     private void setWarehouseLocation(String p_warehouseLocation) {
-        boolean warehouseLocationIsValid = routePlannerValidator.validateWarehouseLocation(p_warehouseLocation);
-        if(warehouseLocationIsValid){
-            this.warehouseLocation = p_warehouseLocation;
-        }
+        routePlannerValidator.validateWarehouseLocation(p_warehouseLocation);
+       this.warehouseLocation = p_warehouseLocation;
     }
 
 
     private void setStartTime(LocalTime p_startTime) {
-        boolean startTimeIsValid = routePlannerValidator.validateStartTime(p_startTime);
-        if(startTimeIsValid){
-            this.startTime = p_startTime;
-        }
-
+        routePlannerValidator.validateStartTime(p_startTime);
+        this.startTime = p_startTime;
     }
 
     public String getWarehouseLocation() {
