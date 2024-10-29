@@ -1,21 +1,39 @@
 package Inventory;
 
 public class DimensionValidationUtils {
-    public static void validateHeight(float p_height) {
-        if (p_height < 0) {
+    public boolean validateHeight(float p_height) {
+        boolean isValid = false;
+
+        if (p_height > 0) {
+            isValid = true;
+        } else {
             throw new IllegalArgumentException("Height cannot be negative.");
         }
+
+        return isValid;
     }
 
-    public static void validateWidth(float p_width) {
-        if (p_width < 0) {
+    public boolean validateWidth(float p_width) {
+        boolean isValid = false;
+
+        if (p_width > 0) {
+            isValid = true;
+        } else {
             throw new IllegalArgumentException("Width cannot be negative.");
         }
+
+        return isValid;
     }
 
-    public static void validateLength(float p_length) {
-        if (p_length < 0) {
+    public boolean validateLength(float p_length) {
+        boolean isValid = false;
+
+        if (p_length > 0) {
+            isValid = true;
+        } else {
             throw new IllegalArgumentException("Length cannot be negative.");
         }
+
+        return isValid;
     }
 }
