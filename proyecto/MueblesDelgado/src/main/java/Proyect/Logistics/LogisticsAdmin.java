@@ -7,10 +7,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class LogisticsAdmin {
-    private ArrayList<Order> a_orders = new ArrayList<>();
-    private ArrayList<DeliveryTruck> a_trucksAvailable = new ArrayList<>(); //nuevo atributo
-    private RoutePlanner a_routePlanner;
+    private ArrayList<Order> orders = new ArrayList<>();
+    private ArrayList<DeliveryTruck> trucksAvailable = new ArrayList<>(); //nuevo atributo
+    private RoutePlanner routePlanner;
 
+    LogisticsAdminValidationUtils logisticsAdminValidator = new LogisticsAdminValidationUtils();
 
     public LogisticsAdmin(ArrayList<Order> p_orders, RoutePlanner p_routePlanner, ArrayList<DeliveryTruck> p_trucksAvailable){
         setOrders(p_orders);
@@ -19,53 +20,35 @@ public class LogisticsAdmin {
     }
 
     private void setOrders(ArrayList<Order> p_orders) {
-        boolean ordersIsValid = validateOrders(p_orders);
+        boolean ordersIsValid = logisticsAdminValidator.validateOrders(p_orders);
         if(ordersIsValid){
-            this.a_orders = p_orders;
+            this.orders = p_orders;
         }
     }
 
-    private boolean validateOrders(ArrayList<Order> p_orders){
-        boolean isValid = false;
-        if(p_orders.isEmpty()){
-            throw new IllegalArgumentException("NO CURRENT ORDERS");
-        }else{
-            isValid = true;
-        }
-        return isValid;
-    }
 
     public void setRoutePlanner(RoutePlanner p_routePlanner) {
-        this.a_routePlanner = p_routePlanner;
+        this.routePlanner = p_routePlanner;
     }
 
     private void setTrucksAvailable(ArrayList<DeliveryTruck> p_trucksAvailable){
-        boolean truckAvailableIsValid = validateTrucks(p_trucksAvailable);
+        boolean truckAvailableIsValid = logisticsAdminValidator.validateTrucks(p_trucksAvailable);
         if(truckAvailableIsValid){
-            this.a_trucksAvailable = p_trucksAvailable;
+            this.trucksAvailable = p_trucksAvailable;
         }
     }
 
-    private boolean validateTrucks(ArrayList<DeliveryTruck> p_trucksAvailable){
-        boolean isValid = false;
-        if(p_trucksAvailable.isEmpty()){
-            throw new IllegalArgumentException("NO CURRENT TRUCKS");
-        }else{
-            isValid = true;
-        }
-        return isValid;
-    }
 
     public ArrayList<Order> getOrders() {
-        return a_orders;
+        return orders;
     }
 
     public RoutePlanner getRoutePlanner() {
-        return a_routePlanner;
+        return routePlanner;
     }
 
     public ArrayList<DeliveryTruck> getTrucksAvailable(){
-        return a_trucksAvailable;
+        return trucksAvailable;
     }
 
     public ArrayList<String> getDeliveryRoute(){
