@@ -9,7 +9,7 @@ public class Route {
     private float distance = 0.0f;
     private LocalTime estimatedTime = LocalTime.of(0, 0);
 
-    RouteValidationUtils routeValidator = new RouteValidationUtils();
+      private static final RouteValidationUtils routeValidator = new RouteValidationUtils();
     
 
     public Route(int p_routeId, String p_originLocation, String p_destination,
@@ -22,44 +22,32 @@ public class Route {
     }
 
     private void setRouteId(int p_routeId){
-        boolean routeIdIsValid = routeValidator.validateRouteId(p_routeId);
-        if(routeIdIsValid){
-            this.routeId = p_routeId;
-        }
+        routeValidator.validateRouteId(p_routeId);
+        this.routeId = p_routeId;
     }
 
 
     private void setOriginLocation(String p_originLocation){
-        boolean originLocationIsValid = routeValidator.validateOriginLocation(p_originLocation);
-        if(originLocationIsValid){
-            this.originLocation = p_originLocation;
-        }
-
+        routeValidator.validateOriginLocation(p_originLocation);
+        this.originLocation = p_originLocation;
     }
 
 
     private void setDestination(String p_destination) {
-        boolean destinationIsValid =  routeValidator.validateDestination(p_destination);
-        if(destinationIsValid){
-            this.destination = p_destination;
-        }
+        routeValidator.validateDestination(p_destination);
+        this.destination = p_destination;
     }
 
     private void setDistance(float p_distance) {
-        boolean distanceIsValid = routeValidator.validateDistance(p_distance);
-        if(distanceIsValid){
-            this.distance = p_distance;
-        }
-
+         routeValidator.validateDistance(p_distance);
+        this.distance = p_distance;
     }
 
 
 
     private void setEstimatedTime(LocalTime p_estimatedTime){
-        boolean estimatedTimeIsValid = routeValidator.validateEstimatedTime(p_estimatedTime);
-        if(estimatedTimeIsValid){
-            this.estimatedTime = p_estimatedTime;
-        }
+        routeValidator.validateEstimatedTime(p_estimatedTime);
+        this.estimatedTime = p_estimatedTime;
     }
 
 
