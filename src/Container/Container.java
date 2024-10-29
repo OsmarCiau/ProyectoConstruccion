@@ -1,10 +1,10 @@
 package Container;
 public abstract class Container {
-    private boolean available = true;
+    private boolean available = false;
     protected int number = 0;
 
-    public void setAvailable(boolean available) {
-        this.available = available;
+    public void setAvailable(boolean p_available) {
+        this.available = p_available;
     }
 
 
@@ -12,8 +12,8 @@ public abstract class Container {
         return number;
     }
 
-    public void setNumber(int number) {
-        this.number = number;
+    public void setNumber(int p_number) {
+        this.number = p_number;
     }
 
     public abstract boolean isAvailable();

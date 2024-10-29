@@ -7,7 +7,7 @@ import java.time.Duration;
 
 public class Order {
     private int a_orderID = 0;
-    private String a_destination = "";
+    private String a_destination = null;
     private ArrayList<Platform> a_platformUsed = new ArrayList<>();
     private Date a_deliveryDate = new Date();
     private ArrayList<Furniture> a_orderContent = new ArrayList<>();

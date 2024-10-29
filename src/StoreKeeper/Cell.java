@@ -4,27 +4,20 @@ import Container.Container;
 import Inventory.Dimension;
 
 public class Cell extends Container {
-    private Dimension dimension = new Dimension(0,0,0);
-   // private int cellNumber=0;
-    private float ocupiedSpace=0; //  espacio restante a lo largo
+    private Dimension dimension = null;
+    private float occupiedSpace =0;
 
-    public Cell(int cellNumber, float ocupiedSpace){
+    public Cell(int p_cellNumber, float p_occupiedSpace){
         setAvailable(true);
-        setNumber(cellNumber);
-        //setCellNumber(cellNumber);
+        setNumber(p_cellNumber);
+        this.dimension =  new Dimension(1,1,1);
         setDimension(); // los valores son iguales para todas las celdas. Ya están definidos en el setter.
-        setOcupiedSpace(ocupiedSpace);
+        setOccupiedSpace(p_occupiedSpace);
     }
-    public void getInfo(){
-        System.out.println("Cell number: " + number + "\n" + //celNumber
-                "Dimension: " + dimension.getLength() + " x " + dimension.getWidth() + " x " + dimension.getHeight() + "\n" +
-                "Occupied space (lenght): " + ocupiedSpace + "\n" +
-                "Available: " + isAvailable()
-        );
-    }
+
 
     public Dimension getDimension() {
-        return dimension;
+        return this.dimension;
     }
 
     public void setDimension() {
@@ -32,27 +25,18 @@ public class Cell extends Container {
         this.dimension.setWidth(5);
         this.dimension.setHeight(5);
     }
-    /*
 
-    public int getCellNumber() {
-        return cellNumber;
+    public float getOccupiedSpace() {
+        return this.occupiedSpace;
     }
 
-    public void setCellNumber(int cellNumber) {
-        this.cellNumber = cellNumber;
-    }
-*/
-    public float getOcupiedSpace() {
-        return ocupiedSpace;
-    }
-
-    public void setOcupiedSpace(float ocupiedSpace) {
-        this.ocupiedSpace = ocupiedSpace;
+    public void setOccupiedSpace(float p_occupiedSpace) {
+        this.occupiedSpace = p_occupiedSpace;
     }
 
     @Override
     public boolean isAvailable() {
-        if( (dimension.getLength() - ocupiedSpace) >0 ){
+        if( (this.dimension.getLength() - this.occupiedSpace) >0 ){
             return true;
         }
         else{
@@ -61,21 +45,29 @@ public class Cell extends Container {
 
     }
 
+    public void getInfo(){
+        System.out.println("Cell number: " + number + "\n" + //celNumber
+                "Dimension: " + this.dimension.getLength() + " x " + this.dimension.getWidth() + " x " + this.dimension.getHeight() + "\n" +
+                "Occupied space (lenght): " + this.occupiedSpace + "\n" +
+                "Available: " + isAvailable()
+        );
+    }
+
     public float getAvailableSpace(){
         if(isAvailable()){
-            return dimension.getLength() - ocupiedSpace;
+            return this.dimension.getLength() - this.occupiedSpace;
         }
         else{
             return 0;
         }
     }
 
-    public void addSpaceOccupiedInCell(float platformLength){
-        ocupiedSpace += platformLength;
+    public void addSpaceOccupiedInCell(float p_platformLength){
+        this.occupiedSpace += p_platformLength;
     }
 
-    public void removeSpaceOccupiedInCell(float platformLength){
-        ocupiedSpace -= platformLength;
+    public void removeSpaceOccupiedInCell(float p_platformLength){
+        this.occupiedSpace -= p_platformLength;
     }
 
 

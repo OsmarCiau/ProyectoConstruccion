@@ -12,8 +12,8 @@ public class StoreKeeper {
     private ArrayList<Platform> platformsList = new ArrayList<>();
     // private FurnitureRegistry entry;
 
-    public StoreKeeper(int employeeId, ContainerList<Rack> racksList){
-        this.employeeId = employeeId;
+    public StoreKeeper(int p_employeeId, ContainerList<Rack> racksList){
+        this.employeeId = p_employeeId;
         this.racksList = racksList;
     }
 
@@ -39,7 +39,7 @@ public class StoreKeeper {
     private ArrayList<Rack> findAvailableRack() {
         ArrayList<Rack> availableRacksList = new ArrayList<>();
 
-        for(Rack rack: racksList){
+        for(Rack rack: this.racksList){
             if(rack.isAvailable()){
                 availableRacksList.add(rack);
             }
@@ -79,7 +79,7 @@ public class StoreKeeper {
     public void retirePlatformInCell(Platform platform) {
         StorageKeys spotKey = platform.getLocationInRack();
 
-        Rack rack = racksList.getByNumber(spotKey.getRackNumber());
+        Rack rack = this.racksList.getByNumber(spotKey.getRackNumber());
         ContainerList<Cell> cellList = rack.getRackCells();
         Cell cell = cellList.getByNumber(spotKey.getCellNumber());
         cell.removeSpaceOccupiedInCell(platform.getDimension().getLength());
@@ -89,7 +89,7 @@ public class StoreKeeper {
     }
 
     public StorageKeys findPlatform(int platformId) {
-        for(Platform platform: platformsList){
+        for(Platform platform: this.platformsList){
             if(platform.getPlatformID() == platformId){
                 return platform.getLocationInRack();
             }
@@ -131,7 +131,7 @@ public class StoreKeeper {
     }
 
     private Rack getRackByNumber(int rackNumber){
-        for(Rack rack: racksList){
+        for(Rack rack: this.racksList){
             if(rack.getNumber() == rackNumber){
                 return rack;
             }

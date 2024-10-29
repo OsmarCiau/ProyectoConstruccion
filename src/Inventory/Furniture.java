@@ -5,7 +5,7 @@ public class Furniture{
     private String a_type = null;
     private String a_brand = null;
     private String a_color = null;
-    private Dimension a_dimension = new Dimension(0.0f, 0.0f, 0.0f);
+    private Dimension a_dimension = new Dimension(1f, 1f, 1f);
     private int a_quantity = 0;
     private int a_buildTime = 0;
 
