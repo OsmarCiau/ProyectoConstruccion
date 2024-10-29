@@ -1,5 +1,7 @@
 package Inventory;
 
+import Validations.ValidationUtils;
+
 public class Dimension {
     private float length = 0.0f;
     private float height = 0.0f;
@@ -15,10 +17,8 @@ public class Dimension {
         return height;
     }
 
-    private static final DimensionValidationUtils dimensionValidator = new DimensionValidationUtils();
-
     public void setHeight(float p_height) {
-        dimensionValidator.validateHeight(p_height);
+        ValidationUtils.validatePositiveNumber(p_height, "Height");
         this.height = p_height;
     }
 
@@ -27,7 +27,7 @@ public class Dimension {
     }
 
     public void setWidth(float p_width){
-        dimensionValidator.validateWidth(p_width);
+        ValidationUtils.validatePositiveNumber(p_width, "Width");
         this.width = p_width;
     }
 
@@ -36,7 +36,7 @@ public class Dimension {
     }
 
     public void setLength(float p_length) {
-        dimensionValidator.validateLength(p_length);
+        ValidationUtils.validatePositiveNumber(p_length, "Length");
         this.length = p_length;
     }
 

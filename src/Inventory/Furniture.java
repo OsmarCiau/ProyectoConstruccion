@@ -1,5 +1,7 @@
 package Inventory;
 
+import Validations.ValidationUtils;
+
 public class Furniture{
     private int furnitureId = 0;
     private String type = null;
@@ -23,11 +25,9 @@ public class Furniture{
         return furnitureId;
     }
 
-    private static final FurnitureValidationUtils furnitureValidator = new FurnitureValidationUtils();
-
     public void setFurnitureId(int p_furnitureId) {
-        furnitureValidator.validateNonNegative(p_furnitureId, "Furniture ID");
-        furnitureId = p_furnitureId;
+        ValidationUtils.validatePositiveNumber(p_furnitureId, "Furniture ID");
+        this.furnitureId = p_furnitureId;
     }
 
     public String getType() {
@@ -35,7 +35,7 @@ public class Furniture{
     }
 
     public void setType(String p_type) {
-        furnitureValidator.validateNonNull(p_type, "Type");
+        ValidationUtils.validateString(p_type, "Type");
         this.type = p_type;
     }
 
@@ -44,7 +44,7 @@ public class Furniture{
     }
 
     public void setBrand(String p_brand) {
-        furnitureValidator.validateNonNull(p_brand, "Brand");
+        ValidationUtils.validateString(p_brand, "Brand");
         this.brand = p_brand;
     }
 
@@ -53,7 +53,7 @@ public class Furniture{
     }
 
     public void setColor(String p_color) {
-        furnitureValidator.validateNonNull(p_color, "Color");
+        ValidationUtils.validateString(p_color, "Color");
         this.color = p_color;
     }
 
@@ -62,7 +62,7 @@ public class Furniture{
     }
 
     public void setDimension(Dimension p_dimension) {
-        furnitureValidator.validateDimension(p_dimension);
+        ValidationUtils.validateNonNull(p_dimension, "Dimension");
         this.dimension = p_dimension;
     }
 
@@ -71,7 +71,7 @@ public class Furniture{
     }
 
     public void setQuantity(int p_quantity) {
-        furnitureValidator.validateQuantity(p_quantity);
+        ValidationUtils.validateNonNegativeNumber(p_quantity, "Quantity");
         this.quantity = p_quantity;
     }
 
@@ -80,7 +80,7 @@ public class Furniture{
     }
 
     public void setBuildTime(int p_buildTime) {
-        furnitureValidator.validateNonNegative(p_buildTime, "Build Time");
+        ValidationUtils.validatePositiveNumber(p_buildTime, "Build Time");
         this.buildTime = p_buildTime;
     }
 

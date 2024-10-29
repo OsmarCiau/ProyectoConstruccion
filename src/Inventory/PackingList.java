@@ -1,5 +1,7 @@
 package Inventory;
 
+import Validations.ValidationUtils;
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -18,10 +20,8 @@ public class PackingList {
 		return products;
 	}
 
-	private static final PackingListValidationUtils packingListValidator = new PackingListValidationUtils();
-
 	public void setProducts(ArrayList<Furniture> p_products) {
-		packingListValidator.isPackingListEmpty(p_products);
+		ValidationUtils.validatesArrayList(p_products, "Products");
 		this.products = p_products;
 	}
 
@@ -30,7 +30,7 @@ public class PackingList {
 	}
 
 	public void setFolio(int p_folio) {
-		packingListValidator.validateFolio(p_folio);
+		ValidationUtils.validatePositiveNumber(p_folio, "Folio");
 		this.folio = p_folio;
 	}
 
@@ -39,7 +39,7 @@ public class PackingList {
 	}
 
 	public void setArrivalDate(Date p_arrivalDate) {
-		packingListValidator.validateArrivalDate(p_arrivalDate);
+		ValidationUtils.validateNonNull(p_arrivalDate, "Date");
 		this.arrivalDate = p_arrivalDate;
 	}
 }
