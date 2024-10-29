@@ -35,17 +35,13 @@ public class TruckAssignment {
 
     // Setters con validación
     public void setDeliveryTruck(DeliveryTruck p_deliveryTruck) {
-        boolean deliveryTruckIsValid = truckAssignmentValidator.validateDeliveryTruck(p_deliveryTruck);
-        if(deliveryTruckIsValid){
-            this.deliveryTruck = p_deliveryTruck;
-        }
+        truckAssignmentValidator.validateDeliveryTruck(p_deliveryTruck);
+        this.deliveryTruck = p_deliveryTruck;
     }
 
     public void setTruckDriver(TruckDriver p_truckDriver) {
-        boolean truckDriverIsValid = truckAssignmentValidator.validateTruckDriver(p_truckDriver);
-        if(truckDriverIsValid){
-            this.truckDriver = p_truckDriver;
-        }
+        truckAssignmentValidator.validateTruckDriver(p_truckDriver);
+        this.truckDriver = p_truckDriver;
     }
 
     public int getAssignmentId() {

@@ -19,18 +19,13 @@ public class TruckDriver {
     }
 
     public void setName(String p_name) {
-        boolean nameIsValid = truckDriverValidator.validateName(p_name);
-        if(nameIsValid){
-            this.name = p_name;
-        }
+        truckDriverValidator.validateName(p_name);
+        this.name = p_name;
     }
 
     public void setLicenseNumber(int p_licenseNumber){
-        boolean licenseNumberIsValid = truckDriverValidator.validateLicenseNumber(p_licenseNumber);
-        if(licenseNumberIsValid){
-            this.licenseNumber = p_licenseNumber;
-        }
-
+        truckDriverValidator.validateLicenseNumber(p_licenseNumber);
+        this.licenseNumber = p_licenseNumber;
     }
 
     public String getName() {

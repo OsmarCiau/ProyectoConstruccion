@@ -15,33 +15,25 @@ public class DeliveryTruck {
     private static final DeliveryTruckValidationUtils deliveryTruckValidator = new DeliveryTruckValidationUtils();
 
     public DeliveryTruck(){}
-    public DeliveryTruck(int p_trackingNumber, double capacity, double mileage){
+    public DeliveryTruck(int p_trackingNumber, double p_capacity, double p_mileage){
         setTrackingNumber(p_trackingNumber);
-        setCapacity(capacity);
-        setMileage(mileage);
+        setCapacity(p_capacity);
+        setMileage(p_mileage);
     }
 
     public void setTrackingNumber(int p_trackingNumber) {
-        boolean trackingNumberIsValid = deliveryTruckValidator.validateTrackingNumber(p_trackingNumber);
-
-        if(trackingNumberIsValid){
-            this.trackingNumber = p_trackingNumber;
-        }
+        deliveryTruckValidator.validateTrackingNumber(p_trackingNumber);
+        this.trackingNumber = p_trackingNumber;
     }
 
     public void setCapacity(double p_capacity){
-        boolean capacityIsValid = deliveryTruckValidator.validateCapacity(p_capacity);
-
-        if(capacityIsValid){
-            this.capacity = p_capacity;
-        }
+        deliveryTruckValidator.validateCapacity(p_capacity);
+        this.capacity = p_capacity;
     }
 
     public void setMileage(double p_mileage){
-        boolean mileageIsValid = deliveryTruckValidator.validateMileage(p_mileage);
-        if(mileageIsValid){
-            this.mileage = p_mileage;
-        }
+       deliveryTruckValidator.validateMileage(p_mileage);
+       this.mileage = p_mileage;
     }
 
     public int getTrackingNumber() {

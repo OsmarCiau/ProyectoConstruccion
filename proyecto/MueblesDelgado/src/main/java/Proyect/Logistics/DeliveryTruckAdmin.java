@@ -22,13 +22,13 @@ public class DeliveryTruckAdmin{
 
     //private HashMap<DeliveryTruck, TruckDriver> deliveryTruckTruckDriverMap = new HashMap<>(); YA NO ES NECESARIO
 
-    public void registerDeliveryTruck(int trackingNumber, double capacity, double mileage) {
-        DeliveryTruck deliveryTruck = new DeliveryTruck(trackingNumber, capacity, mileage);
+    public void registerDeliveryTruck(int p_trackingNumber, double p_capacity, double p_mileage) {
+        DeliveryTruck deliveryTruck = new DeliveryTruck(p_trackingNumber, p_capacity, p_mileage);
         deliveryTruckRepository.save(deliveryTruck);
     }
 
-    public void registerTruckDriver(String name, int licenseNumber) {
-        TruckDriver truckDriver = new TruckDriver(name, licenseNumber);
+    public void registerTruckDriver(String p_name, int p_licenseNumber) {
+        TruckDriver truckDriver = new TruckDriver(p_name, p_licenseNumber);
         truckDriverRepository.save(truckDriver);
     }
 
@@ -42,9 +42,9 @@ public class DeliveryTruckAdmin{
 
 
     /* CAMBIO PARA ALMACENAR EN UNA BD, Y NO EN UN MAP */
-    public void assignDriverToTruck(int trackingNumber, String name) {
-        DeliveryTruck selectedTruck = deliveryTruckRepository.findByTrackingNumber(trackingNumber);
-        TruckDriver selectedDriver = truckDriverRepository.findByName(name);
+    public void assignDriverToTruck(int p_trackingNumber, String p_name) {
+        DeliveryTruck selectedTruck = deliveryTruckRepository.findByTrackingNumber(p_trackingNumber);
+        TruckDriver selectedDriver = truckDriverRepository.findByName(p_name);
 
         if (selectedTruck != null && selectedDriver != null) {
             truckAssignmentRepository.save(new TruckAssignment(selectedTruck, selectedDriver));
