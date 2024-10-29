@@ -52,7 +52,7 @@ public class LogisticsAdmin {
     }
 
     public ArrayList<String> getDeliveryRoute(){
-        ArrayList<String> deliveryRoute = a_routePlanner.planOptimalRoutes(getOrders(), getRoutePlanner().getWarehouseLocation() );
+        ArrayList<String> deliveryRoute = routePlanner.planOptimalRoutes(getOrders(), getRoutePlanner().getWarehouseLocation() );
         return deliveryRoute;
     }
 
