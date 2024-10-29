@@ -15,9 +15,14 @@ public class Dimension {
         return a_height;
     }
 
+    private static final DimensionValidationUtils dimensionValidator = new DimensionValidationUtils();
+
     public void setHeight(float p_height) {
-        DimensionValidationUtils.validateHeight(p_height);
-        a_height = p_height;
+        boolean isHeightValid = dimensionValidator.validateHeight(p_height);
+
+        if (isHeightValid) {
+            a_height = p_height;
+        }
     }
 
     public float getWidth() {
@@ -25,8 +30,11 @@ public class Dimension {
     }
 
     public void setWidth(float p_width){
-        DimensionValidationUtils.validateWidth(p_width);
-        a_width = p_width;
+        boolean isWidthValid = dimensionValidator.validateWidth(p_width);
+
+        if (isWidthValid) {
+            a_width = p_width;
+        }
     }
 
     public float getLength() {
@@ -34,14 +42,17 @@ public class Dimension {
     }
 
     public void setLength(float p_length) {
-        DimensionValidationUtils.validateLength(p_length);
-        a_length = p_length;
+        boolean isLengthValid = dimensionValidator.validateLength(p_length);
+
+        if (isLengthValid) {
+            a_length = p_length;
+        }
     }
 
     public void swapLengthAndWidth(){
-        float temp = a_width;
+        float currentWidth = a_width;
         a_width = a_length;
-        a_length = temp;
+        a_length = currentWidth;
     }
 }
 
