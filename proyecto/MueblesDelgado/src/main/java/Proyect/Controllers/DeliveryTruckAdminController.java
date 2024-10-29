@@ -20,13 +20,13 @@ public class DeliveryTruckAdminController {
     private DeliveryTruckAdmin deliveryTruckAdminService;
 
     @PostMapping("/truck")
-    public void registerDeliveryTruck(@RequestParam int trackingNumber, @RequestParam double capacity, @RequestParam double mileage) {
-        deliveryTruckAdminService.registerDeliveryTruck(trackingNumber, capacity, mileage);
+    public void registerDeliveryTruck(@RequestParam int p_trackingNumber, @RequestParam double p_capacity, @RequestParam double p_mileage) {
+        deliveryTruckAdminService.registerDeliveryTruck(p_trackingNumber, p_capacity, p_mileage);
     }
 
     @PostMapping("/driver")
-    public void registerTruckDriver(@RequestParam String name, @RequestParam int licenseNumber) {
-        deliveryTruckAdminService.registerTruckDriver(name, licenseNumber);
+    public void registerTruckDriver(@RequestParam String p_name, @RequestParam int p_licenseNumber) {
+        deliveryTruckAdminService.registerTruckDriver(p_name, p_licenseNumber);
     }
 
     @GetMapping("/trucks")
@@ -40,8 +40,8 @@ public class DeliveryTruckAdminController {
     }
 
     @PostMapping("/assign")
-    public void assignDriverToTruck(@RequestParam int trackingNumber, @RequestParam String name) {
-        deliveryTruckAdminService.assignDriverToTruck(trackingNumber, name);
+    public void assignDriverToTruck(@RequestParam int p_trackingNumber, @RequestParam String p_name) {
+        deliveryTruckAdminService.assignDriverToTruck(p_trackingNumber, p_name);
     }
 
     @GetMapping("/assignments")

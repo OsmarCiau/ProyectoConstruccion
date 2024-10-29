@@ -28,9 +28,9 @@ public class TruckAssignment {
     public TruckAssignment() {}
 
     // Constructor con parámetros
-    public TruckAssignment(DeliveryTruck deliveryTruck, TruckDriver truckDriver) {
-        setDeliveryTruck(deliveryTruck);
-        setTruckDriver(truckDriver);
+    public TruckAssignment(DeliveryTruck p_deliveryTruck, TruckDriver p_truckDriver) {
+        setDeliveryTruck(p_deliveryTruck);
+        setTruckDriver(p_truckDriver);
     }
 
     // Setters con validación
