@@ -2,10 +2,11 @@ package StoreKeeper;
 
 import Container.Container;
 import Inventory.Dimension;
+import Validations.ValidationUtils;
 
 public class Cell extends Container {
     private Dimension dimension = null;
-    private float occupiedSpace =0;
+    private float occupiedSpace = 0;
 
     public Cell(int p_cellNumber, float p_occupiedSpace){
         setAvailable(true);
@@ -31,6 +32,7 @@ public class Cell extends Container {
     }
 
     public void setOccupiedSpace(float p_occupiedSpace) {
+        ValidationUtils.validateNonNegativeNumber(p_occupiedSpace,"Occupied space in Cell");
         this.occupiedSpace = p_occupiedSpace;
     }
 

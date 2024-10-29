@@ -3,6 +3,8 @@ package StoreKeeper;
 import java.util.ArrayList;
 import java.util.Date;
 import Inventory.Furniture;
+import Validations.ValidationUtils;
+
 import java.time.Duration;
 
 public class Order {
@@ -23,7 +25,7 @@ public class Order {
 
     public void findPlatforms() {
         for (Platform platform : a_platformUsed) {
-            OrderValidationUtils.validateNonNull(platform.getLocationInRack(), "Location In Rack");
+            ValidationUtils.validateNonNull(platform.getLocationInRack(), "Location In Rack");
             System.out.println("Platform ID: " + platform.getPlatformID());
             System.out.println("Location in Rack: " + platform.getLocationInRack());
             System.out.println("Dimension: " + platform.getDimension());
@@ -52,7 +54,7 @@ public class Order {
     }
 
     public void setTotalAssemblyTime(Duration p_assemblyTime){
-        OrderValidationUtils.validateNonNull(p_assemblyTime, "Assembly Time");
+        ValidationUtils.validateNonNull(p_assemblyTime, "Assembly Time");
         this.a_totalAssemblyTime = p_assemblyTime;
     }
 
@@ -61,7 +63,8 @@ public class Order {
     }
 
     public void setOrderID(int p_orderID) {
-        OrderValidationUtils.validateOrderID(p_orderID);
+        ValidationUtils.validatePositiveNumber(p_orderID, "Order ID");
+        //OrderValidationUtils.validateOrderID(p_orderID);
         this.a_orderID =  p_orderID;
     }
 
@@ -70,7 +73,8 @@ public class Order {
     }
 
     public void setDestination(String  p_destination) {
-        OrderValidationUtils.validateDestination(p_destination);
+        ValidationUtils.validateString(p_destination, "Destination");
+        //OrderValidationUtils.validateDestination(p_destination);
         this.a_destination =  p_destination;
     }
 
@@ -79,7 +83,7 @@ public class Order {
     }
 
     public void setPlatformUsed(ArrayList<Platform>  p_platformUsed) {
-        OrderValidationUtils.validateNonNull(p_platformUsed, "Platform Used");
+        ValidationUtils.validatesArrayList(p_platformUsed, "Platform Used");
         this.a_platformUsed =  p_platformUsed;
     }
 
@@ -88,7 +92,8 @@ public class Order {
     }
 
     public void setDeliveryDate(Date  p_deliveryDate) {
-        OrderValidationUtils.validateNonNull(p_deliveryDate, "Delivery Date");
+        ValidationUtils.validateNonNull(p_deliveryDate, "Delivery Date");
+        //OrderValidationUtils.validateNonNull(p_deliveryDate, "Delivery Date");
         this.a_deliveryDate =  p_deliveryDate;
     }
 
@@ -97,7 +102,7 @@ public class Order {
     }
 
     public void setOrderContent(ArrayList<Furniture>  p_orderContent) {
-        OrderValidationUtils.validateNonNull(p_orderContent, "Order Content");
+        ValidationUtils.validateNonNull(p_orderContent, "Order Content");
         this.a_orderContent =  p_orderContent;
     }
 }

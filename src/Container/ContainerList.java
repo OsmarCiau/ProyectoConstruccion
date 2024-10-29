@@ -1,5 +1,7 @@
 package Container;
 
+import Validations.ValidationUtils;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -11,6 +13,7 @@ public class ContainerList <T extends Container> implements Iterable<T>{
     }
 
     public void add(T p_container){
+        ValidationUtils.validateNonNull(p_container, "Container");
         this.list.add(p_container);
     }
 
@@ -29,6 +32,10 @@ public class ContainerList <T extends Container> implements Iterable<T>{
 
     public int size(){
         return this.list.size();
+    }
+
+    public boolean isEmpty(){
+        return this.list.isEmpty();
     }
 
     @Override
