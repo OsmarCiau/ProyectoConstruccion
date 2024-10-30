@@ -22,14 +22,12 @@ public class DeliveryTruckAdmin{
 
     //private HashMap<DeliveryTruck, TruckDriver> deliveryTruckTruckDriverMap = new HashMap<>(); YA NO ES NECESARIO
 
-    public void registerDeliveryTruck(int p_trackingNumber, double p_capacity, double p_mileage) {
-        DeliveryTruck deliveryTruck = new DeliveryTruck(p_trackingNumber, p_capacity, p_mileage);
-        deliveryTruckRepository.save(deliveryTruck);
+    public void registerDeliveryTruck(DeliveryTruck p_deliveryTruck) {
+        deliveryTruckRepository.save(p_deliveryTruck);
     }
 
-    public void registerTruckDriver(String p_name, int p_licenseNumber) {
-        TruckDriver truckDriver = new TruckDriver(p_name, p_licenseNumber);
-        truckDriverRepository.save(truckDriver);
+    public void registerTruckDriver(TruckDriver p_truckDriver) {
+        truckDriverRepository.save(p_truckDriver);
     }
 
     public List<DeliveryTruck> getAvailableTrucks() {

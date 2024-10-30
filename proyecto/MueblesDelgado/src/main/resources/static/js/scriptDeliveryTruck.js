@@ -27,6 +27,7 @@ async function register(entityType) {
     }
 }
 
+
 // Función para obtener la lista de camiones o conductores
 async function getAvailable(entityType) {
     const response = await fetch(`/api/delivery/${entityType}`);
@@ -50,10 +51,9 @@ async function assignDriver() {
     const trackingNumber = document.getElementById('assignTrackingNumber').value;
     const name = document.getElementById('assignDriverName').value;
 
-    const response = await fetch('/api/delivery/assign', {
+    const response = await fetch(`/api/delivery/assign?p_trackingNumber=${trackingNumber}&p_name=${encodeURIComponent(name)}`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ trackingNumber, name })
+        headers: { 'Content-Type': 'application/json' }
     });
 
     if (response.ok) {
@@ -62,6 +62,8 @@ async function assignDriver() {
         alert("Error al asignar el conductor. Inténtalo de nuevo.");
     }
 }
+
+
 
 // Función para obtener la lista de asignaciones
 async function getAssignments() {
