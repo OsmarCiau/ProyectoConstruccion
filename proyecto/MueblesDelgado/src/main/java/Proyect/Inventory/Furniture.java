@@ -2,11 +2,20 @@ package Proyect.Inventory;
 
 import Proyect.Validations.ValidationUtils;
 
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+@Entity
 public class Furniture{
+
+    @Id
     private int furnitureId = 0;
     private String type = null;
     private String brand = null;
     private String color = null;
+
+    @Embedded
     private Dimension dimension = new Dimension(1f, 1f, 1f);
     private int quantity = 0;
     private int buildTime = 0;
@@ -20,6 +29,8 @@ public class Furniture{
         setQuantity(p_quantity);
         setBuildTime(p_buildTime);
     }
+
+    public Furniture(){}
 
     public int getFurnitureId() {
         return furnitureId;
@@ -84,6 +95,7 @@ public class Furniture{
         this.buildTime = p_buildTime;
     }
 
+    @Override
     public boolean equals(Object p_object) {
         if (!(p_object instanceof Furniture furniture))
             return false;

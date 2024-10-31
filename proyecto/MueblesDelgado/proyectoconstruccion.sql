@@ -41,6 +41,37 @@ INSERT INTO `delivery_truck` VALUES (123,1000,5000),(235,3000,600);
 UNLOCK TABLES;
 
 --
+-- Table structure for table `furniture`
+--
+
+DROP TABLE IF EXISTS `furniture`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `furniture` (
+    `furniture_id` int NOT NULL,
+    `brand` varchar(255) DEFAULT NULL,
+    `build_time` int NOT NULL,
+    `color` varchar(255) DEFAULT NULL,
+    `height` float DEFAULT NULL,
+    `length` float DEFAULT NULL,
+    `width` float DEFAULT NULL,
+    `quantity` int NOT NULL,
+    `type` varchar(255) DEFAULT NULL,
+    PRIMARY KEY (`furniture_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `furniture`
+--
+
+LOCK TABLES `furniture` WRITE;
+/*!40000 ALTER TABLE `furniture` DISABLE KEYS */;
+/*!40000 ALTER TABLE `furniture` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+--
 -- Table structure for table `truck_assignment`
 --
 

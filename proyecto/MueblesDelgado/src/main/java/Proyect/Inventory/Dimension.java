@@ -1,7 +1,9 @@
 package Proyect.Inventory;
 
 import Proyect.Validations.ValidationUtils;
+import jakarta.persistence.Embeddable;
 
+@Embeddable
 public class Dimension {
     private float length = 0.0f;
     private float height = 0.0f;
@@ -12,6 +14,8 @@ public class Dimension {
         setHeight(p_height);
         setWidth(p_width);
     }
+
+    public Dimension(){}
 
     public float getHeight() {
         return height;

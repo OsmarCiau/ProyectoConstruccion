@@ -1,9 +1,11 @@
 package Proyect.Inventory;
 
 import Proyect.Validations.ValidationUtils;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 
+@Service
 public class InventoryAdmin {
     private ArrayList<Furniture> furnitureDatabase = new ArrayList<>();
 
