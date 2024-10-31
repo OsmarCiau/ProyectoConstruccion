@@ -3,8 +3,9 @@ package Proyect.StoreKeeper;
 import java.util.ArrayList;
 import java.util.Date;
 import Proyect.Inventory.Furniture;
-import Proyect.StoreKeeper.Platform;
 import Proyect.Validations.ValidationUtils;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
 import java.time.Duration;
 
@@ -15,6 +16,9 @@ public class Order {
     private Date deliveryDate = new Date();
     private ArrayList<Furniture> orderContent = new ArrayList<>();
     private Duration totalAssemblyTime = Duration.ZERO;
+
+    public Order() {
+    }
 
     public Order(int p_orderID, String  p_destination, Date  p_deliveryDate, ArrayList<Furniture>  p_orderContent) { //ArrayList<Platform> p_platformUsed
         setOrderID(p_orderID);

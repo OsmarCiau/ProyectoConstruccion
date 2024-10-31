@@ -1,91 +1,67 @@
+// LogisticsAdminService.java
 package Proyect.Logistics;
 
-
 import Proyect.StoreKeeper.Order;
+import Proyect.Logistics.DeliveryTruck;
+import Proyect.Logistics.OrderTruckAssignment;
+import Proyect.Repositories.DeliveryTruckRepository;
+import Proyect.Repositories.OrderTruckAssignmentRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 
+@Service
 public class LogisticsAdmin {
-    private ArrayList<Order> orders = new ArrayList<>();
-    private ArrayList<DeliveryTruck> trucksAvailable = new ArrayList<>(); //nuevo atributo
-    private RoutePlanner routePlanner;
 
-    private static final LogisticsAdminValidationUtils logisticsAdminValidator = new LogisticsAdminValidationUtils();
-    
-    public LogisticsAdmin(ArrayList<Order> p_orders, RoutePlanner p_routePlanner, ArrayList<DeliveryTruck> p_trucksAvailable){
-        setOrders(p_orders);
-        setRoutePlanner(p_routePlanner);
-        setTrucksAvailable(p_trucksAvailable);
+    //@Autowired
+    //private OrderRepository orderRepository;
+
+    @Autowired
+    private DeliveryTruckRepository deliveryTruckRepository;
+
+    @Autowired
+    private OrderTruckAssignmentRepository orderTruckAssignmentRepository;
+
+
+    /* Guardar una lista de pedidos
+    //public void setOrders(List<Order> orders) {
+        orderRepository.saveAll(orders);
+    } */
+
+    // Guardar una lista de camiones
+    public void setTrucksAvailable(List<DeliveryTruck> trucksAvailable) {
+        deliveryTruckRepository.saveAll(trucksAvailable);
     }
 
-    private void setOrders(ArrayList<Order> p_orders) {
-        logisticsAdminValidator.validateOrders(p_orders);
-        this.orders = p_orders;
+    // Obtener todos los pedidos
+    /*public List<Order> getOrders() {
+        return orderRepository.findAll();
+    } */
+
+    // Obtener todos los camiones disponibles
+    public List<DeliveryTruck> getTrucksAvailable() {
+        return deliveryTruckRepository.findAll();
     }
 
+    // Obtener la ruta de entrega planificada
+    /*public List<String> getDeliveryRoute() {
+        return routePlanner.planOptimalRoutes(getOrders(), routePlanner.getWarehouseLocation());
+    } */
 
-    public void setRoutePlanner(RoutePlanner p_routePlanner) {
-        this.routePlanner = p_routePlanner;
-    }
+    // Asignar un pedido a un camión y almacenar en la base de datos
+    /*public void assignOrderToTruck(int orderId, int trackingNumber) {
+        Order selectedOrder = orderRepository.findByOrderId(orderId);
+        DeliveryTruck selectedTruck = deliveryTruckRepository.findByTrackingNumber(trackingNumber);
 
-    private void setTrucksAvailable(ArrayList<DeliveryTruck> p_trucksAvailable){
-        logisticsAdminValidator.validateTrucks(p_trucksAvailable);
-        this.trucksAvailable = p_trucksAvailable;
-    }
-
-
-    public ArrayList<Order> getOrders() {
-        return orders;
-    }
-
-    public RoutePlanner getRoutePlanner() {
-        return routePlanner;
-    }
-
-    public ArrayList<DeliveryTruck> getTrucksAvailable(){
-        return trucksAvailable;
-    }
-
-    public ArrayList<String> getDeliveryRoute(){
-        ArrayList<String> deliveryRoute = routePlanner.planOptimalRoutes(getOrders(), getRoutePlanner().getWarehouseLocation() );
-        return deliveryRoute;
-    }
-
-    private HashMap<Order, DeliveryTruck> orderDeliveryTruckHashMap;
-    public void assignOrderToTruck(int p_orderId, int p_trackingNumber){
-        Order orderSelected = findOrder(p_orderId);
-        DeliveryTruck deliveryTruckSelected = findTruck(p_trackingNumber);
-
-        if(orderSelected != null && deliveryTruckSelected != null){
-            orderDeliveryTruckHashMap.put(orderSelected, deliveryTruckSelected);
+        if (selectedOrder != null && selectedTruck != null) {
+            OrderTruckAssignment assignment = new OrderTruckAssignment(selectedOrder, selectedTruck);
+            orderTruckAssignmentRepository.save(assignment);
         }
+    } */
 
-    }
-
-    public HashMap<Order, DeliveryTruck> getOrderDeliveryTruckHashMap(){
-        return orderDeliveryTruckHashMap;
-    }
-
-    private Order findOrder(int p_orderId){
-        Order foundOrder = null;
-        for (Order order : getOrders()){
-            if(order.getOrderID() == p_orderId){
-                foundOrder = order;
-            }
-
-        }
-        return foundOrder;
-    }
-
-    private DeliveryTruck findTruck(int p_trackingNumber){
-        DeliveryTruck foundTruck = null;
-        for(DeliveryTruck truck : getTrucksAvailable()){
-            if(truck.getTrackingNumber() == p_trackingNumber){
-                foundTruck = truck;
-            }
-        }
-
-        return foundTruck;
+    // Obtener todas las asignaciones de pedidos a camiones
+    public List<OrderTruckAssignment> getOrderTruckAssignments() {
+        return orderTruckAssignmentRepository.findAll();
     }
 }

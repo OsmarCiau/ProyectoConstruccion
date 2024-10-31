@@ -26,8 +26,8 @@ h1 {
 /* Contenedor para las secciones */
 .container {
     display: flex;               /* Usamos flexbox para el diseño */
-    flex-wrap: wrap;            /* Permite que las secciones se envuelvan */
-    gap: 20px;                  /* Espacio entre las secciones */
+    flex-wrap: wrap;             /* Permite que las secciones se envuelvan */
+    gap: 20px;                   /* Espacio entre las secciones */
     justify-content: center;     /* Centra las secciones en el contenedor */
 }
 
@@ -54,6 +54,7 @@ form {
     flex-direction: column;
 }
 
+/* Estilos de etiquetas y campos de entrada */
 label {
     font-weight: bold;
     margin-top: 10px;
@@ -74,6 +75,7 @@ input:focus {
     outline: none;
 }
 
+/* Estilo de botones */
 button {
     margin-top: 15px;
     padding: 10px;
@@ -113,4 +115,3 @@ section > button {
     margin-top: 15px;
     padding: 10px;
 }
-
