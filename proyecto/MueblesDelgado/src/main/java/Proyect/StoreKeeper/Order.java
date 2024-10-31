@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import Proyect.Inventory.Furniture;
 import Proyect.Validations.ValidationUtils;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 
 import java.time.Duration;
 
@@ -68,7 +66,7 @@ public class Order {
     }
 
     public void setOrderID(int p_orderID) {
-        ValidationUtils.validatePositiveNumber(p_orderID, "Order ID");
+        ValidationUtils.validateGreaterThanZero(p_orderID, "Order ID");
         //OrderValidationUtils.validateOrderID(p_orderID);
         this.orderID =  p_orderID;
     }
@@ -78,7 +76,7 @@ public class Order {
     }
 
     public void setDestination(String  p_destination) {
-        ValidationUtils.validateString(p_destination, "Destination");
+        ValidationUtils.validateNonNull(p_destination, "Destination");
         //OrderValidationUtils.validateDestination(p_destination);
         this.destination =  p_destination;
     }

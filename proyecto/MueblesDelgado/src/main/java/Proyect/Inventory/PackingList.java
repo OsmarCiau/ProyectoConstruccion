@@ -30,7 +30,7 @@ public class PackingList {
 	}
 
 	public void setFolio(int p_folio) {
-		ValidationUtils.validatePositiveNumber(p_folio, "Folio");
+		ValidationUtils.validateGreaterThanZero(p_folio, "Folio");
 		this.folio = p_folio;
 	}
 

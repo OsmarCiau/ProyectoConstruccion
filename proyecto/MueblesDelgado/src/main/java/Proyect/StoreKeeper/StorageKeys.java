@@ -18,7 +18,7 @@ public class StorageKeys {
     }
 
     public void setRackNumber(int p_rackNumber) {
-        ValidationUtils.validatePositiveNumber(p_rackNumber,"Rack Number");
+        ValidationUtils.validateGreaterThanZero(p_rackNumber,"Rack Number");
         this.rackNumber = p_rackNumber;
     }
 
@@ -27,7 +27,7 @@ public class StorageKeys {
     }
 
     public void setCellNumber(int p_cellNumber) {
-        ValidationUtils.validatePositiveNumber(p_cellNumber, "Cell Number");
+        ValidationUtils.validateGreaterThanZero(p_cellNumber, "Cell Number");
         this.cellNumber = p_cellNumber;
     }
 

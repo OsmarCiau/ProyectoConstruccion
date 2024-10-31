@@ -4,20 +4,28 @@ import Proyect.Container.ContainerList;
 import Proyect.StoreKeeper.StorageKeys;
 import Proyect.Container.Container;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class ValidationUtils {
-    public static void validatePositiveNumber(int p_number, String p_fieldName) {
+    public static void validateGreaterThanZero(int p_number, String p_fieldName) {
         if (p_number <= 0) {
             throw new IllegalArgumentException("Error. " + p_fieldName + " must be positive.");
         }
     }
 
-    public static void validatePositiveNumber(float p_number, String p_fieldName) {
+    public static void validateGreaterThanZero(Float p_number, String p_fieldName) {
         if (p_number <= 0) {
             throw new IllegalArgumentException("Error. " + p_fieldName + " must be positive.");
         }
     }
+
+    public static void validateGreaterThanZero(double p_number, String p_fieldName) {
+        if (p_number <= 0) {
+            throw new IllegalArgumentException("Error. " + p_fieldName + " must be positive.");
+        }
+    }
+
 
     public static void validateNonNegativeNumber(int p_number, String p_fieldName){ //for quantities
         if(p_number < 0){
@@ -31,11 +39,6 @@ public class ValidationUtils {
         }
     }
 
-    public static void validateString(String p_string, String p_fieldName) {
-        if (p_string == null || p_string.isEmpty()) {
-            throw new IllegalArgumentException("Error. " + p_fieldName + " cannot be null or empty.");
-        }
-    }
 
     public static void validateNonNull(Object value, String fieldName) {
         if (value == null) {
@@ -59,6 +62,23 @@ public class ValidationUtils {
         if(p_containerList == null || p_containerList.isEmpty()){
             throw new IllegalArgumentException("Error. " + fieldName + " is empty or null.");
         }
+    }
+
+    public static void validateStartTime(LocalTime p_startTime, String fieldName){
+        LocalTime minimumTime = LocalTime.of(8,0);
+
+        if(p_startTime.isBefore(minimumTime)){
+            throw new IllegalArgumentException("Error. " + fieldName + " must be after 8:00 AM");
+        }
+    }
+
+    public static void  validateEstimatedTime(LocalTime p_estimatedTime, String fieldName){
+        LocalTime minimumTime = LocalTime.of(0, 0);
+
+        if(p_estimatedTime.equals(minimumTime)){
+            throw new IllegalArgumentException("Error. " + fieldName + " must be longer than 0:00");
+        }
+
     }
 
 

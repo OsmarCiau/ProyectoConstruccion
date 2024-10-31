@@ -22,7 +22,7 @@ public class Rack extends Container {
     }
 
     public void setCellCounter(int p_cellCounter) {
-        ValidationUtils.validatePositiveNumber(p_cellCounter, "Cell Counter");
+        ValidationUtils.validateGreaterThanZero(p_cellCounter, "Cell Counter");
         this.cellCounter = p_cellCounter;
     }
 

@@ -1,6 +1,7 @@
 package Proyect.Logistics;
 
 import java.time.LocalTime;
+import Proyect.Validations.ValidationUtils;
 
 public class Route {
     private int routeId = 0;
@@ -9,7 +10,6 @@ public class Route {
     private float distance = 0.0f;
     private LocalTime estimatedTime = LocalTime.of(0, 0);
 
-      private static final RouteValidationUtils routeValidator = new RouteValidationUtils();
     
 
     public Route(int p_routeId, String p_originLocation, String p_destination,
@@ -22,31 +22,29 @@ public class Route {
     }
 
     private void setRouteId(int p_routeId){
-        routeValidator.validateRouteId(p_routeId);
+        ValidationUtils.validateGreaterThanZero(p_routeId, "Route Id");
         this.routeId = p_routeId;
     }
 
 
     private void setOriginLocation(String p_originLocation){
-        routeValidator.validateOriginLocation(p_originLocation);
+        ValidationUtils.validateNonNull(p_originLocation, "Origin Location");
         this.originLocation = p_originLocation;
     }
 
 
     private void setDestination(String p_destination) {
-        routeValidator.validateDestination(p_destination);
+        ValidationUtils.validateNonNull(p_destination, "Destination");
         this.destination = p_destination;
     }
 
     private void setDistance(float p_distance) {
-         routeValidator.validateDistance(p_distance);
+        ValidationUtils.validateGreaterThanZero(p_distance, "Distance");
         this.distance = p_distance;
     }
 
-
-
     private void setEstimatedTime(LocalTime p_estimatedTime){
-        routeValidator.validateEstimatedTime(p_estimatedTime);
+        ValidationUtils.validateEstimatedTime(p_estimatedTime, "Estimated Time");
         this.estimatedTime = p_estimatedTime;
     }
 

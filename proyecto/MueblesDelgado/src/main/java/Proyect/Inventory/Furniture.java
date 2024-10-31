@@ -26,7 +26,7 @@ public class Furniture{
     }
 
     public void setFurnitureId(int p_furnitureId) {
-        ValidationUtils.validatePositiveNumber(p_furnitureId, "Furniture ID");
+        ValidationUtils.validateGreaterThanZero(p_furnitureId, "Furniture ID");
         this.furnitureId = p_furnitureId;
     }
 
@@ -35,7 +35,7 @@ public class Furniture{
     }
 
     public void setType(String p_type) {
-        ValidationUtils.validateString(p_type, "Type");
+        ValidationUtils.validateNonNull(p_type, "Type");
         this.type = p_type;
     }
 
@@ -44,7 +44,7 @@ public class Furniture{
     }
 
     public void setBrand(String p_brand) {
-        ValidationUtils.validateString(p_brand, "Brand");
+        ValidationUtils.validateNonNull(p_brand, "Brand");
         this.brand = p_brand;
     }
 
@@ -53,7 +53,7 @@ public class Furniture{
     }
 
     public void setColor(String p_color) {
-        ValidationUtils.validateString(p_color, "Color");
+        ValidationUtils.validateNonNull(p_color, "Color");
         this.color = p_color;
     }
 
@@ -80,7 +80,7 @@ public class Furniture{
     }
 
     public void setBuildTime(int p_buildTime) {
-        ValidationUtils.validatePositiveNumber(p_buildTime, "Build Time");
+        ValidationUtils.validateGreaterThanZero(p_buildTime, "Build Time");
         this.buildTime = p_buildTime;
     }
 

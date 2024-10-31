@@ -35,7 +35,7 @@ public class Platform {
     }
 
     public void setPlatformID(int p_platformID) {
-        ValidationUtils.validatePositiveNumber(p_platformID, "Platform ID");
+        ValidationUtils.validateGreaterThanZero(p_platformID, "Platform ID");
         PlatformValidationUtils.validatePlatformID(p_platformID);
         this.platformID = p_platformID;
     }

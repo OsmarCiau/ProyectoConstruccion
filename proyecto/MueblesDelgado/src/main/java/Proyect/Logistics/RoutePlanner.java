@@ -4,12 +4,12 @@ import Proyect.StoreKeeper.Order;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import Proyect.Validations.ValidationUtils;
 
 public class RoutePlanner {
     private String warehouseLocation = null;
     private LocalTime startTime = LocalTime.of(0, 0);
 
-    private static final RoutePlannerValidationUtils routePlannerValidator = new RoutePlannerValidationUtils();
 
 
     public RoutePlanner(String p_wareHouseLocation, LocalTime p_startTime){
@@ -18,13 +18,13 @@ public class RoutePlanner {
     }
 
     private void setWarehouseLocation(String p_warehouseLocation) {
-        routePlannerValidator.validateWarehouseLocation(p_warehouseLocation);
+       ValidationUtils.validateNonNull(p_warehouseLocation, "Warehouse Location");
        this.warehouseLocation = p_warehouseLocation;
     }
 
 
     private void setStartTime(LocalTime p_startTime) {
-        routePlannerValidator.validateStartTime(p_startTime);
+        ValidationUtils.validateStartTime(p_startTime, "Start Time");
         this.startTime = p_startTime;
     }
 

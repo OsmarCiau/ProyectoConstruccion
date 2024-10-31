@@ -1,5 +1,6 @@
 package Proyect.Logistics;
 
+import Proyect.Validations.ValidationUtils;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,7 +23,6 @@ public class TruckAssignment {
     @JoinColumn(name = "driver_id") // Columna que referencia al conductor
     private TruckDriver truckDriver = new TruckDriver();
 
-    private static final TruckAssignmentValidationUtils truckAssignmentValidator = new TruckAssignmentValidationUtils();
 
     // Constructor por defecto
     public TruckAssignment() {}
@@ -35,12 +35,12 @@ public class TruckAssignment {
 
     // Setters con validación
     public void setDeliveryTruck(DeliveryTruck p_deliveryTruck) {
-        truckAssignmentValidator.validateDeliveryTruck(p_deliveryTruck);
+        ValidationUtils.validateNonNull(p_deliveryTruck, "Delivery Truck");
         this.deliveryTruck = p_deliveryTruck;
     }
 
     public void setTruckDriver(TruckDriver p_truckDriver) {
-        truckAssignmentValidator.validateTruckDriver(p_truckDriver);
+        ValidationUtils.validateNonNull(p_truckDriver, "Truck Driver");
         this.truckDriver = p_truckDriver;
     }
 

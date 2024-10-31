@@ -1,5 +1,6 @@
 package Proyect.Logistics;
 
+import Proyect.Validations.ValidationUtils;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
@@ -9,8 +10,6 @@ public class TruckDriver {
     @Id
     private int licenseNumber = 0;
     private String name = null;
-
-    private static final TruckDriverValidationUtils truckDriverValidator = new TruckDriverValidationUtils();
     public TruckDriver() {}
 
     public TruckDriver(String p_name, int p_licenseNumber){
@@ -19,12 +18,12 @@ public class TruckDriver {
     }
 
     public void setName(String p_name) {
-        truckDriverValidator.validateName(p_name);
+        ValidationUtils.validateNonNull(p_name, "Name");
         this.name = p_name;
     }
 
     public void setLicenseNumber(int p_licenseNumber){
-        truckDriverValidator.validateLicenseNumber(p_licenseNumber);
+        ValidationUtils.validateGreaterThanZero(p_licenseNumber, "License Number");
         this.licenseNumber = p_licenseNumber;
     }
 
