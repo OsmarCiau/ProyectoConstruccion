@@ -1,13 +1,21 @@
 package Proyect.Inventory;
 
 import Proyect.Validations.ValidationUtils;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.Date;
 
+@Entity
 public class PackingList {
+
+	@Id
 	private int folio = 0;
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private ArrayList<Furniture> products = new ArrayList<>();
+
+	@Temporal(TemporalType.DATE)
 	private Date arrivalDate = new Date();
 
 	public PackingList(int p_folio, ArrayList<Furniture> p_products, Date p_arrivalDate) {
@@ -15,6 +23,8 @@ public class PackingList {
 		setProducts(p_products);
 		setArrivalDate(p_arrivalDate);
 	}
+
+	public PackingList() {}
 
 	public ArrayList<Furniture> getProducts() {
 		return products;
