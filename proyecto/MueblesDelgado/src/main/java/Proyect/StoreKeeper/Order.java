@@ -4,14 +4,23 @@ import java.util.ArrayList;
 import java.util.Date;
 import Proyect.Inventory.Furniture;
 import Proyect.Validations.ValidationUtils;
-
+import javax.persistence.*;
 import java.time.Duration;
 
+@Entity
 public class Order {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderID = 0;
     private String destination = null;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private ArrayList<Platform> platformUsed = new ArrayList<>();
+
+    @Temporal(TemporalType.DATE)
     private Date deliveryDate = new Date();
+
+
     private ArrayList<Furniture> orderContent = new ArrayList<>();
     private Duration totalAssemblyTime = Duration.ZERO;
 
