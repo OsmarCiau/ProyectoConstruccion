@@ -6,6 +6,7 @@ import Proyect.Logistics.DeliveryTruck;
 import Proyect.Logistics.OrderTruckAssignment;
 import Proyect.Repositories.DeliveryTruckRepository;
 import Proyect.Repositories.OrderTruckAssignmentRepository;
+import Proyect.Repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,30 +15,16 @@ import java.util.List;
 @Service
 public class LogisticsAdmin {
 
-    //@Autowired
-    //private OrderRepository orderRepository;
-
     @Autowired
     private DeliveryTruckRepository deliveryTruckRepository;
 
     @Autowired
     private OrderTruckAssignmentRepository orderTruckAssignmentRepository;
 
-
-    /* Guardar una lista de pedidos
-    //public void setOrders(List<Order> orders) {
-        orderRepository.saveAll(orders);
-    } */
-
     // Guardar una lista de camiones
     public void setTrucksAvailable(List<DeliveryTruck> trucksAvailable) {
         deliveryTruckRepository.saveAll(trucksAvailable);
     }
-
-    // Obtener todos los pedidos
-    /*public List<Order> getOrders() {
-        return orderRepository.findAll();
-    } */
 
     // Obtener todos los camiones disponibles
     public List<DeliveryTruck> getTrucksAvailable() {
