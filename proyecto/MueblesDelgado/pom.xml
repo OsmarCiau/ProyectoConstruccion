@@ -75,6 +75,11 @@
             <artifactId>javax.persistence-api</artifactId>
             <version>2.2</version> <!-- Asegúrate de usar la versión correcta -->
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
 
     </dependencies>
 
