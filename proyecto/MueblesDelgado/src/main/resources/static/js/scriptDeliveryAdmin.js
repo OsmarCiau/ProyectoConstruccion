@@ -108,17 +108,29 @@ document.getElementById('getDriversButton').addEventListener('click', async () =
     });
 });
 
-// Obtener y mostrar las asignaciones
 document.getElementById('getAssignmentsButton').addEventListener('click', async () => {
-    const response = await fetch(`${API_BASE_URL}/assignments`);
-    const assignments = await response.json();
+    try {
+        const response = await fetch(`${API_BASE_URL}/assignments`);
 
-    const assignmentList = document.getElementById('assignmentList');
-    assignmentList.innerHTML = ''; // Limpiar la lista antes de mostrar los nuevos resultados
+        if (!response.ok) {
+            throw new Error('No se pudieron obtener las asignaciones');
+        }
 
-    assignments.forEach((assignment) => {
-        const li = document.createElement('li');
-        li.textContent = `Camión: ${assignment.truckTrackingNumber}, Conductor: ${assignment.driverName}`;
-        assignmentList.appendChild(li);
-    });
+        const assignments = await response.json();
+
+        const assignmentList = document.getElementById('assignmentList');
+        assignmentList.innerHTML = ''; // Limpiar la lista antes de mostrar los nuevos resultados
+
+        assignments.forEach((assignment) => {
+            // Acceder a los datos anidados
+            const truckTrackingNumber = assignment.deliveryTruck.trackingNumber;
+            const driverName = assignment.truckDriver.name;
+
+            const li = document.createElement('li');
+            li.textContent = `Camión: ${truckTrackingNumber}, Conductor: ${driverName}`;
+            assignmentList.appendChild(li);
+        });
+    } catch (error) {
+        console.error('Error al obtener las asignaciones:', error);
+    }
 });
