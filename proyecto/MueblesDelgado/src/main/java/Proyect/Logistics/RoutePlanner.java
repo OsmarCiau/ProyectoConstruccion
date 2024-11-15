@@ -11,7 +11,6 @@ public class RoutePlanner {
     private LocalTime startTime = LocalTime.of(0, 0);
 
 
-
     public RoutePlanner(String p_wareHouseLocation, LocalTime p_startTime){
         setWarehouseLocation(p_wareHouseLocation);
         setStartTime(p_startTime);
@@ -42,11 +41,10 @@ public class RoutePlanner {
         return time;
     }
 
-    public ArrayList<String> planOptimalRoutes(ArrayList<Order> p_order, String p_wareHouseLocation){
-        //TO-DO
-        ArrayList<String> optimalRoute = new ArrayList<>();
-        return optimalRoute;
-    }
+    //public ArrayList<String> planOptimalRoutes(ArrayList<Order> p_order, String p_wareHouseLocation){
+        //Shortest Path with Dijkstra's Algorithm
+        
+    //}
 
     public LocalTime routeDuration(){
         //TO-DO

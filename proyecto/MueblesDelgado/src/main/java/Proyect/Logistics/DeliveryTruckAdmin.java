@@ -46,7 +46,7 @@ public class DeliveryTruckAdmin{
                 .orElseThrow(() -> new IllegalArgumentException("Driver not found: Name " + p_name));
 
         // Verificar si la asignación ya existe
-        if (truckAssignmentRepository.existsByTruckAndDriver(selectedTruck, selectedDriver)) {
+        if (truckAssignmentRepository.existsByDeliveryTruckAndTruckDriver(selectedTruck, selectedDriver)) {
             throw new IllegalArgumentException("Assignment already exists");
         }
         truckAssignmentRepository.save(new TruckAssignment(selectedTruck, selectedDriver));

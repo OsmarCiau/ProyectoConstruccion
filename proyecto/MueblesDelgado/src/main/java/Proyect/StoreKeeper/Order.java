@@ -4,22 +4,25 @@ import java.util.ArrayList;
 import java.util.Date;
 import Proyect.Inventory.Furniture;
 import Proyect.Validations.ValidationUtils;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.Duration;
 
 @Entity
+@Table(name = "orders")  // Cambiar "order" a "orders" para evitar conflictos con SQL
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderID = 0;
     private String destination = null;
 
+    // Relación con Platform comentada por ahora
+    /*
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private ArrayList<Platform> platformUsed = new ArrayList<>();
+    */
 
     @Temporal(TemporalType.DATE)
     private Date deliveryDate = new Date();
-
 
     private ArrayList<Furniture> orderContent = new ArrayList<>();
     private Duration totalAssemblyTime = Duration.ZERO;
@@ -35,15 +38,6 @@ public class Order {
         calculateAssemblyTime();
     }
 
-    public void findPlatforms() {
-        for (Platform platform : platformUsed) {
-            ValidationUtils.validateNonNull(platform.getLocationInRack(), "Location In Rack");
-            System.out.println("Platform ID: " + platform.getPlatformID());
-            System.out.println("Location in Rack: " + platform.getLocationInRack());
-            System.out.println("Dimension: " + platform.getDimension());
-        }
-    }
-
     private void calculateAssemblyTime() {
         Duration totalAssemblyTime = Duration.ZERO;
         for (Furniture furniture : orderContent) {
@@ -57,9 +51,12 @@ public class Order {
         return Duration.ofMinutes(buildTimeMinutes);
     }
 
+    // Comentado temporalmente
+    /*
     public void addPlatformUsed(Platform p_platform) {
         platformUsed.add(p_platform);
     }
+    */
 
     public Duration getTotalAssemblyTime() {
         return totalAssemblyTime;
@@ -76,7 +73,6 @@ public class Order {
 
     public void setOrderID(int p_orderID) {
         ValidationUtils.validateGreaterThanZero(p_orderID, "Order ID");
-        //OrderValidationUtils.validateOrderID(p_orderID);
         this.orderID =  p_orderID;
     }
 
@@ -86,10 +82,11 @@ public class Order {
 
     public void setDestination(String  p_destination) {
         ValidationUtils.validateNonNull(p_destination, "Destination");
-        //OrderValidationUtils.validateDestination(p_destination);
         this.destination =  p_destination;
     }
 
+    // Relación con Platform comentada temporalmente
+    /*
     public ArrayList<Platform> getPlatformUsed() {
         return platformUsed;
     }
@@ -98,6 +95,7 @@ public class Order {
         ValidationUtils.validatesArrayList(p_platformUsed, "Platform Used");
         this.platformUsed =  p_platformUsed;
     }
+    */
 
     public Date getDeliveryDate() {
         return deliveryDate;
@@ -105,7 +103,6 @@ public class Order {
 
     public void setDeliveryDate(Date  p_deliveryDate) {
         ValidationUtils.validateNonNull(p_deliveryDate, "Delivery Date");
-        //OrderValidationUtils.validateNonNull(p_deliveryDate, "Delivery Date");
         this.deliveryDate =  p_deliveryDate;
     }
 

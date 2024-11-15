@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TruckAssignmentRepository extends JpaRepository<TruckAssignment, Integer> {
-    boolean existsByTruckAndDriver(DeliveryTruck deliveryTruck, TruckDriver truckDriver);
+    boolean existsByDeliveryTruckAndTruckDriver(DeliveryTruck deliveryTruck, TruckDriver truckDriver);
 }

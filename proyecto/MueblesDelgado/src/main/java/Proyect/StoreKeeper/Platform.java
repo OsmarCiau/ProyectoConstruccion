@@ -27,7 +27,7 @@ public class Platform {
 
     private void assignOrder(Order p_order) {
         setOrder(p_order);
-        p_order.addPlatformUsed(this); //* relación bidireccional
+        //p_order.addPlatformUsed(this); //* relación bidireccional
     }
 
     public Order getOrder() {
