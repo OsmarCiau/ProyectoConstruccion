@@ -91,6 +91,7 @@ function getAvailableInventory() {
 } */
 
 // Función para obtener las órdenes de envío activas
+/*
 function getActiveOrders() {
     const orderList = document.getElementById('orderList');
     if (orderList.children.length === 0) {
@@ -102,7 +103,7 @@ function getActiveOrders() {
         }
         alert(orderItems);
     }
-}
+} */
 
 // Inicialización de eventos al cargar el documento
 document.addEventListener('DOMContentLoaded', () => {

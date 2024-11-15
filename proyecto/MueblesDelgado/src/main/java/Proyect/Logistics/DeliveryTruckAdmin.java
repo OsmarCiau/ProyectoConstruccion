@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class DeliveryTruckAdmin{
-
+    
     private DeliveryTruckRepository deliveryTruckRepository;
     private TruckDriverRepository truckDriverRepository;
     private TruckAssignmentRepository truckAssignmentRepository;
