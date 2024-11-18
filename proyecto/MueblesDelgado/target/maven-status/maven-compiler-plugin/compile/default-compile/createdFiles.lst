@@ -4,7 +4,6 @@ Proyect\StoreKeeper\Order.class
 Proyect\StoreKeeper\Platform.class
 Proyect\Logistics\DeliveryTruckAdmin.class
 Proyect\Repositories\TruckDriverRepository.class
-Proyect\Application.class
 Proyect\StoreKeeper\OrdersAdmin.class
 Proyect\StoreKeeper\StoreKeeper.class
 Proyect\StoreKeeper\StorageKeys.class
