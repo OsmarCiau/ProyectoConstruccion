@@ -2,82 +2,75 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Administración de Camiones de Reparto</title>
-    <link rel="stylesheet" href="/css/styles.css"> <!-- Agrega aquí tu archivo CSS para estilos -->
-    <script src="/js/scriptDeliveryTruck.js" defer></script>   <!-- Archivo JavaScript para las solicitudes de API -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Camiones</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <script src="../js/deliveryTruckAPI.js"></script>
 </head>
 <body>
-<h1>Administración de Camiones de Reparto</h1>
 
-<!-- Contenedor para las secciones -->
-<div class="container">
+    <h1>Gestión de Camiones y Conductores</h1>
 
-    <!-- Formulario para Registrar un Camión -->
-    <section>
-        <h2>Registrar Camión</h2>
-        <form id="registerTruckForm">
-            <label for="trackingNumber">Número de Seguimiento:</label>
-            <input type="number" id="trackingNumber" name="trackingNumber" required>
+    <!-- Contenedor para todas las secciones -->
+    <div class="container">
+        <!-- Registrar Camión -->
+        <section>
+            <h2>Registrar Camión</h2>
+            <form id="truckForm">
+                <label for="truckTrackingNumber">Número de seguimiento:</label>
+                <input type="text" id="truckTrackingNumber" required>
+                <label for="truckCapacity">Capacidad:</label>
+                <input type="number" id="truckCapacity" required>
+                <label for="truckMileage">Kilometraje:</label>
+                <input type="number" id="truckMileage" required>
+                <button type="submit">Registrar Camión</button>
+            </form>
+        </section>
 
-            <label for="capacity">Capacidad:</label>
-            <input type="number" step="0.01" id="capacity" name="capacity" required>
+        <!-- Registrar Conductor -->
+        <section>
+            <h2>Registrar Conductor</h2>
+            <form id="driverForm">
+                <label for="driverName">Nombre del conductor:</label>
+                <input type="text" id="driverName" required>
+                <label for="driverLicense">Número de licencia:</label>
+                <input type="text" id="driverLicense" required>
+                <button type="submit">Registrar Conductor</button>
+            </form>
+        </section>
 
-            <label for="mileage">Kilometraje:</label>
-            <input type="number" step="0.01" id="mileage" name="mileage" required>
+        <!-- Asignar Conductor a Camión -->
+        <section>
+            <h2>Asignar Conductor a Camión</h2>
+            <form id="assignForm">
+                <label for="assignTruckTrackingNumber">Número de seguimiento del camión:</label>
+                <input type="text" id="assignTruckTrackingNumber" required>
+                <label for="assignDriverName">Nombre del conductor:</label>
+                <input type="text" id="assignDriverName" required>
+                <button type="submit">Asignar Conductor</button>
+            </form>
+        </section>
 
-            <button type="button" onclick="register('truck')">Registrar Camión</button>
-        </form>
-    </section>
+        <!-- Ver Camiones Disponibles -->
+        <section>
+            <h2>Ver Camiones Disponibles</h2>
+            <button id="getTrucksButton">Ver Camiones</button>
+            <ul id="truckList"></ul>
+        </section>
 
-    <!-- Formulario para Registrar un Conductor -->
-    <section>
-        <h2>Registrar Conductor</h2>
-        <form id="registerDriverForm">
-            <label for="driverName">Nombre:</label>
-            <input type="text" id="driverName" name="driverName" required>
+        <!-- Ver Conductores Disponibles -->
+        <section>
+            <h2>Ver Conductores Disponibles</h2>
+            <button id="getDriversButton">Ver Conductores</button>
+            <ul id="driverList"></ul>
+        </section>
 
-            <label for="licenseNumber">Número de Licencia:</label>
-            <input type="number" id="licenseNumber" name="licenseNumber" required>
-
-            <button type="button" onclick="register('driver')">Registrar Conductor</button>
-        </form>
-    </section>
-
-    <!-- Botón para Ver Camiones Disponibles -->
-    <section>
-        <h2>Camiones Disponibles</h2>
-        <button type="button" onclick="getAvailable('trucks')">Ver Camiones</button>
-        <ul id="truckList"></ul>
-    </section>
-
-    <!-- Botón para Ver Conductores Disponibles -->
-    <section>
-        <h2>Conductores Disponibles</h2>
-        <button type="button" onclick="getAvailable('drivers')">Ver Conductores</button>
-        <ul id="driverList"></ul>
-    </section>
-
-    <!-- Formulario para Asignar Conductor a Camión -->
-    <section>
-        <h2>Asignar Conductor a Camión</h2>
-        <form id="assignDriverForm">
-            <label for="assignTrackingNumber">Número de Seguimiento del Camión:</label>
-            <input type="number" id="assignTrackingNumber" name="assignTrackingNumber" required>
-
-            <label for="assignDriverName">Nombre del Conductor:</label>
-            <input type="text" id="assignDriverName" name="assignDriverName" required>
-
-            <button type="button" onclick="assignDriver()">Asignar Conductor</button>
-        </form>
-    </section>
-
-    <!-- Botón para Ver Asignaciones de Camiones y Conductores -->
-    <section>
-        <h2>Asignaciones</h2>
-        <button type="button" onclick="getAssignments()">Ver Asignaciones</button>
-        <ul id="assignmentList"></ul>
-    </section>
-
-</div> <!-- Fin del contenedor -->
+        <!-- Ver Asignaciones -->
+        <section>
+            <h2>Ver Asignaciones</h2>
+            <button id="getAssignmentsButton">Ver Asignaciones</button>
+            <ul id="assignmentList"></ul>
+        </section>
+    </div>
 </body>
 </html>

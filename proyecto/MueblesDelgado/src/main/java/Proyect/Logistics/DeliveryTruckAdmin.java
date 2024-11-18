@@ -10,17 +10,17 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class DeliveryTruckAdmin{
-
-    @Autowired
+    
     private DeliveryTruckRepository deliveryTruckRepository;
-
-    @Autowired
     private TruckDriverRepository truckDriverRepository;
-
-    @Autowired
     private TruckAssignmentRepository truckAssignmentRepository;
 
-    //private HashMap<DeliveryTruck, TruckDriver> deliveryTruckTruckDriverMap = new HashMap<>(); YA NO ES NECESARIO
+    @Autowired
+    public DeliveryTruckAdmin(DeliveryTruckRepository p_deliveryTruckRepository, TruckDriverRepository p_truckDriverRepository, TruckAssignmentRepository p_truckAssignmentRepository) {
+        this.deliveryTruckRepository = p_deliveryTruckRepository;
+        this.truckDriverRepository = p_truckDriverRepository;
+        this.truckAssignmentRepository = p_truckAssignmentRepository;
+    }
 
     public void registerDeliveryTruck(DeliveryTruck p_deliveryTruck) {
         deliveryTruckRepository.save(p_deliveryTruck);
@@ -39,14 +39,17 @@ public class DeliveryTruckAdmin{
     }
 
 
-    /* CAMBIO PARA ALMACENAR EN UNA BD, Y NO EN UN MAP */
-    public void assignDriverToTruck(int p_trackingNumber, String p_name) {
-        DeliveryTruck selectedTruck = deliveryTruckRepository.findByTrackingNumber(p_trackingNumber);
-        TruckDriver selectedDriver = truckDriverRepository.findByName(p_name);
+    public void assignDriverToTruck(String p_trackingNumber, String p_name) {
+        DeliveryTruck selectedTruck = deliveryTruckRepository.findByTrackingNumber(p_trackingNumber)
+                .orElseThrow(() -> new IllegalArgumentException("Truck not found: Tracking Number " + p_trackingNumber));
+        TruckDriver selectedDriver = truckDriverRepository.findByName(p_name)
+                .orElseThrow(() -> new IllegalArgumentException("Driver not found: Name " + p_name));
 
-        if (selectedTruck != null && selectedDriver != null) {
-            truckAssignmentRepository.save(new TruckAssignment(selectedTruck, selectedDriver));
+        // Verificar si la asignación ya existe
+        if (truckAssignmentRepository.existsByDeliveryTruckAndTruckDriver(selectedTruck, selectedDriver)) {
+            throw new IllegalArgumentException("Assignment already exists");
         }
+        truckAssignmentRepository.save(new TruckAssignment(selectedTruck, selectedDriver));
     }
 
     public List<TruckAssignment> getTruckAssignments() {

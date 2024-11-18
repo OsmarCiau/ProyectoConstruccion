@@ -1,6 +1,7 @@
 package Proyect.Logistics;
 
 import Proyect.Validations.ValidationUtils;
+import jakarta.annotation.Generated;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
@@ -9,19 +10,19 @@ import jakarta.persistence.Id;
 public class DeliveryTruck {
 
     @Id
-    private int trackingNumber = 0;
+    private String trackingNumber = null;
     private double capacity = 0.0f; //cambiar a double?
     private double mileage = 0.0f;  //cambiar a double?
 
     public DeliveryTruck(){}
-    public DeliveryTruck(int p_trackingNumber, double p_capacity, double p_mileage){
+    public DeliveryTruck(String p_trackingNumber, double p_capacity, double p_mileage){
         setTrackingNumber(p_trackingNumber);
         setCapacity(p_capacity);
         setMileage(p_mileage);
     }
 
-    public void setTrackingNumber(int p_trackingNumber) {
-        ValidationUtils.validateGreaterThanZero(p_trackingNumber, "Tracking Number");
+    public void setTrackingNumber(String p_trackingNumber) {
+        ValidationUtils.validateNonNull(p_trackingNumber, "Tracking Number");
         this.trackingNumber = p_trackingNumber;
     }
 
@@ -35,7 +36,7 @@ public class DeliveryTruck {
        this.mileage = p_mileage;
     }
 
-    public int getTrackingNumber() {
+    public String getTrackingNumber() {
         return trackingNumber;
     }
 

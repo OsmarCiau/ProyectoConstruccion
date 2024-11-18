@@ -44,9 +44,9 @@ public class DeliveryTruckAdminController {
     }
 
     @PostMapping("/assign")
-    public ResponseEntity<Void> assignDriverToTruck(@RequestParam int p_trackingNumber, @RequestParam String p_name) {
+    public ResponseEntity<Void> assignDriverToTruck(@RequestParam String p_trackingNumber, @RequestParam String p_name) {
         deliveryTruckAdminService.assignDriverToTruck(p_trackingNumber, p_name);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping("/assignments")
