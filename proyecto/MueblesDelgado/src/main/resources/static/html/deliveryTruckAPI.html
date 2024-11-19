@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Camiones</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <script src="../js/deliveryTruckAPI.js"></script>
+</head>
+<body>
+
+    <h1>Gestión de Camiones y Conductores</h1>
+
+    <!-- Contenedor para todas las secciones -->
+    <div class="container">
+        <!-- Registrar Camión -->
+        <section>
+            <h2>Registrar Camión</h2>
+            <form id="truckForm">
+                <label for="truckTrackingNumber">Número de seguimiento:</label>
+                <input type="text" id="truckTrackingNumber" required>
+                <label for="truckCapacity">Capacidad:</label>
+                <input type="number" id="truckCapacity" required>
+                <label for="truckMileage">Kilometraje:</label>
+                <input type="number" id="truckMileage" required>
+                <button type="submit">Registrar Camión</button>
+            </form>
+        </section>
+
+        <!-- Registrar Conductor -->
+        <section>
+            <h2>Registrar Conductor</h2>
+            <form id="driverForm">
+                <label for="driverName">Nombre del conductor:</label>
+                <input type="text" id="driverName" required>
+                <label for="driverLicense">Número de licencia:</label>
+                <input type="text" id="driverLicense" required>
+                <button type="submit">Registrar Conductor</button>
+            </form>
+        </section>
+
+        <!-- Asignar Conductor a Camión -->
+        <section>
+            <h2>Asignar Conductor a Camión</h2>
+            <form id="assignForm">
+                <label for="assignTruckTrackingNumber">Número de seguimiento del camión:</label>
+                <input type="text" id="assignTruckTrackingNumber" required>
+                <label for="assignDriverName">Nombre del conductor:</label>
+                <input type="text" id="assignDriverName" required>
+                <button type="submit">Asignar Conductor</button>
+            </form>
+        </section>
+
+        <!-- Ver Camiones Disponibles -->
+        <section>
+            <h2>Ver Camiones Disponibles</h2>
+            <button id="getTrucksButton">Ver Camiones</button>
+            <ul id="truckList"></ul>
+        </section>
+
+        <!-- Ver Conductores Disponibles -->
+        <section>
+            <h2>Ver Conductores Disponibles</h2>
+            <button id="getDriversButton">Ver Conductores</button>
+            <ul id="driverList"></ul>
+        </section>
+
+        <!-- Ver Asignaciones -->
+        <section>
+            <h2>Ver Asignaciones</h2>
+            <button id="getAssignmentsButton">Ver Asignaciones</button>
+            <ul id="assignmentList"></ul>
+        </section>
+    </div>
+</body>
+</html>
