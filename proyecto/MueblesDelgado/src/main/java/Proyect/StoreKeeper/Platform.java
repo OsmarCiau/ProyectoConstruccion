@@ -61,4 +61,16 @@ public class Platform {
     public Dimension getDimension() {
         return dimension;
     }
+
+    public float getLength(){
+        return dimension.getLength();
+    }
+
+    public float getWidth(){
+        return dimension.getWidth();
+    }
+
+    public float getHeight(){
+        return dimension.getHeight();
+    }
 }
