@@ -10,7 +10,6 @@ public class Route {
     private float distance = 0.0f;
     private LocalTime estimatedTime = LocalTime.of(0, 0);
 
-    
 
     public Route(int p_routeId, String p_originLocation, String p_destination,
                  float p_distance, LocalTime p_estimatedTime){
