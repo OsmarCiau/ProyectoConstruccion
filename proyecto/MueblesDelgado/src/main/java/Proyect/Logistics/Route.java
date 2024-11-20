@@ -1,5 +1,6 @@
 package Proyect.Logistics;
 
+import java.time.Duration;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -7,12 +8,12 @@ public class Route {
     private int routeId;
     private String originLocation;
     private List<String> destinations;  // Lista de destinos
-    private List<LocalTime> travelTimes; // Lista de tiempos de viaje a cada destino (incluyendo ensamblaje)
+    private List<Duration> travelTimes;  // Lista de tiempos de viaje
     private float distance;  // Distancia total recorrida
     private LocalTime estimatedTime;  // Tiempo estimado para completar la ruta
 
     public Route(int p_routeId, String p_originLocation, List<String> p_destinations,
-                 List<LocalTime> p_travelTimes, float p_distance, LocalTime p_estimatedTime) {
+                 List<Duration> p_travelTimes, float p_distance, LocalTime p_estimatedTime) {
         setRouteId(p_routeId);
         setOriginLocation(p_originLocation);
         setDestinations(p_destinations);
@@ -37,7 +38,7 @@ public class Route {
         this.destinations = p_destinations;
     }
 
-    private void setTravelTimes(List<LocalTime> p_travelTimes) {
+    private void setTravelTimes(List<Duration> p_travelTimes) {
         if (p_travelTimes == null || p_travelTimes.isEmpty()) throw new IllegalArgumentException("Travel Times no puede ser nulo o vacío");
         this.travelTimes = p_travelTimes;
     }
@@ -65,7 +66,7 @@ public class Route {
         return destinations;
     }
 
-    public List<LocalTime> getTravelTimes() {
+    public List<Duration> getTravelTimes() {
         return travelTimes;
     }
 
@@ -86,7 +87,7 @@ public class Route {
                     .append(", Origin Location: '").append(getOriginLocation()).append("'")
                     .append(", Destinations: ").append(getDestinations())
                     .append(", Distances: ").append(getDistance())
-                    .append(", Estimated Time: ").append(getEstimatedTime())
+                    .append(", Estimated Hour for Arriving: ").append(getEstimatedTime())
                     .append("\nDetails by Destination:\n");
 
         for (int i = 0; i < destinations.size(); i++) {
@@ -98,8 +99,12 @@ public class Route {
         return routeDetails.toString();
     }
 
-    // Método para calcular la hora estimada de llegada (usando el travelTime)
-    private LocalTime calculateArrivalTime(int index) {
-        return travelTimes.get(index); // Usamos travelTimes que ya contiene el tiempo total
+    // Método para obtener la duración total de la ruta
+    public Duration getTotalTravelTime() {
+        Duration totalTravelTime = Duration.ZERO;
+        for (Duration travelTime : travelTimes) {
+            totalTravelTime = totalTravelTime.plus(travelTime);
+        }
+        return totalTravelTime;
     }
 }

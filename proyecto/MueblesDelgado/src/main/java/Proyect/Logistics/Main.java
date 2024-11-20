@@ -33,7 +33,7 @@ public class Main {
         Order order2 = new Order(2, "Plaza Galerías, Mérida, Yucatán", LocalDate.now(), furnitureList2);
         Order order3 = new Order(3, "Plaza La Isla, Mérida, Yucatán", LocalDate.now(), furnitureList3);
         Order order4 = new Order(4, "Plaza City Center, Mérida, Yucatán", LocalDate.now(), furnitureList4);
-        Order order5 = new Order(5, "Toluca, Estado de México", LocalDate.now(), furnitureList5);
+        Order order5 = new Order(5, "Cancún, Quintana Roo", LocalDate.now(), furnitureList5);
 
         // Crear la lista de pedidos
         List<Order> orders = new ArrayList<>();
@@ -60,7 +60,7 @@ public class Main {
                     System.out.println(route.getDestinations().get(j) + " - Tiempo de viaje: " + route.getTravelTimes().get(j));
                 }
                 System.out.println("Distancia total: " + route.getDistance() + " km");
-                System.out.println("Tiempo estimado: " + route.getEstimatedTime());
+                System.out.println("Hora estimada de llegada: " + route.getEstimatedTime());
                 System.out.println();
             }
         }
