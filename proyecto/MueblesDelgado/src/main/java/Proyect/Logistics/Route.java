@@ -1,53 +1,58 @@
 package Proyect.Logistics;
 
 import java.time.LocalTime;
-import Proyect.Validations.ValidationUtils;
+import java.util.List;
 
 public class Route {
-    private int routeId = 0;
-    private String originLocation = null;
-    private String destination = null;
-    private float distance = 0.0f;
-    private LocalTime estimatedTime = LocalTime.of(0, 0);
+    private int routeId;
+    private String originLocation;
+    private List<String> destinations;  // Lista de destinos
+    private List<LocalTime> travelTimes; // Lista de tiempos de viaje a cada destino (incluyendo ensamblaje)
+    private float distance;  // Distancia total recorrida
+    private LocalTime estimatedTime;  // Tiempo estimado para completar la ruta
 
-
-    public Route(int p_routeId, String p_originLocation, String p_destination,
-                 float p_distance, LocalTime p_estimatedTime){
+    public Route(int p_routeId, String p_originLocation, List<String> p_destinations,
+                 List<LocalTime> p_travelTimes, float p_distance, LocalTime p_estimatedTime) {
         setRouteId(p_routeId);
         setOriginLocation(p_originLocation);
-        setDestination(p_destination);
+        setDestinations(p_destinations);
+        setTravelTimes(p_travelTimes);
         setDistance(p_distance);
         setEstimatedTime(p_estimatedTime);
     }
 
-    private void setRouteId(int p_routeId){
-        ValidationUtils.validateGreaterThanZero(p_routeId, "Route Id");
+    // Setters y validaciones
+    private void setRouteId(int p_routeId) {
+        if (p_routeId <= 0) throw new IllegalArgumentException("Route ID debe ser mayor que cero");
         this.routeId = p_routeId;
     }
 
-
-    private void setOriginLocation(String p_originLocation){
-        ValidationUtils.validateNonNull(p_originLocation, "Origin Location");
+    private void setOriginLocation(String p_originLocation) {
+        if (p_originLocation == null || p_originLocation.isEmpty()) throw new IllegalArgumentException("Origin Location no puede ser nulo o vacío");
         this.originLocation = p_originLocation;
     }
 
+    private void setDestinations(List<String> p_destinations) {
+        if (p_destinations == null || p_destinations.isEmpty()) throw new IllegalArgumentException("Destinations no puede ser nulo o vacío");
+        this.destinations = p_destinations;
+    }
 
-    private void setDestination(String p_destination) {
-        ValidationUtils.validateNonNull(p_destination, "Destination");
-        this.destination = p_destination;
+    private void setTravelTimes(List<LocalTime> p_travelTimes) {
+        if (p_travelTimes == null || p_travelTimes.isEmpty()) throw new IllegalArgumentException("Travel Times no puede ser nulo o vacío");
+        this.travelTimes = p_travelTimes;
     }
 
     private void setDistance(float p_distance) {
-        ValidationUtils.validateGreaterThanZero(p_distance, "Distance");
+        if (p_distance <= 0) throw new IllegalArgumentException("Distance debe ser mayor que cero");
         this.distance = p_distance;
     }
 
-    private void setEstimatedTime(LocalTime p_estimatedTime){
-        ValidationUtils.validateEstimatedTime(p_estimatedTime, "Estimated Time");
+    private void setEstimatedTime(LocalTime p_estimatedTime) {
+        if (p_estimatedTime == null) throw new IllegalArgumentException("Estimated Time no puede ser nulo");
         this.estimatedTime = p_estimatedTime;
     }
 
-
+    // Getters
     public int getIdRoute() {
         return routeId;
     }
@@ -56,8 +61,12 @@ public class Route {
         return originLocation;
     }
 
-    public String getDestination() {
-        return destination;
+    public List<String> getDestinations() {
+        return destinations;
+    }
+
+    public List<LocalTime> getTravelTimes() {
+        return travelTimes;
     }
 
     public float getDistance() {
@@ -68,13 +77,29 @@ public class Route {
         return estimatedTime;
     }
 
+    // Método para mostrar la ruta
     @Override
     public String toString() {
-        return "Route:" +
-                "Route ID:" + getIdRoute()+
-                ", Origin Location:'" + getOriginLocation() + '\'' +
-                ", Destination:" + getDestination() + '\'' +
-                ", Distance:" + getDistance() +
-                ", EstimatedTime:" + getEstimatedTime();
+        StringBuilder routeDetails = new StringBuilder();
+        routeDetails.append("Route: ")
+                    .append("Route ID: ").append(getIdRoute())
+                    .append(", Origin Location: '").append(getOriginLocation()).append("'")
+                    .append(", Destinations: ").append(getDestinations())
+                    .append(", Distances: ").append(getDistance())
+                    .append(", Estimated Time: ").append(getEstimatedTime())
+                    .append("\nDetails by Destination:\n");
+
+        for (int i = 0; i < destinations.size(); i++) {
+            routeDetails.append("  - ").append(destinations.get(i))
+                        .append(" Travel Time (including assembly): ").append(travelTimes.get(i))
+                        .append("\n");
+        }
+
+        return routeDetails.toString();
+    }
+
+    // Método para calcular la hora estimada de llegada (usando el travelTime)
+    private LocalTime calculateArrivalTime(int index) {
+        return travelTimes.get(index); // Usamos travelTimes que ya contiene el tiempo total
     }
 }

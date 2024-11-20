@@ -1,16 +1,12 @@
 package Proyect.Logistics;
 
 import Proyect.StoreKeeper.Order;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
-
-
-import Proyect.Validations.ValidationUtils;
+import java.util.PriorityQueue;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class RoutePlanner {
     private String warehouseLocation = null;
@@ -18,152 +14,101 @@ public class RoutePlanner {
     private GeoDataProvider geoDataProvider = new GeoDataProvider();
     private final LocalTime WORKDAY_END_TIME = LocalTime.of(18, 0);  // Fin de jornada laboral (8 horas)
     private final int MAX_WORK_DAYS = 3; // Máximo 3 días hábiles para entrega
+    private int routeDayCounter = 1; // Contador para diferenciar las rutas por día
 
     public RoutePlanner(String p_wareHouseLocation, LocalTime p_startTime) {
         setWarehouseLocation(p_wareHouseLocation);
         setStartTime(p_startTime);
     }
 
-    // Método para establecer la ubicación del almacén
     private void setWarehouseLocation(String p_warehouseLocation) {
-        ValidationUtils.validateNonNull(p_warehouseLocation, "Warehouse Location");
         this.warehouseLocation = p_warehouseLocation;
     }
 
-    // Método para establecer la hora de inicio del día
     private void setStartTime(LocalTime p_startTime) {
-        ValidationUtils.validateStartTime(p_startTime, "Start Time");
         this.startTime = p_startTime;
     }
 
-    public String getWarehouseLocation() {
-        return warehouseLocation;
-    }
-
-    public LocalTime getStartTime() {
-        return startTime;
-    }
-
-    // Método que estima el tiempo de entrega para un pedido, considerando el ensamblaje y la distancia
-    public LocalTime estimateDeliveryTimeForOrder(Order p_order) throws Exception {
-        LocalTime assemblyTime = LocalTime.ofSecondOfDay(p_order.getTotalAssemblyTime().getSeconds());
-
-        // Obtener las coordenadas del almacén y de la dirección de entrega
-        double[] warehouseCoordinates = geoDataProvider.getCoordinatesFromAddress(warehouseLocation);
-        double[] deliveryCoordinates = geoDataProvider.getCoordinatesFromAddress(p_order.getDestination());
-
-        // Obtener la duración de la ruta desde el almacén hasta el destino
-        double duration = geoDataProvider.getDuration(warehouseCoordinates, deliveryCoordinates); // Duration en minutos
-
-        // Convertir la duración a segundos
-        long durationInSeconds = (long) (duration * 60); 
-        long totalSeconds = durationInSeconds + assemblyTime.toSecondOfDay();
-        LocalTime estimatedTime = LocalTime.ofSecondOfDay(totalSeconds);
-
-        return estimatedTime;
-    }
-
-
-    // Método que planifica las rutas óptimas para los pedidos del día
-    public List<Route> planDailyRoutes(List<Order> orders) throws Exception {
-        List<Route> plannedRoutes = new ArrayList<>();
-        LocalTime availableTime = LocalTime.of(8, 0);  // Hora de inicio de la jornada laboral (8:00 AM)
-    
-        // Optimizar las rutas de los pedidos
-        ArrayList<Order> orderedDeliveries = optimizeRoutes(new ArrayList<>(orders));
-    
-        // Empezar desde el almacén para la primera ruta
-        String currentOrigin = warehouseLocation;
-    
-        // Planificar las entregas para hoy
-        for (Order order : orderedDeliveries) {
-            // Calcular la estimación de tiempo para el pedido
-            LocalTime estimatedTime = estimateDeliveryTimeForOrder(order);
-            float distance = (float) geoDataProvider.getDistance(
-                    geoDataProvider.getCoordinatesFromAddress(currentOrigin), 
-                    geoDataProvider.getCoordinatesFromAddress(order.getDestination()));
-    
-            // Crear la ruta planificada (usando la clase Route)
-            Route route = new Route(plannedRoutes.size() + 1, currentOrigin, order.getDestination(), distance, estimatedTime);
-    
-            // Verificar si el tiempo estimado de entrega excede el horario laboral
-            if (estimatedTime.isAfter(WORKDAY_END_TIME)) {
-                availableTime = LocalTime.of(8, 0);  // Reiniciar al inicio del siguiente día
-                availableTime = availableTime.plusMinutes(estimatedTime.toSecondOfDay() / 60); // Sumar el tiempo estimado de entrega
-            } else {
-                if (estimatedTime.isBefore(availableTime)) {
-                    availableTime = availableTime.plusMinutes(estimatedTime.toSecondOfDay() / 60);
-                } else {
-                    availableTime = estimatedTime;
-                }
-            }
-    
-            // Agregar la ruta planificada a la lista
-            plannedRoutes.add(route);
-    
-            // El origen de la próxima ruta será el destino de esta ruta
-            currentOrigin = order.getDestination();
-        }
-    
-        // Validar que las entregas estén dentro del límite de 3 días hábiles
-        validateDeliveryDate(orderedDeliveries);
-    
-        // Retornar las rutas planificadas
-        return plannedRoutes;
-    }
-    
-    // Método que optimiza las rutas de entrega de los pedidos
-    private ArrayList<Order> optimizeRoutes(ArrayList<Order> orders) throws Exception {
-        // Crear una lista nueva para los pedidos ordenados por distancia
-        ArrayList<Order> orderedDeliveries = new ArrayList<>(orders);
-        
-        // Coordenadas del almacén
-        double[] warehouseCoordinates = geoDataProvider.getCoordinatesFromAddress(warehouseLocation); // Coordenadas del almacén
-
-        // Ordenar los pedidos utilizando un comparador basado en la distancia
-        orderedDeliveries.sort(Comparator.comparingDouble(order -> 
-            {
-                try {
-                    return geoDataProvider.getDistance(warehouseCoordinates, geoDataProvider.getCoordinatesFromAddress(order.getDestination()));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return Double.MAX_VALUE; // Retornar un valor muy grande en caso de error
-                }
-            }));
-
-        return orderedDeliveries;
-    }
-
-
-    // Método para validar que la fecha de entrega de los pedidos no exceda el límite de 3 días hábiles    
-    private void validateDeliveryDate(List<Order> orders) {
+    public List<List<Route>> planOptimalRoutes(List<Order> p_orders) throws Exception {
+        List<List<Route>> allRoutes = new ArrayList<>(); // Lista que contendrá las rutas por día
+        List<Route> currentDayRoutes = new ArrayList<>();
         LocalDate currentDate = LocalDate.now();
-        LocalDate maxDeliveryDate = currentDate.plusDays(MAX_WORK_DAYS);
+        PriorityQueue<Order> orderQueue = new PriorityQueue<>(Comparator.comparingInt(Order::getOrderID));
+        orderQueue.addAll(p_orders);
     
-        // Iterar a través de la lista de pedidos
-        for (Order order : orders) {
-            // Convertir Date a LocalDate
-            LocalDate deliveryDate = convertToLocalDate(order.getDeliveryDate());
+        while (!orderQueue.isEmpty()) {
+            List<String> destinations = new ArrayList<>();
+            List<LocalTime> travelTimes = new ArrayList<>();
+            float totalDistance = 0.0f;
+            LocalTime estimatedTime = startTime;
+            List<Order> ordersForToday = new ArrayList<>();
     
-            // Verificar si la fecha de entrega excede el límite
-            if (deliveryDate.isAfter(maxDeliveryDate)) {
-                throw new RuntimeException("La fecha de entrega del pedido con ID " + order.getOrderID() + " excede el límite de " + MAX_WORK_DAYS + " días hábiles.");
+            while (!orderQueue.isEmpty() && canDeliverOrderInDay(estimatedTime) && ordersForToday.size() < 5) {
+                Order currentOrder = orderQueue.poll();
+                if (!isOrderDeliveredInTime(currentOrder, currentDate)) {
+                    continue;
+                }
+    
+                double[] originCoordinates = geoDataProvider.getCoordinatesFromAddress(warehouseLocation);
+                double[] destinationCoordinates = geoDataProvider.getCoordinatesFromAddress(currentOrder.getDestination());
+                double distance = geoDataProvider.calculateDistanceBetweenTwoPoints(originCoordinates, destinationCoordinates);
+                double duration = geoDataProvider.calculateDurationBetweenTwoPoints(originCoordinates, destinationCoordinates);
+    
+                int assemblyTime = currentOrder.getTotalAssemblyTime().toMinutesPart();
+                LocalTime totalTimeForDestination = estimatedTime.plusMinutes((long) duration + assemblyTime);
+    
+                if (estimatedTime.plusMinutes((long) duration).isAfter(WORKDAY_END_TIME)) {
+                    orderQueue.add(currentOrder); // Si no cabe, devolver el pedido a la cola para el siguiente día
+                    break;
+                }
+    
+                destinations.add(currentOrder.getDestination());
+                travelTimes.add(totalTimeForDestination);
+                totalDistance += distance;
+    
+                estimatedTime = totalTimeForDestination;
+    
+                ordersForToday.add(currentOrder);
+            }
+    
+            if (!ordersForToday.isEmpty()) {
+                Route route = new Route(routeDayCounter, warehouseLocation, destinations, travelTimes, totalDistance, estimatedTime);
+                currentDayRoutes.add(route);
+            }
+
+            // Si terminamos con las rutas de hoy, pasamos al siguiente día
+            if (estimatedTime.isAfter(WORKDAY_END_TIME)) {
+                allRoutes.add(new ArrayList<>(currentDayRoutes)); // Añadir las rutas del día
+                currentDayRoutes.clear(); // Limpiar las rutas del día para el siguiente
+                currentDate = moveToNextWorkday(currentDate);
+                routeDayCounter++; // Incrementamos el contador para el próximo día
+                estimatedTime = startTime; // Reiniciar la hora de trabajo para el próximo día
             }
         }
+
+        // Agregar las rutas del último día si quedan
+        if (!currentDayRoutes.isEmpty()) {
+            allRoutes.add(new ArrayList<>(currentDayRoutes));
+        }
+
+        return allRoutes;
     }
-    
-    // Método para convertir un objeto Date a LocalDate
-    private LocalDate convertToLocalDate(Date deliveryDate) {
-        return deliveryDate.toInstant()
-                           .atZone(ZoneId.systemDefault())
-                           .toLocalDate();
+
+    // Métodos de ayuda
+    private boolean isOrderDeliveredInTime(Order order, LocalDate currentDate) {
+        LocalDate deliveryDeadline = currentDate.plusDays(MAX_WORK_DAYS);
+        return !order.getDeliveryDate().isAfter(deliveryDeadline);
     }
-    
-    @Override
-    public String toString() {
-        return "RoutePlanner{" +
-                "warehouseLocation='" + warehouseLocation + '\'' +
-                ", startTime=" + startTime +
-                '}';
+
+    private boolean canDeliverOrderInDay(LocalTime estimatedTime) {
+        return estimatedTime.isBefore(WORKDAY_END_TIME);
+    }
+
+    private LocalDate moveToNextWorkday(LocalDate currentDate) {
+        currentDate = currentDate.plusDays(1);
+        if (currentDate.getDayOfWeek().getValue() > 5) {
+            currentDate = currentDate.plusDays(8 - currentDate.getDayOfWeek().getValue());
+        }
+        return currentDate;
     }
 }

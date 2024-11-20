@@ -1,7 +1,7 @@
 package Proyect.StoreKeeper;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDate;
 import Proyect.Inventory.Furniture;
 import Proyect.Validations.ValidationUtils;
 import jakarta.persistence.*;
@@ -22,7 +22,7 @@ public class Order {
     */
 
     @Temporal(TemporalType.DATE)
-    private Date deliveryDate = new Date();
+    private LocalDate deliveryDate = null;
 
     private ArrayList<Furniture> orderContent = new ArrayList<>();
     private Duration totalAssemblyTime = Duration.ZERO;
@@ -30,7 +30,7 @@ public class Order {
     public Order() {
     }
 
-    public Order(int p_orderID, String  p_destination, Date  p_deliveryDate, ArrayList<Furniture>  p_orderContent) { //ArrayList<Platform> p_platformUsed
+    public Order(int p_orderID, String p_destination, LocalDate p_deliveryDate, ArrayList<Furniture> p_orderContent) { //ArrayList<Platform> p_platformUsed
         setOrderID(p_orderID);
         setDestination(p_destination);
         setDeliveryDate(p_deliveryDate);
@@ -97,11 +97,11 @@ public class Order {
     }
     */
 
-    public Date getDeliveryDate() {
+    public LocalDate getDeliveryDate() {
         return deliveryDate;
     }
 
-    public void setDeliveryDate(Date  p_deliveryDate) {
+    public void setDeliveryDate(LocalDate p_deliveryDate) {
         ValidationUtils.validateNonNull(p_deliveryDate, "Delivery Date");
         this.deliveryDate =  p_deliveryDate;
     }
