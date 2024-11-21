@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class InventoryAdmin {
@@ -17,7 +18,7 @@ public class InventoryAdmin {
     @Autowired
     private PackingListRepository packingListRepository;
 
-    public void addFurniture(PackingList p_packingList) {
+    public void addFurnitureItemsToInventory(PackingList p_packingList) {
         packingListRepository.save(p_packingList);
         ArrayList<Furniture> productsToAdd = p_packingList.getProducts();
         ValidationUtils.validatesArrayList(productsToAdd, "Products");
@@ -25,14 +26,11 @@ public class InventoryAdmin {
         System.out.println("Added " + productsToAdd.size() + " items to the inventory.");
     }
 
-//    public void addFurniture(PackingList p_packingList) {
-//        ArrayList<Furniture> productsToAdd = p_packingList.getProducts();
-//        ValidationUtils.validatesArrayList(productsToAdd, "Products");
-//        furnitureDatabase.addAll(productsToAdd);
-//        System.out.println("Added " + productsToAdd.size() + " items to the inventory.");
-//    }
+    public List<Furniture> retrieveAllFurnitureFromInventory() {
+        return furnitureRepository.findAll();
+    }
 
-    public void removeFurniture(PackingList p_packingList) {
+    public void removeFurnitureItemsFromInventory(PackingList p_packingList) {
         ArrayList<Furniture> productsToRemove = p_packingList.getProducts();
         ValidationUtils.validatesArrayList(productsToRemove, "Products");
         furnitureRepository.deleteAll(productsToRemove);
@@ -40,35 +38,19 @@ public class InventoryAdmin {
 
     }
 
-//    public void removeFurniture(PackingList p_packingList) {
-//        ArrayList<Furniture> productsToRemove = p_packingList.getProducts();
-//        ValidationUtils.validatesArrayList(productsToRemove, "Products");
-//        furnitureDatabase.removeAll(productsToRemove);
-//        System.out.println("Removed " + productsToRemove.size() + " items from the inventory.");
-//    }
-
-    public void updateFurniture(PackingList p_packingList) {
+    public void updateFurnitureItemsInInventory(PackingList p_packingList) {
         ArrayList<Furniture> productsToUpdate = p_packingList.getProducts();
         ValidationUtils.validatesArrayList(productsToUpdate, "Products");
 
         for (Furniture furniture : productsToUpdate) {
-            updateFurnitureItem(furniture);
+            updateFurnitureItemInInventory(furniture);
         }
         packingListRepository.save(p_packingList);
         System.out.println("Updated inventory with " + productsToUpdate.size() + " items.");
 
     }
 
-//    public void updateFurniture(PackingList p_packingList) {
-//        ArrayList<Furniture> productsToUpdate = p_packingList.getProducts();
-//        ValidationUtils.validatesArrayList(productsToUpdate, "Products");
-//        for (Furniture furniture : productsToUpdate) {
-//            updateFurnitureItem(furniture);
-//        }
-//        System.out.println("Updated inventory with " + productsToUpdate.size() + " items.");
-//    }
-
-    private void updateFurnitureItem(Furniture p_furniture) {
+    private void updateFurnitureItemInInventory(Furniture p_furniture) {
         furnitureRepository.save(p_furniture);
         System.out.println("Updated furniture with ID: " + p_furniture.getFurnitureId());
     }
