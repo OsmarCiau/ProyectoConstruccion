@@ -1,7 +1,7 @@
 package Proyect.Repositories;
 
 
-import Proyect.Admin.Authentication.Administrator;
+import Proyect.Authentication.Administrator;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 

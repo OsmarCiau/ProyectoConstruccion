@@ -1,8 +1,7 @@
 package Proyect.Controllers;
 
-import Proyect.Admin.Authentication.AuthenticationService;
-import Proyect.Admin.Authentication.Administrator;
-import Proyect.Admin.Authentication.JwtUtil;
+import Proyect.Authentication.AuthenticationService;
+import Proyect.Authentication.Administrator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/authentication")
 public class AdministratorAuthContoller {
 
     @Autowired
