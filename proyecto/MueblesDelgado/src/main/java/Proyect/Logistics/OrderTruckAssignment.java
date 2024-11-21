@@ -1,49 +1,51 @@
 package Proyect.Logistics;
 
-import Proyect.Validations.ValidationUtils;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+
+import jakarta.persistence.*;
 
 @Entity
 public class OrderTruckAssignment {
 
     @Id
-    private int assignmentId; // Ensure you have a unique ID for the entity
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "truck_id", referencedColumnName = "trackingNumber")
+    private DeliveryTruck deliveryTruck;
 
-    //falta relacion ManyToOne
-    private int orderId; // Reference to the order
-    private int truckId; // Reference to the truck
+    @ManyToOne
+    @JoinColumn(name = "route_id", referencedColumnName = "routeId")
+    private Route route;
 
-    public OrderTruckAssignment(){}
-
-    public OrderTruckAssignment(int p_assignmentId, int p_orderId, int p_truckId){
-        setAssignmentId(p_assignmentId);
-        setOrderId(p_orderId);
-        setTruckId(p_truckId);
+    // Constructor
+    public OrderTruckAssignment(DeliveryTruck deliveryTruck, Route route) {
+        this.deliveryTruck = deliveryTruck;
+        this.route = route;
     }
 
-    // Getters and setters
-    public void setAssignmentId(int p_assignmentId) {
-        ValidationUtils.validateGreaterThanZero(p_assignmentId, "Assignment Id");
-        this.assignmentId = p_assignmentId;
+    // Getters y setters
+    public Long getId() {
+        return id;
     }
 
-    public void setOrderId(int p_orderId) {
-        ValidationUtils.validateGreaterThanZero(p_orderId, "Order Id");
-        this.orderId = p_orderId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setTruckId(int p_truckId) {
-        ValidationUtils.validateGreaterThanZero(p_truckId, "Truck Id");
-        this.truckId = p_truckId;
+    public DeliveryTruck getDeliveryTruck() {
+        return deliveryTruck;
     }
 
-    public int getAssignmentId() {
-        return assignmentId;
+    public void setDeliveryTruck(DeliveryTruck deliveryTruck) {
+        this.deliveryTruck = deliveryTruck;
     }
-    public int getTruckId() {
-        return truckId;
+
+    public Route getRoute() {
+        return route;
     }
-    public int getOrderId() { return orderId; }
+
+    public void setRoute(Route route) {
+        this.route = route;
+    }
 }

@@ -7,7 +7,10 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import org.json.JSONObject;
+import org.springframework.stereotype.Component;
 
+
+@Component
 public class GeoDataProvider {
     private static final String API_KEY = "AIzaSyAprtokl7TAwkM6QkbCT25sBlRt-LkweuU";
 
@@ -52,6 +55,7 @@ public class GeoDataProvider {
 
     // Método común para obtener la respuesta de la API
     private static JSONObject getApiResponse(String p_urlString) throws Exception {
+        @SuppressWarnings("deprecation")
         URL url = new URL(p_urlString);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");

@@ -1,23 +1,21 @@
 package Proyect.Logistics;
 
 import Proyect.Validations.ValidationUtils;
-import jakarta.annotation.Generated;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-
 
 @Entity
 public class DeliveryTruck {
 
     @Id
     private String trackingNumber = null;
-    private double capacity = 0.0f; //cambiar a double?
-    private double mileage = 0.0f;  //cambiar a double?
+    private static final double DEFAULT_CAPACITY = 6500.0f; // 6,500 kg
+    private double mileage = 0.0f; // en km
 
-    public DeliveryTruck(){}
-    public DeliveryTruck(String p_trackingNumber, double p_capacity, double p_mileage){
+    public DeliveryTruck() {}
+
+    public DeliveryTruck(String p_trackingNumber, double p_mileage) {
         setTrackingNumber(p_trackingNumber);
-        setCapacity(p_capacity);
         setMileage(p_mileage);
     }
 
@@ -26,14 +24,9 @@ public class DeliveryTruck {
         this.trackingNumber = p_trackingNumber;
     }
 
-    public void setCapacity(double p_capacity){
-        ValidationUtils.validateGreaterThanZero(p_capacity, "DeliveryTruck Capacity");
-        this.capacity = p_capacity;
-    }
-
-    public void setMileage(double p_mileage){
-       ValidationUtils.validateGreaterThanZero(p_mileage, "DeliveryTruck Mileage");
-       this.mileage = p_mileage;
+    public void setMileage(double p_mileage) {
+        ValidationUtils.validateGreaterThanZero(p_mileage, "DeliveryTruck Mileage");
+        this.mileage = p_mileage;
     }
 
     public String getTrackingNumber() {
@@ -41,19 +34,18 @@ public class DeliveryTruck {
     }
 
     public double getCapacity() {
-        return capacity;
+        return DEFAULT_CAPACITY;
     }
 
     public double getMileage() {
         return mileage;
     }
 
-
     @Override
     public String toString() {
-        return
-                "\n"+"TrackingNumber:" + getTrackingNumber() +
-                        ", Capacity:" + getCapacity() +
-                        ", Mileage:" + getMileage() ;
+        return "\n" +
+                "TrackingNumber:" + getTrackingNumber() +
+                ", Capacity:" + getCapacity() +
+                ", Mileage:" + getMileage();
     }
 }

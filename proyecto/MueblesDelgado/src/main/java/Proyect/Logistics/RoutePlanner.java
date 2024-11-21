@@ -5,35 +5,43 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+
+@Service
 public class RoutePlanner {
     private String warehouseLocation;
     private LocalTime startTime;
     private GeoDataProvider geoDataProvider;
     private final int MAX_WORK_DAYS = 3;
     private final long MAX_HOURS_PER_DAY = 3;
-    private int routeDayCounter = 1;
 
-    public RoutePlanner(String warehouseLocation, LocalTime startTime) {
+    @Autowired
+    public RoutePlanner(@Value("${logistics.warehouseLocation}") String warehouseLocation,
+                        @Value("${logistics.startTime}") String startTime) {
         this.warehouseLocation = warehouseLocation;
-        this.startTime = startTime;
+        this.startTime = LocalTime.parse(startTime);  // Convertir el String en LocalTime
         this.geoDataProvider = new GeoDataProvider();
-    }
 
-    public List<List<Route>> planOptimalRoutes(List<Order> orders) throws Exception {
-        List<List<Route>> allRoutes = new ArrayList<>();
+    }
+    // Devolver lista de rutas por camión
+    public List<Route> planOptimalRoutes(List<Order> orders, int numberOfTrucks) throws Exception {
+        List<Route> allRoutes = new ArrayList<>();
         PriorityQueue<Order> orderQueue = initializeOrderQueue(orders);
 
         LocalDate currentDate = LocalDate.now();
         while (!orderQueue.isEmpty()) {
-            List<Route> dailyRoutes = planDailyRoutes(orderQueue, currentDate);
+            List<Route> dailyRoutes = planDailyRoutes(orderQueue, currentDate, numberOfTrucks);
             if (!dailyRoutes.isEmpty()) {
-                allRoutes.add(dailyRoutes);
-                routeDayCounter++;
-                currentDate = moveToNextWorkday(currentDate);
+                allRoutes.addAll(dailyRoutes); // Agregar todas las rutas del día
+                currentDate = moveToNextWorkday(currentDate); // Pasamos al siguiente día laboral
             }
         }
         return allRoutes;
@@ -45,13 +53,15 @@ public class RoutePlanner {
         return orderQueue;
     }
 
-    private List<Route> planDailyRoutes(PriorityQueue<Order> orderQueue, LocalDate currentDate) throws Exception {
+    private List<Route> planDailyRoutes(PriorityQueue<Order> orderQueue, LocalDate currentDate, int numberOfTrucks) throws Exception {
         List<Route> dailyRoutes = new ArrayList<>();
         List<Order> ordersForToday = new ArrayList<>();
         LocalTime estimatedTime = startTime;
         float totalDistance = 0.0f;
+        int truckCounter = 0; // Para distribuir las rutas entre los camiones
 
-        while (!orderQueue.isEmpty() && ordersForToday.size() < 5) {
+        // Asignar las rutas entre los camiones
+        while (!orderQueue.isEmpty()) {
             Order currentOrder = orderQueue.poll();
 
             if (isOutsideYucatan(currentOrder.getDestination())) {
@@ -68,20 +78,25 @@ public class RoutePlanner {
             LocalTime timeIncludingReturn = calculateTotalTimeWithReturn(currentOrder, estimatedTime, totalOrderDuration);
 
             if (exceedsWorkHours(timeIncludingReturn)) {
-                orderQueue.add(currentOrder);
+                orderQueue.add(currentOrder);  // Si se exceden las horas, dejamos la orden para el siguiente ciclo
                 break;
             }
 
+            // Asignamos la orden al camión actual
             ordersForToday.add(currentOrder);
             totalDistance += distance;
             estimatedTime = timeIncludingReturn.minus(Duration.ofMinutes((long) geoDataProvider.calculateDurationBetweenTwoPoints(
                     geoDataProvider.getCoordinatesFromAddress(currentOrder.getDestination()),
                     geoDataProvider.getCoordinatesFromAddress(warehouseLocation))));
+
+            // Cuando un camión alcanza su capacidad máxima de entregas, se asignan las rutas al siguiente camión
+            if (ordersForToday.size() == (orderQueue.size() / numberOfTrucks) + 1) {
+                dailyRoutes.add(createRoute(ordersForToday, totalDistance, estimatedTime));
+                truckCounter++;
+                ordersForToday.clear();  // Limpiamos las rutas para el siguiente camión
+            }
         }
 
-        if (!ordersForToday.isEmpty()) {
-            dailyRoutes.add(createRoute(ordersForToday, totalDistance, estimatedTime));
-        }
         return dailyRoutes;
     }
 
@@ -100,7 +115,6 @@ public class RoutePlanner {
         LocalTime estimatedTime = startTime.plus(totalOrderDuration);
 
         return new Route(
-                routeDayCounter++,
                 warehouseLocation,
                 List.of(order.getDestination()),
                 List.of(totalOrderDuration),
@@ -118,7 +132,7 @@ public class RoutePlanner {
             travelTimes.add(order.getTotalAssemblyTime());
         }
 
-        return new Route(routeDayCounter, warehouseLocation, destinations, travelTimes, totalDistance, estimatedTime);
+        return new Route(warehouseLocation, destinations, travelTimes, totalDistance, estimatedTime);
     }
 
     private float calculateDistance(Order order) throws Exception {
