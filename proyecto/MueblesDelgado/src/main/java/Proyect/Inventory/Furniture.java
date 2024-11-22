@@ -19,9 +19,12 @@ public class Furniture{
     private Dimension dimension = new Dimension(1f, 1f, 1f);
     private int quantity = 0;
     private int buildTime = 0;
+    private int orderID = 0;
 
-    public Furniture(int p_furnitureId, String p_type, String p_brand, String p_color, Dimension p_dimension, int p_quantity, int p_buildTime) {
+
+    public Furniture(int p_furnitureId, int p_orderID, String p_type, String p_brand, String p_color, Dimension p_dimension, int p_quantity, int p_buildTime) {
         setFurnitureId(p_furnitureId);
+        setOrderID(p_orderID);
         setType(p_type);
         setBrand(p_brand);
         setColor(p_color);
@@ -34,6 +37,15 @@ public class Furniture{
 
     public int getFurnitureId() {
         return furnitureId;
+    }
+
+    public int getOrderID() {
+        return orderID;
+    }
+
+    public void setOrderID(int p_orderID) {
+        ValidationUtils.validateGreaterThanZero(p_orderID, "Order ID");
+        this.orderID = p_orderID;
     }
 
     public void setFurnitureId(int p_furnitureId) {

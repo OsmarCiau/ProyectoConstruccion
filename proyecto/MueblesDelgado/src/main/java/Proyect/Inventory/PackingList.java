@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class PackingList {
@@ -13,12 +14,12 @@ public class PackingList {
 	private int folio = 0;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private ArrayList<Furniture> products = new ArrayList<>();
+	private List<Furniture> products = new ArrayList<>();
 
 	@Temporal(TemporalType.DATE)
 	private Date arrivalDate = new Date();
 
-	public PackingList(int p_folio, ArrayList<Furniture> p_products, Date p_arrivalDate) {
+	public PackingList(int p_folio, List<Furniture> p_products, Date p_arrivalDate) {
 		setFolio(p_folio);
 		setProducts(p_products);
 		setArrivalDate(p_arrivalDate);
@@ -26,12 +27,12 @@ public class PackingList {
 
 	public PackingList() {}
 
-	public ArrayList<Furniture> getProducts() {
+	public List<Furniture> getProducts() {
 		return products;
 	}
 
-	public void setProducts(ArrayList<Furniture> p_products) {
-		ValidationUtils.validatesArrayList(p_products, "Products");
+	public void setProducts(List<Furniture> p_products) {
+		ValidationUtils.validatesList(p_products, "Products");
 		this.products = p_products;
 	}
 
