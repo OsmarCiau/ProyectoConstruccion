@@ -1,12 +1,15 @@
 package Proyect.StoreKeeper;
 
+import Proyect.Inventory.Furniture;
 import Proyect.Logistics.Route;
 import Proyect.StoreKeeper.Platform;
+import Proyect.Validations.ValidationUtils;
 import jakarta.persistence.*;
 
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -15,23 +18,14 @@ public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int orderID;
-
-    private String destination;
+    private int orderID = 0;
+    private String destination = null;
 
     @Temporal(TemporalType.DATE)
     private LocalDate deliveryDate;
 
     private Duration totalAssemblyTime = Duration.ZERO;
-
-    // Enum para el estado de la orden
-    public enum Status {
-        PENDING,
-        DELIVERED
-    }
-
-    @Enumerated(EnumType.STRING) // Usamos el tipo de enumeración como string
-    private Status status = Status.PENDING; // El valor inicial de la orden es PENDING
+    private List<Furniture> orderContent = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "route_id", nullable = true) // Ruta asociada
@@ -43,10 +37,25 @@ public class Order {
     // Constructor vacío
     public Order() {}
 
-    // Constructor con parámetros
-    public Order(String p_destination, LocalDate p_deliveryDate) {
+    public Order(int p_orderID, String  p_destination, LocalDate p_deliveryDate, List<Furniture> p_orderContent) { //ArrayList<Platform> p_platformUsed
+        setOrderID(p_orderID);
         setDestination(p_destination);
         setDeliveryDate(p_deliveryDate);
+        setOrderContent(p_orderContent);
+        calculateAssemblyTime();
+    }
+
+    private void calculateAssemblyTime() {
+        Duration totalAssemblyTime = Duration.ZERO;
+        for (Furniture furniture : orderContent) {
+            totalAssemblyTime = totalAssemblyTime.plus(calculateFurnitureBuildTime(furniture));
+        }
+        setTotalAssemblyTime(totalAssemblyTime);
+    }
+
+    private Duration calculateFurnitureBuildTime(Furniture  p_furniture) {
+        int buildTimeMinutes =  p_furniture.getBuildTime() *  p_furniture.getQuantity();
+        return Duration.ofMinutes(buildTimeMinutes);
     }
 
     // Getter y Setter para orderID
@@ -58,83 +67,55 @@ public class Order {
         this.orderID = p_orderID;
     }
 
-    // Getter y Setter para destination
+    public Duration getTotalAssemblyTime() {
+        return totalAssemblyTime;
+    }
+
+    public void setTotalAssemblyTime(Duration p_assemblyTime){
+        ValidationUtils.validateNonNull(p_assemblyTime, "Assembly Time");
+        this.totalAssemblyTime = p_assemblyTime;
+    }
+
     public String getDestination() {
         return destination;
     }
 
-    public void setDestination(String p_destination) {
-        this.destination = p_destination;
+    public void setDestination(String  p_destination) {
+        ValidationUtils.validateNonNull(p_destination, "Destination");
+        this.destination =  p_destination;
     }
 
-    // Getter y Setter para deliveryDate
+    public Route getRoute() {
+        return route;
+    }
+
+    public void setRoute(Route  p_route) {
+        this.route =  p_route;
+    }
+
+    public List<Platform> getPlatforms() {
+        return platforms;
+    }
+
+    public void setPlatforms(List<Platform>  p_platforms) {
+        this.platforms =  p_platforms;
+    }
+
     public LocalDate getDeliveryDate() {
         return deliveryDate;
     }
 
     public void setDeliveryDate(LocalDate p_deliveryDate) {
-        this.deliveryDate = p_deliveryDate;
+        ValidationUtils.validateNonNull(p_deliveryDate, "Delivery Date");
+        this.deliveryDate =  p_deliveryDate;
     }
 
-    // Getter y Setter para totalAssemblyTime
-    public Duration getTotalAssemblyTime() {
-        return totalAssemblyTime;
+    public List<Furniture> getOrderContent() {
+        return orderContent;
     }
 
-    public void setTotalAssemblyTime(Duration p_totalAssemblyTime) {
-        this.totalAssemblyTime = p_totalAssemblyTime;
-    }
-
-    // Getter y Setter para route
-    public Route getRoute() {
-        return route;
-    }
-
-    public void setRoute(Route p_route) {
-        this.route = p_route;
-    }
-
-    // Getter y Setter para platforms
-    public List<Platform> getPlatforms() {
-        return platforms;
-    }
-
-    public void setPlatforms(List<Platform> platforms) {
-        this.platforms = platforms;
-    }
-
-    // Getter y Setter para status
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
-    // Método para marcar la orden como entregada
-    public void setStatusDelivered(boolean p_isDelivered) {
-        if (p_isDelivered) {
-            this.status = Status.DELIVERED; // Si se marca como entregado, cambiamos el estado
-        } else {
-            this.status = Status.PENDING; // Si no se entrega, el estado es PENDING
-        }
-    }
-
-    // Método para cambiar el estado de la orden (por ejemplo, "PENDING" a "DELIVERED")
-    public void updateStatus(Status newStatus) {
-        this.status = newStatus;
-    }
-
-    @Override
-    public String toString() {
-        return "Order{" +
-                "orderID=" + orderID +
-                ", destination='" + destination + '\'' +
-                ", deliveryDate=" + deliveryDate +
-                ", totalAssemblyTime=" + totalAssemblyTime +
-                ", status=" + status + // Mostrar el estado de la orden
-                ", route=" + (route != null ? route.getRouteId() : "No route assigned") +
-                '}';
+    public void setOrderContent(List<Furniture>  p_orderContent) {
+        ValidationUtils.validateNonNull(p_orderContent, "Order Content");
+        this.orderContent =  p_orderContent;
     }
 }
