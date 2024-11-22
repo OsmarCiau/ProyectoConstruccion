@@ -40,6 +40,11 @@
     </orderEntry>
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-test:3.3.4" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-web:6.1.13" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-autoconfigure:3.3.4" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot:3.3.4" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:6.1.13" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-tx:6.1.13" level="project" />
+    <orderEntry type="library" name="Maven: org.json:json:20231013" level="project" />
   </component>
   <component name="PyNamespacePackagesService">
     <option name="namespacePackageFolders">
