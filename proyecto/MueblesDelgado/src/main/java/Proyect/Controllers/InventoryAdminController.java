@@ -20,6 +20,7 @@ public class InventoryAdminController {
     @PostMapping("/add_furniture")
     public ResponseEntity<Void> addFurniture(@RequestBody PackingList packingList) {
         inventoryAdminService.addFurnitureToInventory(packingList);
+
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

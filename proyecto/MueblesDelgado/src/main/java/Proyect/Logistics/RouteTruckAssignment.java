@@ -4,7 +4,7 @@ package Proyect.Logistics;
 import jakarta.persistence.*;
 
 @Entity
-public class OrderTruckAssignment {
+public class RouteTruckAssignment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,10 +19,10 @@ public class OrderTruckAssignment {
     private Route route;
 
     // Constructor vacío (requerido por JPA)
-    public OrderTruckAssignment() {}
+    public RouteTruckAssignment() {}
 
     // Constructor
-    public OrderTruckAssignment(DeliveryTruck deliveryTruck, Route route) {
+    public RouteTruckAssignment(DeliveryTruck deliveryTruck, Route route) {
         this.deliveryTruck = deliveryTruck;
         this.route = route;
     }

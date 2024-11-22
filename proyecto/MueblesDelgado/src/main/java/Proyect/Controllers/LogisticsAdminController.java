@@ -1,7 +1,7 @@
 package Proyect.Controllers;
 
 import Proyect.Logistics.LogisticsAdminService;
-import Proyect.Logistics.OrderTruckAssignment;
+import Proyect.Logistics.RouteTruckAssignment;
 import Proyect.Logistics.Route;
 import Proyect.StoreKeeper.Order;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,9 +47,9 @@ public class LogisticsAdminController {
 
     // Endpoint para obtener todas las asignaciones de camiones a rutas
     @GetMapping("/assignmentsRoutesTrucks")
-    public ResponseEntity<List<OrderTruckAssignment>> getAssignments() {
+    public ResponseEntity<List<RouteTruckAssignment>> getAssignments() {
         // Obtener todas las asignaciones de camiones a rutas
-        List<OrderTruckAssignment> assignments = logisticsAdminService.getOrderTruckAssignments();
+        List<RouteTruckAssignment> assignments = logisticsAdminService.getOrderTruckAssignments();
         return ResponseEntity.ok(assignments);  // Responde con la lista de asignaciones
     }
 }

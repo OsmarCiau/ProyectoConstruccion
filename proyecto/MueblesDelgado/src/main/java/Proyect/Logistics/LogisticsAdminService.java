@@ -41,7 +41,7 @@ public class LogisticsAdminService {
     }
 
     // Obtener todas las asignaciones de pedidos a camiones
-    public List<OrderTruckAssignment> getOrderTruckAssignments() {
+    public List<RouteTruckAssignment> getOrderTruckAssignments() {
         return orderTruckAssignmentRepository.findAll();
     }
 
@@ -95,7 +95,7 @@ public class LogisticsAdminService {
 
     // Método para crear y guardar la asignación entre camión y ruta
     private void createAssignment(DeliveryTruck truck, Route route) {
-        OrderTruckAssignment assignment = new OrderTruckAssignment(truck, route);
+        RouteTruckAssignment assignment = new RouteTruckAssignment(truck, route);
         orderTruckAssignmentRepository.save(assignment);
     }
 

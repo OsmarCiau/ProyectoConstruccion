@@ -24,7 +24,7 @@ public class OrdersAdminController {
     @PostMapping
     public ResponseEntity<Order> createOrder(@RequestBody Order order) {
         // Primero, creamos la orden
-        Order createdOrder = ordersAdminService.createOrderWithPlatforms(order); // Cambié el método para que gestione las plataformas
+        Order createdOrder = ordersAdminService.findOrCreateOrder(order.getOrderID(), order.getDestination(), order.getDeliveryDate());
 
         // Devolvemos la orden creada con el status 201 (CREATED)
         return new ResponseEntity<>(createdOrder, HttpStatus.CREATED);
