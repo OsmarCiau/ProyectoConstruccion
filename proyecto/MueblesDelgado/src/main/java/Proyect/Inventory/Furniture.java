@@ -33,7 +33,7 @@ public class Furniture {
     private Order order;
 
     // Relación ManyToOne con PackingList (opcional)
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "packingListID") // Nombre de la columna de clave foránea
     private PackingList packingList;
 
