@@ -1,5 +1,7 @@
 package Proyect.StoreKeeper;
 
+import Proyect.Inventory.Furniture;
+import Proyect.Repositories.FurnitureRepository;
 import Proyect.Repositories.OrderRepository;
 import Proyect.Validations.ValidationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +12,13 @@ import java.util.List;
 @Service
 public class OrdersAdmin {
 
+    private final FurnitureRepository furnitureRepository;
     private final OrderRepository orderRepository;
     private final StoreKeeper storeKeeper;
 
     @Autowired
-    public OrdersAdmin(OrderRepository orderRepository, StoreKeeper storeKeeper) {
+    public OrdersAdmin(FurnitureRepository furnitureRepository, OrderRepository orderRepository, StoreKeeper storeKeeper) {
+        this.furnitureRepository = furnitureRepository;
         this.orderRepository = orderRepository;
         this.storeKeeper = storeKeeper;
     }
@@ -30,9 +34,13 @@ public class OrdersAdmin {
 
     // Crear la orden y asignar las plataformas
     public Order createOrderWithPlatforms(Order order) {
-        // Guardamos la orden antes de asignar plataformas, porque las plataformas dependen de la orden
-        orderRepository.save(order); // Guardamos la orden primero
+        // Guardamos la orden primero
+        orderRepository.save(order);
 
+        // Asignar el Order a los muebles de la orden
+        updateFurnitureOrder(order);
+
+        // Asignar las plataformas si existen
         if (order.getPlatforms() != null && !order.getPlatforms().isEmpty()) {
             for (Platform platform : order.getPlatforms()) {
                 try {
@@ -55,6 +63,18 @@ public class OrdersAdmin {
 
     public void setOrders(List<Order> p_orders) {
         orderRepository.saveAll(p_orders);
+    }
+
+    // Actualizar los muebles con el Order asociado
+    private void updateFurnitureOrder(Order order) {
+        List<Furniture> furnitureList = order.getOrderContent(); // Obtén los muebles del pedido
+
+        for (Furniture furniture : furnitureList) {
+            if (furniture.getOrder() == null) {  // Solo actualiza si el mueble no tiene un Order asociado
+                furniture.setOrder(order);  // Asociamos el mueble con el Order
+                furnitureRepository.save(furniture);  // Guarda el mueble con la relación al Order
+            }
+        }
     }
 
     public void removeOrder(int p_orderId) {

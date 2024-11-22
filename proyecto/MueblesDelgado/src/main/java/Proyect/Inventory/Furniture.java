@@ -1,59 +1,54 @@
 package Proyect.Inventory;
 
 import Proyect.Validations.ValidationUtils;
-
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
+import Proyect.StoreKeeper.Order;
 
 @Entity
-public class Furniture{
+public class Furniture {
 
     @Id
-    private int furnitureId = 0;
-    private String type = null;
-    private String brand = null;
-    private String color = null;
+    private int furnitureId;
+
+    private String type;
+    private String brand;
+    private String color;
 
     @Embedded
     private Dimension dimension = new Dimension(1f, 1f, 1f);
-    private int quantity = 0;
-    private int buildTime = 0;
-    private int orderID = 0;
 
-    // Relación ManyToOne con PackingList
+    private int quantity;
+    private int buildTime;
+
+    // Relación ManyToOne con Order
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "packingListID") // Este es el nombre de la columna que almacena la relación
+    @JoinColumn(name = "order_id") // Relación con Order
+    private Order order;
+
+    // Relación ManyToOne con PackingList (opcional)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "packingListID") // Nombre de la columna de clave foránea
     private PackingList packingList;
 
+    // Constructor vacío para JPA
+    public Furniture() {}
 
-    public Furniture(int p_furnitureId, int p_orderID, String p_type, String p_brand, String p_color, Dimension p_dimension, int p_quantity, int p_buildTime) {
+    // Constructor que toma un orderId para asociar el Order
+    public Furniture(int p_furnitureId, String p_type, String p_brand, String p_color, Dimension p_dimension, 
+                     int p_quantity, int p_buildTime, Order order) {
         setFurnitureId(p_furnitureId);
-        setOrderID(p_orderID);
         setType(p_type);
         setBrand(p_brand);
         setColor(p_color);
         setDimension(p_dimension);
         setQuantity(p_quantity);
         setBuildTime(p_buildTime);
+        setOrder(order);  // Asociamos el Order
     }
 
-    public Furniture(){}
-
+    // Getters y Setters
     public int getFurnitureId() {
         return furnitureId;
-    }
-
-    public int getOrderID() {
-        return orderID;
-    }
-
-    public void setOrderID(int p_orderID) {
-        ValidationUtils.validateGreaterThanZero(p_orderID, "Order ID");
-        this.orderID = p_orderID;
     }
 
     public void setFurnitureId(int p_furnitureId) {
@@ -115,11 +110,45 @@ public class Furniture{
         this.buildTime = p_buildTime;
     }
 
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public PackingList getPackingList() {
+        return packingList;
+    }
+
+    public void setPackingList(PackingList packingList) {
+        this.packingList = packingList;
+    }
+
     @Override
     public boolean equals(Object p_object) {
-        if (!(p_object instanceof Furniture furniture))
+        if (!(p_object instanceof Furniture furniture)) {
             return false;
+        }
         return furnitureId == furniture.furnitureId;
     }
 
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(furnitureId);
+    }
+
+    @Override
+    public String toString() {
+        return "Furniture{" +
+                "furnitureId=" + furnitureId +
+                ", type='" + type + '\'' +
+                ", brand='" + brand + '\'' +
+                ", color='" + color + '\'' +
+                ", dimension=" + dimension +
+                ", quantity=" + quantity +
+                ", buildTime=" + buildTime +
+                '}';
+    }
 }
