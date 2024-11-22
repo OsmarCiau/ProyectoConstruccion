@@ -55,7 +55,7 @@ public class StoreKeeper {
     }
 
     public StorageKeys findPlatform(int platformId) {
-        return storageKeyRepository.findByPlatformId(platformId)
+        return storageKeyRepository.findByPlatform_platformId(platformId)
                 .orElseThrow(() -> new IllegalStateException("Plataforma con ID " + platformId + " no encontrada."));
     }
 

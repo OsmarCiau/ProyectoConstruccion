@@ -7,7 +7,7 @@ public class StorageKeys {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long storageId; // ID único para StorageKey
+    private int storageId; // ID único para StorageKey
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rack_id", referencedColumnName = "rackNumber", nullable = false)
@@ -33,11 +33,11 @@ public class StorageKeys {
     }
 
     // Getters y Setters
-    public Long getStorageId() {
+    public int getStorageId() {
         return storageId;
     }
 
-    public void setStorageId(Long p_storageId) {
+    public void setStorageId(int p_storageId) {
         this.storageId = p_storageId;
     }
 

@@ -11,5 +11,7 @@ import Proyect.StoreKeeper.StorageKeys;
 @Repository
 public interface StorageKeysRepository extends JpaRepository<StorageKeys, Integer> {
     List<StorageKeys> findByPlatformIsNull(); // Claves disponibles (sin plataformas)
-    Optional<StorageKeys> findByPlatformId(int platformId); // Buscar clave por ID de plataforma
+    // Cambiar a buscar por la propiedad 'platformId' de Platform
+    Optional<StorageKeys> findByPlatform_platformId(int platformId);
+    
 }

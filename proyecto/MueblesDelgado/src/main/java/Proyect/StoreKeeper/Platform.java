@@ -3,14 +3,14 @@ package Proyect.StoreKeeper;
 import Proyect.Inventory.Dimension;
 import Proyect.Validations.ValidationUtils;
 
-import javax.persistence.*;
+import jakarta.persistence.*;;
 
 @Entity
 public class Platform {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long platformId; // Identificador único de la plataforma
+    private int platformId; // Identificador único de la plataforma
 
     @ManyToOne(fetch = FetchType.LAZY)  // Relación muchos a uno con Order
     @JoinColumn(name = "order_id", nullable = false)
@@ -26,7 +26,7 @@ public class Platform {
     public Platform() {
     }
 
-    public Platform(Long p_platformId, Order p_order, Dimension p_dimension, StorageKeys p_locationInRack) {
+    public Platform(int p_platformId, Order p_order, Dimension p_dimension, StorageKeys p_locationInRack) {
         this.platformId = p_platformId;
         this.order = p_order;
         this.dimension = p_dimension;
@@ -34,11 +34,11 @@ public class Platform {
     }
 
     // Métodos getters y setters
-    public Long getPlatformId() {
+    public int getPlatformId() {
         return platformId;
     }
 
-    public void setPlatformId(Long p_platformId) {
+    public void setPlatformId(int p_platformId) {
         ValidationUtils.validateGreaterThanZero(p_platformId, "Platform ID");
         this.platformId = p_platformId;
     }
