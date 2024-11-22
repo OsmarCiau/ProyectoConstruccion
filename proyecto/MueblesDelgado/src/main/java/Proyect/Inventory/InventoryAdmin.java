@@ -44,7 +44,6 @@ public class InventoryAdmin {
 
     public void updateFurniture(PackingList p_packingList) {
         List<Furniture> productsToUpdate = p_packingList.getProducts();
-        ValidationUtils.validatesArrayList(productsToUpdate, "Products");
 
         for (Furniture furniture : productsToUpdate) {
             updateFurnitureItem(furniture);
