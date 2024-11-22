@@ -3,26 +3,34 @@ package Proyect.StoreKeeper;
 import Proyect.Repositories.StorageKeysRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class StoreKeeper {
 
-    private final StorageKeysRepository storageKeyRepository;
+    private final StorageKeysRepository storageKeyRepository; // Repositorio para interactuar con las claves
+    private final List<Platform> platforms; // Lista local para seguimiento de plataformas
 
     @Autowired
     public StoreKeeper(StorageKeysRepository p_storageKeyRepository) {
         this.storageKeyRepository = p_storageKeyRepository;
+        this.platforms = new ArrayList<>();
     }
 
+    // Obtener todos los espacios disponibles (sin plataforma asignada)
     public List<StorageKeys> getAvailableSpace() {
         return storageKeyRepository.findByPlatformIsNull();
     }
 
+    // Colocar una plataforma en un espacio adecuado
     public void placePlatformInCell(Platform platform) {
+        // Obtener espacios disponibles
         List<StorageKeys> availableKeys = getAvailableSpace();
         StorageKeys fittingKey = null;
 
+        // Buscar una clave adecuada para la plataforma
         for (StorageKeys key : availableKeys) {
             if (platformFitsInCell(platform, key.getCell())) {
                 fittingKey = key;
@@ -30,10 +38,12 @@ public class StoreKeeper {
             }
         }
 
+        // Verificar si se encontró un espacio
         if (fittingKey != null) {
-            fittingKey.setPlatform(platform);
-            platform.setLocationInRack(fittingKey);
-            storageKeyRepository.save(fittingKey);
+            fittingKey.setPlatform(platform); // Asignar la plataforma a la clave
+            platform.setLocationInRack(fittingKey); // Actualizar ubicación en la plataforma
+            storageKeyRepository.save(fittingKey); // Guardar el cambio en la base de datos
+            platforms.add(platform); // Registrar la plataforma localmente
             System.out.println("Plataforma " + platform.getPlatformId() + " colocada en Rack " 
                     + fittingKey.getRack().getRackNumber() + " Celda " + fittingKey.getCell().getNumber());
         } else {
@@ -41,12 +51,14 @@ public class StoreKeeper {
         }
     }
 
+    // Retirar una plataforma de su celda
     public void retirePlatformFromCell(Platform platform) {
         StorageKeys platformLocation = platform.getLocationInRack();
         if (platformLocation != null) {
-            platformLocation.setPlatform(null);
-            storageKeyRepository.save(platformLocation);
-            platform.setLocationInRack(null);
+            platformLocation.setPlatform(null); // Liberar la clave de almacenamiento
+            storageKeyRepository.save(platformLocation); // Guardar el cambio en la base de datos
+            platforms.remove(platform); // Remover de la lista local
+            platform.setLocationInRack(null); // Limpiar la referencia en la plataforma
             System.out.println("La plataforma " + platform.getPlatformId() + " se retiró de: Rack: "
                     + platformLocation.getRack().getRackNumber() + ", Celda: " + platformLocation.getCell().getNumber());
         } else {
@@ -54,17 +66,23 @@ public class StoreKeeper {
         }
     }
 
+    // Buscar una plataforma por ID
     public StorageKeys findPlatform(int platformId) {
-        return storageKeyRepository.findByPlatform_platformId(platformId)
-                .orElseThrow(() -> new IllegalStateException("Plataforma con ID " + platformId + " no encontrada."));
+        StorageKeys foundKey = storageKeyRepository.findByPlatform_platformId(platformId).orElse(null);
+        if (foundKey == null) {
+            throw new IllegalStateException("Plataforma con ID " + platformId + " no encontrada.");
+        }
+        return foundKey;
     }
 
+    // Verificar si una plataforma cabe en una celda
     private boolean platformFitsInCell(Platform platform, Cell cell) {
+        // Verificar dimensiones de la plataforma contra la celda
         if (platform.getLength() <= cell.getLength()) {
             return true;
         }
         if (platform.getWidth() <= cell.getLength() && platform.getLength() <= cell.getWidth()) {
-            platform.getDimension().swapLengthAndWidth();
+            platform.getDimension().swapLengthAndWidth(); // Ajustar dimensiones si es necesario
             return true;
         }
         return false;

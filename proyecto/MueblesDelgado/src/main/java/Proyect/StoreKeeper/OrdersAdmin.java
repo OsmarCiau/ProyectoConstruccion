@@ -11,10 +11,12 @@ import java.util.List;
 public class OrdersAdmin {
 
     private final OrderRepository orderRepository;
+    private final StoreKeeper storeKeeper;
 
     @Autowired
-    public OrdersAdmin(OrderRepository p_orderRepository) {
-        this.orderRepository = p_orderRepository;
+    public OrdersAdmin(OrderRepository orderRepository, StoreKeeper storeKeeper) {
+        this.orderRepository = orderRepository;
+        this.storeKeeper = storeKeeper;
     }
 
     public Order findByOrderId(int p_orderId) {
@@ -28,7 +30,14 @@ public class OrdersAdmin {
 
     public Order addOrder(Order p_order) {
         ValidationUtils.validateNonNull(p_order, "Order");
-        return orderRepository.save(p_order);
+
+        // Guardamos la orden en la base de datos primero
+        Order savedOrder = orderRepository.save(p_order);
+
+        // Llamamos al StoreKeeper para asignar el espacio a los muebles de la orden recién creada
+        //storeKeeper.storeOrderInWarehouse(savedOrder);
+
+        return savedOrder;
     }
 
     public void setOrders(List<Order> p_orders) {
