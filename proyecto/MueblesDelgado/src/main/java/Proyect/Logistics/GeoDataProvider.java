@@ -7,13 +7,16 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import org.json.JSONObject;
+import org.springframework.stereotype.Component;
 
+
+@Component
 public class GeoDataProvider {
     private static final String API_KEY = "AIzaSyAprtokl7TAwkM6QkbCT25sBlRt-LkweuU";
 
     // Método principal para obtener las coordenadas a partir de la dirección
-    public double[] getCoordinatesFromAddress(String address) throws Exception {
-        String encodedAddress = normalizeAddress(address);
+    public double[] getCoordinatesFromAddress(String p_address) throws Exception {
+        String encodedAddress = normalizeAddress(p_address);
         String urlString = generateRequestURLCoordinates("geocode", encodedAddress);
         JSONObject jsonResponse = getApiResponse(urlString);
         verifyResult(jsonResponse);
@@ -21,35 +24,39 @@ public class GeoDataProvider {
         return extractCoordinates(jsonResponse);
     }
 
-    public double getDistance(double[] origin, double[] destination) throws Exception {
-        JSONObject routeInfo = getRouteInformation(origin, destination);
+    public double calculateDistanceBetweenTwoPoints(double[] p_origin, double[] p_destination) throws Exception {
+        return extractRouteMetric(p_origin, p_destination, "distance") / 1000; // Convertir a kilómetros
+    }
+    
+    public double calculateDurationBetweenTwoPoints(double[] p_origin, double[] p_destination) throws Exception {
+        return extractRouteMetric(p_origin, p_destination, "duration") / 60; // Convertir a minutos
+    }
+    
+    // Método auxiliar para extraer métricas de la ruta (distancia o duración)
+    private double extractRouteMetric(double[] p_origin, double[] p_destination, String p_metric) throws Exception {
+        JSONObject routeInfo = getRouteInformation(p_origin, p_destination);
+    
         return routeInfo.getJSONArray("routes").getJSONObject(0)
                 .getJSONArray("legs").getJSONObject(0)
-                .getJSONObject("distance").getDouble("value") / 1000;
+                .getJSONObject(p_metric).getDouble("value");
     }
-
-    public double getDuration(double[] origin, double[] destination) throws Exception {
-        JSONObject routeInfo = getRouteInformation(origin, destination);
-        return routeInfo.getJSONArray("routes").getJSONObject(0)
-                .getJSONArray("legs").getJSONObject(0)
-                .getJSONObject("duration").getDouble("value") / 60;
-    }
-
+    
     // Método principal para obtener la información de la ruta entre dos puntos
-    private JSONObject getRouteInformation(double[] origin, double[] destination) throws Exception {
-        String originStr = formatCoordinates(origin);
-        String destinationStr = formatCoordinates(destination);
-        
+    private JSONObject getRouteInformation(double[] p_origin, double[] p_destination) throws Exception {
+        String originStr = formatCoordinates(p_origin);
+        String destinationStr = formatCoordinates(p_destination);
+    
         String urlString = generateRequestURLRoute("directions", originStr, destinationStr);
         JSONObject jsonResponse = getApiResponse(urlString);
         validateRouteResponse(jsonResponse);
-        
+    
         return jsonResponse;
     }
 
     // Método común para obtener la respuesta de la API
-    private static JSONObject getApiResponse(String urlString) throws Exception {
-        URL url = new URL(urlString);
+    private static JSONObject getApiResponse(String p_urlString) throws Exception {
+        @SuppressWarnings("deprecation")
+        URL url = new URL(p_urlString);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
 
@@ -70,16 +77,16 @@ public class GeoDataProvider {
     }
 
     // Método común para verificar si la respuesta es válida
-    private static void verifyResult(JSONObject jsonResponse) {
-        if (!"OK".equals(jsonResponse.getString("status"))) {
-            System.out.println("Error en la API: " + jsonResponse.getString("status"));
-            throw new RuntimeException("Error en la API: " + jsonResponse.getString("status"));
+    private static void verifyResult(JSONObject p_jsonResponse) {
+        if (!"OK".equals(p_jsonResponse.getString("status"))) {
+            System.out.println("Error en la API: " + p_jsonResponse.getString("status"));
+            throw new RuntimeException("Error en la API: " + p_jsonResponse.getString("status"));
         }
     }
 
     // Para obtener las coordenadas de la respuesta de Geocoding
-    private static double[] extractCoordinates(JSONObject jsonResponse) {
-        JSONObject location = jsonResponse.getJSONArray("results").getJSONObject(0)
+    private static double[] extractCoordinates(JSONObject p_jsonResponse) {
+        JSONObject location = p_jsonResponse.getJSONArray("results").getJSONObject(0)
                 .getJSONObject("geometry").getJSONObject("location");
         double lat = location.getDouble("lat");
         double lng = location.getDouble("lng");
@@ -88,31 +95,31 @@ public class GeoDataProvider {
     }
 
     // Método para formatear las coordenadas
-    private static String formatCoordinates(double[] coordinates) {
-        return coordinates[0] + "," + coordinates[1];
+    private static String formatCoordinates(double[] p_coordinates) {
+        return p_coordinates[0] + "," + p_coordinates[1];
     }
 
     // Método para generar la URL de la solicitud para GeoCode
-    private static String generateRequestURLCoordinates(String type, String address) {
-        return "https://maps.googleapis.com/maps/api/" + type + "/json?address=" + address + "&key=" + API_KEY;
+    private static String generateRequestURLCoordinates(String p_type, String p_address) {
+        return "https://maps.googleapis.com/maps/api/" + p_type + "/json?address=" + p_address + "&key=" + API_KEY;
     }
 
 
     // Método para generar la URL de la solicitud para Directions
-    private static String generateRequestURLRoute(String type, String origin, String destination) {
-        return "https://maps.googleapis.com/maps/api/" + type + "/json?origin=" + origin + "&destination=" + destination + "&key=" + API_KEY;
+    private static String generateRequestURLRoute(String p_type, String p_origin, String p_destination) {
+        return "https://maps.googleapis.com/maps/api/" + p_type + "/json?origin=" + p_origin + "&destination=" + p_destination + "&key=" + API_KEY;
     }
 
     // Normalizar la dirección para la URL
-    private static String normalizeAddress(String address) {
-        return URLEncoder.encode(address, StandardCharsets.UTF_8);
+    private static String normalizeAddress(String p_address) {
+        return URLEncoder.encode(p_address, StandardCharsets.UTF_8);
     }
 
     // Validar la respuesta de la API de Direcciones
-    private static void validateRouteResponse(JSONObject jsonResponse) {
-        if (!"OK".equals(jsonResponse.getString("status"))) {
-            System.out.println("Error en Directions API: " + jsonResponse.getString("status"));
-            throw new RuntimeException("Error en Directions API: " + jsonResponse.getString("status"));
+    private static void validateRouteResponse(JSONObject p_jsonResponse) {
+        if (!"OK".equals(p_jsonResponse.getString("status"))) {
+            System.out.println("Error en Directions API: " + p_jsonResponse.getString("status"));
+            throw new RuntimeException("Error en Directions API: " + p_jsonResponse.getString("status"));
         }
     }
 
@@ -126,8 +133,8 @@ public class GeoDataProvider {
             System.out.println("Coordinates: " + coordinates[0] + ", " + coordinates[1]);
             System.out.println("Coordinates: " + destination[0] + ", " + destination[1]);
 
-            double distance = geoDataProvider.getDistance(coordinates, destination);
-            double duration = geoDataProvider.getDuration(coordinates, destination);
+            double distance = geoDataProvider.calculateDistanceBetweenTwoPoints(coordinates, destination);
+            double duration = geoDataProvider.calculateDurationBetweenTwoPoints(coordinates, destination);
 
             System.out.println("Distance: " + distance + " km");
             System.out.println("Duration: " + duration + " minutes");

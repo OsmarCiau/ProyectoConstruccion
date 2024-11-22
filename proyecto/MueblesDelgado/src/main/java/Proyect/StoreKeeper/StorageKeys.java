@@ -2,6 +2,8 @@ package Proyect.StoreKeeper;
 
 import Proyect.Validations.ValidationUtils;
 
+
+
 public class StorageKeys {
     private int cellNumber = 0;
     private int rackNumber = 0;
