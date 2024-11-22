@@ -1,8 +1,7 @@
 package Proyect.Controllers;
 
-import Proyect.Admin.Authentication.AuthenticationService;
-import Proyect.Admin.Authentication.Administrator;
-import Proyect.Admin.Authentication.JwtUtil;
+import Proyect.Authentication.AuthenticationService;
+import Proyect.Authentication.Administrator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

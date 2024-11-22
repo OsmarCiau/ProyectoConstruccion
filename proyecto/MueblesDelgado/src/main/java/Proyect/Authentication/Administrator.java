@@ -1,4 +1,4 @@
-package Proyect.Admin.Authentication;
+package Proyect.Authentication;
 
 import jakarta.persistence.*;
 
