@@ -36,13 +36,13 @@ public class RoutePlanner {
         this.storeKeeper = new StoreKeeper();
     }
     // Devolver lista de rutas por camión
-    public List<Route> planOptimalRoutes(List<Order> orders, int numberOfTrucks) throws Exception {
+    public List<Route> planOptimalRoutes(List<Order> p_orders, int p_numberOfTrucks) throws Exception {
         List<Route> allRoutes = new ArrayList<>();
-        PriorityQueue<Order> orderQueue = initializeOrderQueue(orders);
+        PriorityQueue<Order> orderQueue = initializeOrderQueue(p_orders);
 
         LocalDate currentDate = LocalDate.now();
         while (!orderQueue.isEmpty()) {
-            List<Route> dailyRoutes = planDailyRoutes(orderQueue, currentDate, numberOfTrucks);
+            List<Route> dailyRoutes = planDailyRoutes(orderQueue, currentDate, p_numberOfTrucks);
             if (!dailyRoutes.isEmpty()) {
                 allRoutes.addAll(dailyRoutes); // Agregar todas las rutas del día
                 currentDate = moveToNextWorkday(currentDate); // Pasamos al siguiente día laboral
@@ -51,13 +51,13 @@ public class RoutePlanner {
         return allRoutes;
     }
 
-    private PriorityQueue<Order> initializeOrderQueue(List<Order> orders) {
+    private PriorityQueue<Order> initializeOrderQueue(List<Order> p_orders) {
         PriorityQueue<Order> orderQueue = new PriorityQueue<>(Comparator.comparing(Order::getDeliveryDate));
-        orderQueue.addAll(orders);
+        orderQueue.addAll(p_orders);
         return orderQueue;
     }
 
-    private List<Route> planDailyRoutes(PriorityQueue<Order> orderQueue, LocalDate currentDate, int numberOfTrucks) throws Exception {
+    private List<Route> planDailyRoutes(PriorityQueue<Order> p_orderQueue, LocalDate p_currentDate, int p_numberOfTrucks) throws Exception {
         List<Route> dailyRoutes = new ArrayList<>();
         List<Order> ordersForToday = new ArrayList<>();
         LocalTime estimatedTime = startTime;
@@ -65,15 +65,15 @@ public class RoutePlanner {
         int truckCounter = 0; // Para distribuir las rutas entre los camiones
 
         // Asignar las rutas entre los camiones
-        while (!orderQueue.isEmpty()) {
-            Order currentOrder = orderQueue.poll();
+        while (!p_orderQueue.isEmpty()) {
+            Order currentOrder = p_orderQueue.poll();
 
             if (isOutsideYucatan(currentOrder.getDestination())) {
                 dailyRoutes.add(createSpecialRoute(currentOrder));
                 continue;
             }
 
-            if (!isOrderDeliverableInTime(currentOrder, currentDate)) {
+            if (!isOrderDeliverableInTime(currentOrder, p_currentDate)) {
                 continue;
             }
 
@@ -82,7 +82,7 @@ public class RoutePlanner {
             LocalTime timeIncludingReturn = calculateTotalTimeWithReturn(currentOrder, estimatedTime, totalOrderDuration);
 
             if (exceedsWorkHours(timeIncludingReturn)) {
-                orderQueue.add(currentOrder);  // Si se exceden las horas, dejamos la orden para el siguiente ciclo
+                p_orderQueue.add(currentOrder);  // Si se exceden las horas, dejamos la orden para el siguiente ciclo
                 break;
             }
 
@@ -94,7 +94,7 @@ public class RoutePlanner {
                     geoDataProvider.getCoordinatesFromAddress(warehouseLocation))));
 
             // Cuando un camión alcanza su capacidad máxima de entregas, se asignan las rutas al siguiente camión
-            if (ordersForToday.size() == (orderQueue.size() / numberOfTrucks) + 1) {
+            if (ordersForToday.size() == (p_orderQueue.size() / p_numberOfTrucks) + 1) {
                 Route route = createRoute(ordersForToday, totalDistance, estimatedTime);
                 dailyRoutes.add(route);
 
@@ -110,78 +110,78 @@ public class RoutePlanner {
     }
 
     // Método para liberar el espacio de almacenamiento cuando se programa la ruta
-    private void releaseStorageSpace(Route route) {
-        for (Order order : route.getOrders()) {
+    private void releaseStorageSpace(Route p_route) {
+        for (Order order : p_route.getOrders()) {
             for (Platform platform : order.getPlatforms()) {
                 storeKeeper.retirePlatformFromCell(platform);
             }
         }
     }
 
-    private boolean isOrderDeliverableInTime(Order order, LocalDate currentDate) {
-        LocalDate deliveryDeadline = currentDate.plusDays(MAX_WORK_DAYS);
-        return !order.getDeliveryDate().isAfter(deliveryDeadline);
+    private boolean isOrderDeliverableInTime(Order p_order, LocalDate p_currentDate) {
+        LocalDate deliveryDeadline = p_currentDate.plusDays(MAX_WORK_DAYS);
+        return !p_order.getDeliveryDate().isAfter(deliveryDeadline);
     }
 
-    private boolean isOutsideYucatan(String destination) {
-        return !destination.toLowerCase().contains("yucatán");
+    private boolean isOutsideYucatan(String p_destination) {
+        return !p_destination.toLowerCase().contains("yucatán");
     }
 
-    private Route createSpecialRoute(Order order) throws Exception {
-        float distance = calculateDistance(order);
-        Duration totalOrderDuration = calculateOrderDuration(order);
+    private Route createSpecialRoute(Order p_order) throws Exception {
+        float distance = calculateDistance(p_order);
+        Duration totalOrderDuration = calculateOrderDuration(p_order);
         LocalTime estimatedTime = startTime.plus(totalOrderDuration);
 
         return new Route(
                 warehouseLocation,
-                List.of(order.getDestination()),
+                List.of(p_order.getDestination()),
                 List.of(totalOrderDuration),
                 distance,
                 estimatedTime
         );
     }
 
-    private Route createRoute(List<Order> orders, float totalDistance, LocalTime estimatedTime) {
+    private Route createRoute(List<Order> p_orders, float p_totalDistance, LocalTime p_estimatedTime) {
         List<String> destinations = new ArrayList<>();
         List<Duration> travelTimes = new ArrayList<>();
 
-        for (Order order : orders) {
+        for (Order order : p_orders) {
             destinations.add(order.getDestination());
             travelTimes.add(order.getTotalAssemblyTime());
         }
 
-        return new Route(warehouseLocation, destinations, travelTimes, totalDistance, estimatedTime);
+        return new Route(warehouseLocation, destinations, travelTimes, p_totalDistance, p_estimatedTime);
     }
 
-    private float calculateDistance(Order order) throws Exception {
+    private float calculateDistance(Order p_order) throws Exception {
         double[] originCoordinates = geoDataProvider.getCoordinatesFromAddress(warehouseLocation);
-        double[] destinationCoordinates = geoDataProvider.getCoordinatesFromAddress(order.getDestination());
+        double[] destinationCoordinates = geoDataProvider.getCoordinatesFromAddress(p_order.getDestination());
         return (float) geoDataProvider.calculateDistanceBetweenTwoPoints(originCoordinates, destinationCoordinates);
     }
 
-    private Duration calculateOrderDuration(Order order) throws Exception {
+    private Duration calculateOrderDuration(Order p_order) throws Exception {
         double[] originCoordinates = geoDataProvider.getCoordinatesFromAddress(warehouseLocation);
-        double[] destinationCoordinates = geoDataProvider.getCoordinatesFromAddress(order.getDestination());
+        double[] destinationCoordinates = geoDataProvider.getCoordinatesFromAddress(p_order.getDestination());
         double travelTime = geoDataProvider.calculateDurationBetweenTwoPoints(originCoordinates, destinationCoordinates);
-        return Duration.ofMinutes((long) travelTime).plus(order.getTotalAssemblyTime());
+        return Duration.ofMinutes((long) travelTime).plus(p_order.getTotalAssemblyTime());
     }
 
-    private LocalTime calculateTotalTimeWithReturn(Order order, LocalTime estimatedTime, Duration orderDuration) throws Exception {
-        double[] destinationCoordinates = geoDataProvider.getCoordinatesFromAddress(order.getDestination());
+    private LocalTime calculateTotalTimeWithReturn(Order p_order, LocalTime p_estimatedTime, Duration p_orderDuration) throws Exception {
+        double[] destinationCoordinates = geoDataProvider.getCoordinatesFromAddress(p_order.getDestination());
         double[] originCoordinates = geoDataProvider.getCoordinatesFromAddress(warehouseLocation);
         double returnDuration = geoDataProvider.calculateDurationBetweenTwoPoints(destinationCoordinates, originCoordinates);
-        return estimatedTime.plus(orderDuration).plusMinutes((long) returnDuration);
+        return p_estimatedTime.plus(p_orderDuration).plusMinutes((long) returnDuration);
     }
 
-    private boolean exceedsWorkHours(LocalTime timeIncludingReturn) {
-        return Duration.between(startTime, timeIncludingReturn).compareTo(Duration.ofHours(MAX_HOURS_PER_DAY)) > 0;
+    private boolean exceedsWorkHours(LocalTime p_timeIncludingReturn) {
+        return Duration.between(startTime, p_timeIncludingReturn).compareTo(Duration.ofHours(MAX_HOURS_PER_DAY)) > 0;
     }
 
-    private LocalDate moveToNextWorkday(LocalDate currentDate) {
-        currentDate = currentDate.plusDays(1);
-        if (currentDate.getDayOfWeek().getValue() > 5) {
-            currentDate = currentDate.plusDays(8 - currentDate.getDayOfWeek().getValue());
+    private LocalDate moveToNextWorkday(LocalDate p_currentDate) {
+        p_currentDate = p_currentDate.plusDays(1);
+        if (p_currentDate.getDayOfWeek().getValue() > 5) {
+            p_currentDate = p_currentDate.plusDays(8 - p_currentDate.getDayOfWeek().getValue());
         }
-        return currentDate;
+        return p_currentDate;
     }
 }

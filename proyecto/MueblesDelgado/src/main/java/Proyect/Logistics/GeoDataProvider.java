@@ -43,10 +43,10 @@ public class GeoDataProvider {
     
     // Método principal para obtener la información de la ruta entre dos puntos
     private JSONObject getRouteInformation(double[] p_origin, double[] p_destination) throws Exception {
-        String originStr = formatCoordinates(p_origin);
-        String destinationStr = formatCoordinates(p_destination);
+        String originString = formatCoordinates(p_origin);
+        String destinationString = formatCoordinates(p_destination);
     
-        String urlString = generateRequestURLRoute("directions", originStr, destinationStr);
+        String urlString = generateRequestURLRoute("directions", originString, destinationString);
         JSONObject jsonResponse = getApiResponse(urlString);
         validateRouteResponse(jsonResponse);
     
