@@ -34,13 +34,6 @@ public class InventoryAdmin {
         return packingListRepository.findAll();
     }
 
-//    public void addFurniture(PackingList p_packingList) {
-//        ArrayList<Furniture> productsToAdd = p_packingList.getProducts();
-//        ValidationUtils.validatesArrayList(productsToAdd, "Products");
-//        furnitureDatabase.addAll(productsToAdd);
-//        System.out.println("Added " + productsToAdd.size() + " items to the inventory.");
-//    }
-
     public void removeFurniture(PackingList p_packingList) {
         List<Furniture> productsToRemove = p_packingList.getProducts();
         ValidationUtils.validatesList(productsToRemove, "Products");
@@ -49,16 +42,9 @@ public class InventoryAdmin {
 
     }
 
-//    public void removeFurniture(PackingList p_packingList) {
-//        ArrayList<Furniture> productsToRemove = p_packingList.getProducts();
-//        ValidationUtils.validatesArrayList(productsToRemove, "Products");
-//        furnitureDatabase.removeAll(productsToRemove);
-//        System.out.println("Removed " + productsToRemove.size() + " items from the inventory.");
-//    }
-
     public void updateFurniture(PackingList p_packingList) {
         List<Furniture> productsToUpdate = p_packingList.getProducts();
-//        ValidationUtils.validatesArrayList(productsToUpdate, "Products");
+        ValidationUtils.validatesArrayList(productsToUpdate, "Products");
 
         for (Furniture furniture : productsToUpdate) {
             updateFurnitureItem(furniture);
@@ -67,15 +53,6 @@ public class InventoryAdmin {
         System.out.println("Updated inventory with " + productsToUpdate.size() + " items.");
 
     }
-
-//    public void updateFurniture(PackingList p_packingList) {
-//        ArrayList<Furniture> productsToUpdate = p_packingList.getProducts();
-//        ValidationUtils.validatesArrayList(productsToUpdate, "Products");
-//        for (Furniture furniture : productsToUpdate) {
-//            updateFurnitureItem(furniture);
-//        }
-//        System.out.println("Updated inventory with " + productsToUpdate.size() + " items.");
-//    }
 
     private void updateFurnitureItem(Furniture p_furniture) {
         furnitureRepository.save(p_furniture);
