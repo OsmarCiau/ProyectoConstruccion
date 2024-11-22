@@ -72,5 +72,16 @@ public class Cell extends Container {
         this.occupiedSpace -= p_platformLength;
     }
 
+    public float getLength(){
+        return dimension.getLength();
+    }
+
+    public float getWidth(){
+        return dimension.getWidth();
+    }
+
+    public float getHeight(){
+        return dimension.getHeight();
+    }
 
 }
