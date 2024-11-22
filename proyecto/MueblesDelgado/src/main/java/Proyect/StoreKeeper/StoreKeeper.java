@@ -3,20 +3,20 @@ package Proyect.StoreKeeper;
 import Proyect.Repositories.StorageKeysRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class StoreKeeper {
 
     private final StorageKeysRepository storageKeyRepository; // Repositorio para interactuar con las claves
-    private final List<Platform> platforms; // Lista local para seguimiento de plataformas
+
+    public StoreKeeper() {
+        this.storageKeyRepository = null;
+    }
 
     @Autowired
     public StoreKeeper(StorageKeysRepository p_storageKeyRepository) {
         this.storageKeyRepository = p_storageKeyRepository;
-        this.platforms = new ArrayList<>();
     }
 
     // Obtener todos los espacios disponibles (sin plataforma asignada)
@@ -43,7 +43,6 @@ public class StoreKeeper {
             fittingKey.setPlatform(platform); // Asignar la plataforma a la clave
             platform.setLocationInRack(fittingKey); // Actualizar ubicación en la plataforma
             storageKeyRepository.save(fittingKey); // Guardar el cambio en la base de datos
-            platforms.add(platform); // Registrar la plataforma localmente
             System.out.println("Plataforma " + platform.getPlatformId() + " colocada en Rack " 
                     + fittingKey.getRack().getRackNumber() + " Celda " + fittingKey.getCell().getNumber());
         } else {
@@ -57,7 +56,6 @@ public class StoreKeeper {
         if (platformLocation != null) {
             platformLocation.setPlatform(null); // Liberar la clave de almacenamiento
             storageKeyRepository.save(platformLocation); // Guardar el cambio en la base de datos
-            platforms.remove(platform); // Remover de la lista local
             platform.setLocationInRack(null); // Limpiar la referencia en la plataforma
             System.out.println("La plataforma " + platform.getPlatformId() + " se retiró de: Rack: "
                     + platformLocation.getRack().getRackNumber() + ", Celda: " + platformLocation.getCell().getNumber());

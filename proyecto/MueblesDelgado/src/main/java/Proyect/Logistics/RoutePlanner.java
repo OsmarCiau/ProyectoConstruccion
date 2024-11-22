@@ -1,6 +1,9 @@
 package Proyect.Logistics;
 
 import Proyect.StoreKeeper.Order;
+import Proyect.StoreKeeper.Platform;
+import Proyect.StoreKeeper.StoreKeeper;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -22,6 +25,7 @@ public class RoutePlanner {
     private GeoDataProvider geoDataProvider;
     private final int MAX_WORK_DAYS = 3;
     private final long MAX_HOURS_PER_DAY = 3;
+    private StoreKeeper storeKeeper;
 
     @Autowired
     public RoutePlanner(@Value("${logistics.warehouseLocation}") String warehouseLocation,
@@ -29,7 +33,7 @@ public class RoutePlanner {
         this.warehouseLocation = warehouseLocation;
         this.startTime = LocalTime.parse(startTime);  // Convertir el String en LocalTime
         this.geoDataProvider = new GeoDataProvider();
-
+        this.storeKeeper = new StoreKeeper();
     }
     // Devolver lista de rutas por camión
     public List<Route> planOptimalRoutes(List<Order> orders, int numberOfTrucks) throws Exception {
@@ -91,13 +95,27 @@ public class RoutePlanner {
 
             // Cuando un camión alcanza su capacidad máxima de entregas, se asignan las rutas al siguiente camión
             if (ordersForToday.size() == (orderQueue.size() / numberOfTrucks) + 1) {
-                dailyRoutes.add(createRoute(ordersForToday, totalDistance, estimatedTime));
+                Route route = createRoute(ordersForToday, totalDistance, estimatedTime);
+                dailyRoutes.add(route);
+
+                // Aquí es donde liberamos el espacio en el almacén cuando la ruta es programada
+                releaseStorageSpace(route);
+
                 truckCounter++;
                 ordersForToday.clear();  // Limpiamos las rutas para el siguiente camión
             }
         }
 
         return dailyRoutes;
+    }
+
+    // Método para liberar el espacio de almacenamiento cuando se programa la ruta
+    private void releaseStorageSpace(Route route) {
+        for (Order order : route.getOrders()) {
+            for (Platform platform : order.getPlatforms()) {
+                storeKeeper.retirePlatformFromCell(platform);
+            }
+        }
     }
 
     private boolean isOrderDeliverableInTime(Order order, LocalDate currentDate) {

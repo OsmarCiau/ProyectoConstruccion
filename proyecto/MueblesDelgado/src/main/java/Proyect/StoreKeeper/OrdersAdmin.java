@@ -28,16 +28,29 @@ public class OrdersAdmin {
         return orderRepository.findAll();
     }
 
-    public Order addOrder(Order p_order) {
-        ValidationUtils.validateNonNull(p_order, "Order");
+    // Crear la orden y asignar las plataformas
+    public Order createOrderWithPlatforms(Order order) {
+        // Guardamos la orden antes de asignar plataformas, porque las plataformas dependen de la orden
+        orderRepository.save(order); // Guardamos la orden primero
 
-        // Guardamos la orden en la base de datos primero
-        Order savedOrder = orderRepository.save(p_order);
+        if (order.getPlatforms() != null && !order.getPlatforms().isEmpty()) {
+            for (Platform platform : order.getPlatforms()) {
+                try {
+                    // Asignar cada plataforma al espacio de almacenamiento
+                    storeKeeper.placePlatformInCell(platform);
+                    platform.setOrder(order); // Asociamos la plataforma a la orden
+                    System.out.println("Plataforma " + platform.getPlatformId() + " colocada en el espacio de almacenamiento.");
+                } catch (IllegalStateException e) {
+                    // Si no se puede asignar la plataforma, manejamos el error
+                    System.out.println("Error al asignar la plataforma " + platform.getPlatformId() + ": " + e.getMessage());
+                    throw new IllegalStateException("Error al asignar la plataforma a la orden.");
+                }
+            }
+        } else {
+            System.out.println("No se encontraron plataformas para la orden.");
+        }
 
-        // Llamamos al StoreKeeper para asignar el espacio a los muebles de la orden recién creada
-        //storeKeeper.storeOrderInWarehouse(savedOrder);
-
-        return savedOrder;
+        return order; // Devolvemos la orden con las plataformas asignadas
     }
 
     public void setOrders(List<Order> p_orders) {

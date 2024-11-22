@@ -1,10 +1,11 @@
 package Proyect.StoreKeeper;
 
-import Proyect.Inventory.Furniture;
 import Proyect.Logistics.Route;
+import Proyect.StoreKeeper.Platform;
 import jakarta.persistence.*;
-import java.time.LocalDate;
+
 import java.time.Duration;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,17 +22,12 @@ public class Order {
     @Temporal(TemporalType.DATE)
     private LocalDate deliveryDate;
 
-    @Transient
-    private List<Furniture> orderContent = new ArrayList<>(); // Asumiendo que es solo para propósito temporal
-
     private Duration totalAssemblyTime = Duration.ZERO;
 
     // Enum para el estado de la orden
     public enum Status {
-        PENDING,      // Orden creada, pero aún no procesada
-        STORED,       // Orden almacenada en el almacén
-        IN_TRANSIT,   // Orden en tránsito, asignada a una ruta
-        DELIVERED     // Orden entregada al cliente
+        PENDING,
+        DELIVERED
     }
 
     @Enumerated(EnumType.STRING) // Usamos el tipo de enumeración como string
@@ -96,10 +92,6 @@ public class Order {
 
     public void setRoute(Route p_route) {
         this.route = p_route;
-        if (p_route != null) {
-            // Si la ruta es asignada, marcar la orden como "In Transit"
-            this.status = Status.IN_TRANSIT;
-        }
     }
 
     // Getter y Setter para platforms
@@ -124,10 +116,12 @@ public class Order {
     public void setStatusDelivered(boolean p_isDelivered) {
         if (p_isDelivered) {
             this.status = Status.DELIVERED; // Si se marca como entregado, cambiamos el estado
+        } else {
+            this.status = Status.PENDING; // Si no se entrega, el estado es PENDING
         }
     }
 
-    // Método para cambiar el estado de la orden
+    // Método para cambiar el estado de la orden (por ejemplo, "PENDING" a "DELIVERED")
     public void updateStatus(Status newStatus) {
         this.status = newStatus;
     }

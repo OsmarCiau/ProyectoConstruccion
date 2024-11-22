@@ -2,6 +2,8 @@ package Proyect.Controllers;
 
 import Proyect.StoreKeeper.Order;
 import Proyect.StoreKeeper.OrdersAdmin;
+import Proyect.StoreKeeper.Platform;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,9 +23,13 @@ public class OrdersAdminController {
 
     @PostMapping
     public ResponseEntity<Order> createOrder(@RequestBody Order order) {
-        Order createdOrder = ordersAdminService.addOrder(order);
+        // Primero, creamos la orden
+        Order createdOrder = ordersAdminService.createOrderWithPlatforms(order); // Cambié el método para que gestione las plataformas
+
+        // Devolvemos la orden creada con el status 201 (CREATED)
         return new ResponseEntity<>(createdOrder, HttpStatus.CREATED);
     }
+
 
     @PostMapping("/orders")
     public ResponseEntity<Void> setOrders(@RequestBody List<Order> orders) {
