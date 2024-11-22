@@ -26,6 +26,14 @@ public class InventoryAdmin {
         System.out.println("Added " + productsToAdd.size() + " items to the inventory.");
     }
 
+    public List<Furniture> retrieveAllFurnitureFromInventory() {
+        return furnitureRepository.findAll();
+    }
+
+    public List<PackingList> getPackingList() {
+        return packingListRepository.findAll();
+    }
+
 //    public void addFurniture(PackingList p_packingList) {
 //        ArrayList<Furniture> productsToAdd = p_packingList.getProducts();
 //        ValidationUtils.validatesArrayList(productsToAdd, "Products");
