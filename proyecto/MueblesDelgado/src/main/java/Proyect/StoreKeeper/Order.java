@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "orders")
@@ -29,6 +30,9 @@ public class Order {
     @JoinColumn(name = "route_id", nullable = true) // Ruta asociada
     private Route route = null;
 
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true) // Relación bidireccional con Platform
+    private List<Platform> platforms; // Lista de plataformas asociadas al pedido
+
     public Order() {}
 
     public Order(String p_destination, LocalDate p_deliveryDate) {
@@ -40,40 +44,44 @@ public class Order {
         return orderID;
     }
 
-    public void setOrderID(int orderID) {
-        this.orderID = orderID;
+    public void setOrderID(int p_orderID) {
+        this.orderID = p_orderID;
     }
 
     public String getDestination() {
         return destination;
     }
 
-    public void setDestination(String destination) {
-        this.destination = destination;
+    public void setDestination(String p_destination) {
+        this.destination = p_destination;
     }
 
     public LocalDate getDeliveryDate() {
         return deliveryDate;
     }
 
-    public void setDeliveryDate(LocalDate deliveryDate) {
-        this.deliveryDate = deliveryDate;
+    public void setDeliveryDate(LocalDate p_deliveryDate) {
+        this.deliveryDate = p_deliveryDate;
     }
 
     public Duration getTotalAssemblyTime() {
         return totalAssemblyTime;
     }
 
-    public void setTotalAssemblyTime(Duration totalAssemblyTime) {
-        this.totalAssemblyTime = totalAssemblyTime;
+    public void setTotalAssemblyTime(Duration p_totalAssemblyTime) {
+        this.totalAssemblyTime = p_totalAssemblyTime;
     }
 
     public Route getRoute() {
         return route;
     }
 
-    public void setRoute(Route route) {
-        this.route = route;
+    public void setRoute(Route p_route) {
+        this.route = p_route;
+    }
+
+    public List<Platform> getPlatforms() {
+        return platforms;
     }
 
     @Override

@@ -1,68 +1,61 @@
 package Proyect.StoreKeeper;
 
+import jakarta.persistence.*;
+import java.util.List;
+
 import Proyect.Container.Container;
-import Proyect.Container.ContainerList;
-import Proyect.Validations.ValidationUtils;
 
-public class Rack extends Container {
-    private int cellCounter = 0;
-    private ContainerList<Cell> rackCells = null;
+@Entity
+public class Rack extends Container{
 
-    public Rack(int p_rackNumber){
-        setAvailable(true);
-        setNumber(p_rackNumber);
-        setCellCounter(6); // cambiar la cantidad de celdas cuando se defina en equipo
-        this.rackCells = new ContainerList<Cell>();
-        setRackCells();
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int rackNumber; // Número del rack
+
+    @OneToMany(mappedBy = "rack", fetch = FetchType.LAZY)
+    private List<StorageKeys> storageKeys; // Relación con StorageKey (almacena celdas y pedidos asociados)
+
+    // Constructor
+    public Rack() {}
+
+    public Rack(int p_rackNumber) {
+        this.rackNumber = p_rackNumber;
     }
 
-
-    public int getCellCounter() {
-        return cellCounter;
+    // Getter y Setter para rackNumber
+    public int getRackNumber() {
+        return rackNumber;
     }
 
-    public void setCellCounter(int p_cellCounter) {
-        ValidationUtils.validateGreaterThanZero(p_cellCounter, "Cell Counter");
-        this.cellCounter = p_cellCounter;
+    public void setRackNumber(int p_rackNumber) {
+        this.rackNumber = p_rackNumber;
     }
 
-    public ContainerList<Cell> getRackCells() {
-        return rackCells;
+    // Getter y Setter para StorageKey
+    public List<StorageKeys> getStorageKeys() {
+        return storageKeys;
     }
 
-    private void setRackCells() {
-        for(int actualCellNumber = 1; actualCellNumber<= this.cellCounter; actualCellNumber++){
-            Cell cell = new Cell(actualCellNumber, 0);
-            this.rackCells.add(cell);
-        }
+    public void setStorageKeys(List<StorageKeys> p_storageKeys) {
+        this.storageKeys = p_storageKeys;
     }
 
     @Override
     public boolean isAvailable() {
-        int cellsNotAvailable = 0;
-        //determinando cuantas celdas no estan disponibles
-        for(Cell cell: this.rackCells){
-            if(!cell.isAvailable()){
-                cellsNotAvailable++;
+        //Si alguna celda está disponible, el rack también lo está
+        for (StorageKeys storageKey : storageKeys) {
+            if (storageKey.getCell().isAvailable()) {
+                return true;
             }
         }
-
-        if(cellsNotAvailable == this.cellCounter){
-            return false;
-        } else{ return true;}
-
+        return false;
     }
 
-    public void getInfo(){
-        System.out.println("Rack number: "  + number); //rackNumber
-        System.out.println("Cell counter: " + cellCounter);
+    // Información del rack
+    public void getInfo() {
+        System.out.println("Rack number: " + rackNumber);
         System.out.println("Rack available: " + isAvailable());
+        System.out.println("Cells in rack: " + storageKeys.size()); // Número de celdas en el rack
+        // se obtiene con el tamaño de la lista de StorageKeys, ya que cada StorageKey tiene una celda asociada en el rack
     }
-
-    public static void main(String[] args) {
-        Rack rack1 = new Rack(1);
-        rack1.getInfo();
-    }
-
 }
-
