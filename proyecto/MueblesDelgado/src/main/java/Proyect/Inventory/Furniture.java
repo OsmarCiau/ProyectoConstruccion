@@ -20,8 +20,11 @@ public class Furniture{
     private int quantity = 0;
     private int buildTime = 0;
 
-    public Furniture(int p_furnitureId, String p_type, String p_brand, String p_color, Dimension p_dimension, int p_quantity, int p_buildTime) {
+    private int orderID;
+
+    public Furniture(int p_furnitureId, int p_orderID,String p_type, String p_brand, String p_color, Dimension p_dimension, int p_quantity, int p_buildTime) {
         setFurnitureId(p_furnitureId);
+        setorderID(p_orderID);
         setType(p_type);
         setBrand(p_brand);
         setColor(p_color);
@@ -39,6 +42,11 @@ public class Furniture{
     public void setFurnitureId(int p_furnitureId) {
         ValidationUtils.validateGreaterThanZero(p_furnitureId, "Furniture ID");
         this.furnitureId = p_furnitureId;
+    }
+
+    public void setorderID(int p_orderID) {
+        ValidationUtils.validateGreaterThanZero(p_orderID, "Order ID");
+        this.orderID = p_orderID;
     }
 
     public String getType() {
