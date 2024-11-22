@@ -18,6 +18,9 @@ public class OrderTruckAssignment {
     @JoinColumn(name = "route_id", referencedColumnName = "routeId")
     private Route route;
 
+    // Constructor vacío (requerido por JPA)
+    public OrderTruckAssignment() {}
+
     // Constructor
     public OrderTruckAssignment(DeliveryTruck deliveryTruck, Route route) {
         this.deliveryTruck = deliveryTruck;
