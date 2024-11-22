@@ -10,12 +10,14 @@ public class DeliveryTruck {
     @Id
     private String trackingNumber = null;
     private static final double DEFAULT_CAPACITY = 6500.0f; // 6,500 kg
+    private double capacity = 0.0f; // en kg
     private double mileage = 0.0f; // en km
 
     public DeliveryTruck() {}
 
     public DeliveryTruck(String p_trackingNumber, double p_mileage) {
         setTrackingNumber(p_trackingNumber);
+        this.capacity = DEFAULT_CAPACITY;
         setMileage(p_mileage);
     }
 
