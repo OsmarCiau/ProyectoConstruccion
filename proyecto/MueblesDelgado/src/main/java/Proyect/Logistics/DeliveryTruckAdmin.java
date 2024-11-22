@@ -48,16 +48,28 @@ public class DeliveryTruckAdmin {
 
     @Transactional  // Asegura la asignación de conductor a camión se realice dentro de una transacción
     public void assignDriverToTruck(String p_trackingNumber, String p_name) {
-        DeliveryTruck selectedTruck = deliveryTruckRepository.findByTrackingNumber(p_trackingNumber)
-                .orElseThrow(() -> new IllegalArgumentException("Truck not found: Tracking Number " + p_trackingNumber));
-        TruckDriver selectedDriver = truckDriverRepository.findByName(p_name)
-                .orElseThrow(() -> new IllegalArgumentException("Driver not found: Name " + p_name));
+        DeliveryTruck selectedTruck = findTruckByTrackingNumber(p_trackingNumber);
+        TruckDriver selectedDriver = findDriverByName(p_name);
 
-        // Verificar si la asignación ya existe
-        if (truckAssignmentRepository.existsByDeliveryTruckAndTruckDriver(selectedTruck, selectedDriver)) {
-            throw new IllegalArgumentException("Assignment already exists");
-        }
+        validateAssignmentDoesNotExist(selectedTruck, selectedDriver);
+
         truckAssignmentRepository.save(new TruckAssignment(selectedTruck, selectedDriver));
+    }
+    private DeliveryTruck findTruckByTrackingNumber(String p_trackingNumber){
+        return deliveryTruckRepository.findByTrackingNumber(p_trackingNumber)
+                .orElseThrow(() -> new IllegalArgumentException("Truck not found: Tracking Number " + p_trackingNumber));
+    }
+
+    private TruckDriver findDriverByName(String p_name){
+        return truckDriverRepository.findByName(p_name)
+                .orElseThrow(() -> new IllegalArgumentException("Driver not found: Name " + p_name));
+    }
+
+    //verifica si la asignación ya existe
+    private void validateAssignmentDoesNotExist(DeliveryTruck p_truck, TruckDriver p_driver){
+        if(truckAssignmentRepository.existsByDeliveryTruckAndTruckDriver(p_truck, p_driver)){
+            throw new IllegalArgumentException("Assignment already exists ");
+        }
     }
 
     public List<TruckAssignment> getTruckAssignments() {
