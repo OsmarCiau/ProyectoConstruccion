@@ -4,7 +4,10 @@ import Proyect.Validations.ValidationUtils;
 
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Furniture{
@@ -20,6 +23,11 @@ public class Furniture{
     private int quantity = 0;
     private int buildTime = 0;
     private int orderID = 0;
+
+    // Relación ManyToOne con PackingList
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "packingListID") // Este es el nombre de la columna que almacena la relación
+    private PackingList packingList;
 
 
     public Furniture(int p_furnitureId, int p_orderID, String p_type, String p_brand, String p_color, Dimension p_dimension, int p_quantity, int p_buildTime) {
