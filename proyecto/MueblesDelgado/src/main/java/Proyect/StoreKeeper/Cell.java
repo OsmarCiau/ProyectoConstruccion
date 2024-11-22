@@ -1,87 +1,114 @@
 package Proyect.StoreKeeper;
 
 import Proyect.Container.Container;
+import jakarta.persistence.*;
 import Proyect.Inventory.Dimension;
 import Proyect.Validations.ValidationUtils;
 
+@Entity
 public class Cell extends Container {
-    private Dimension dimension = null;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int cellNumber; // ID único para la celda
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "storage_key_id", referencedColumnName = "storageId", nullable = true)
+    private StorageKeys storageKey; // Relación con StorageKey (la celda está asociada a un StorageKey)
+
+    @Embedded
+    private Dimension dimension; // Embedding la dimensión
+
     private float occupiedSpace = 0;
 
-    public Cell(int p_cellNumber, float p_occupiedSpace){
+    // Constructor vacío para JPA
+    public Cell() {
+        this.dimension = new Dimension(1, 1, 1);
+    }
+
+    // Constructor con parámetros
+    public Cell(int p_cellNumber, float p_occupiedSpace) {
         setAvailable(true);
         setNumber(p_cellNumber);
-        this.dimension =  new Dimension(1,1,1);
-        setDimension(); // los valores son iguales para todas las celdas. Ya están definidos en el setter.
+        this.dimension = new Dimension(5, 5, 5); // Asumimos que la dimensión es 5x5x5
         setOccupiedSpace(p_occupiedSpace);
     }
 
+    // Getter y Setter para id
+    public int getCellNumber() {
+        return cellNumber;
+    }
 
+    public void setCellNumber(int p_cellNumber) {
+        this.cellNumber = p_cellNumber;
+    }
+
+    // Getter y Setter para StorageKey
+    public StorageKeys getStorageKey() {
+        return storageKey;
+    }
+
+    public void setStorageKey(StorageKeys p_storageKey) {
+        this.storageKey = p_storageKey;
+    }
+
+    // Getter y Setter para dimension
     public Dimension getDimension() {
-        return this.dimension;
+        return dimension;
     }
 
-    public void setDimension() {
-        this.dimension.setLength(5);
-        this.dimension.setWidth(5);
-        this.dimension.setHeight(5);
+    public void setDimension(Dimension p_dimension) {
+        this.dimension = p_dimension;
     }
 
+    // Getter y Setter para occupiedSpace
     public float getOccupiedSpace() {
         return this.occupiedSpace;
     }
 
     public void setOccupiedSpace(float p_occupiedSpace) {
-        ValidationUtils.validateNonNegativeNumber(p_occupiedSpace,"Occupied space in Cell");
+        ValidationUtils.validateNonNegativeNumber(p_occupiedSpace, "Occupied space in Cell");
         this.occupiedSpace = p_occupiedSpace;
     }
 
+    // Método isAvailable para verificar si la celda está disponible
     @Override
     public boolean isAvailable() {
-        if( (this.dimension.getLength() - this.occupiedSpace) >0 ){
-            return true;
-        }
-        else{
-            return false;
-        }
-
+        return (this.dimension.getLength() - this.occupiedSpace) > 0;
     }
 
-    public void getInfo(){
-        System.out.println("Cell number: " + number + "\n" + //celNumber
+    // Información de la celda
+    public void getInfo() {
+        System.out.println("Cell number: " + number + "\n" + // celNumber
                 "Dimension: " + this.dimension.getLength() + " x " + this.dimension.getWidth() + " x " + this.dimension.getHeight() + "\n" +
-                "Occupied space (lenght): " + this.occupiedSpace + "\n" +
-                "Available: " + isAvailable()
-        );
+                "Occupied space (length): " + this.occupiedSpace + "\n" +
+                "Available: " + isAvailable());
     }
 
-    public float getAvailableSpace(){
-        if(isAvailable()){
-            return this.dimension.getLength() - this.occupiedSpace;
-        }
-        else{
-            return 0;
-        }
+    // Obtener espacio disponible en la celda
+    public float getAvailableSpace() {
+        return isAvailable() ? this.dimension.getLength() - this.occupiedSpace : 0;
     }
 
-    public void addSpaceOccupiedInCell(float p_platformLength){
+    // Métodos para añadir y quitar espacio ocupado
+    public void addSpaceOccupiedInCell(float p_platformLength) {
         this.occupiedSpace += p_platformLength;
     }
 
-    public void removeSpaceOccupiedInCell(float p_platformLength){
+    public void removeSpaceOccupiedInCell(float p_platformLength) {
         this.occupiedSpace -= p_platformLength;
     }
 
-    public float getLength(){
+    // Getters para las dimensiones
+    public float getLength() {
         return dimension.getLength();
     }
 
-    public float getWidth(){
+    public float getWidth() {
         return dimension.getWidth();
     }
 
-    public float getHeight(){
+    public float getHeight() {
         return dimension.getHeight();
     }
-
 }

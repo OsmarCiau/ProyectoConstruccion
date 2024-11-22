@@ -3,45 +3,56 @@ package Proyect.StoreKeeper;
 import Proyect.Inventory.Dimension;
 import Proyect.Validations.ValidationUtils;
 
+import javax.persistence.*;
 
+@Entity
 public class Platform {
-    private Order order = null;
-    private int platformID = 0;
-    private StorageKeys locationInRack = null;
-    private Dimension dimension = null;
 
-    public Platform(){}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long platformId; // Identificador único de la plataforma
 
-    public Platform(Order p_order, int p_platformID,  Dimension p_dimension) {
-        assignOrder(p_order);
-        setPlatformID(p_platformID);
-        //setLocationInRack(locationInRack);
-        setDimension(p_dimension);
+    @ManyToOne(fetch = FetchType.LAZY)  // Relación muchos a uno con Order
+    @JoinColumn(name = "order_id", nullable = false)
+    private Order order;
+
+    @OneToOne(fetch = FetchType.LAZY)  // Relación uno a uno con StorageKey
+    @JoinColumn(name = "storage_key_id", nullable = false)
+    private StorageKeys locationInRack;  // Ubicación de la plataforma en el rack (StorageKey)
+
+    @Embedded
+    private Dimension dimension;  // Uso de @Embedded para la clase Dimension
+
+    public Platform() {
     }
 
-    public void setOrder(Order p_order) {
-        ValidationUtils.validateNonNull(p_order, "Order");
-        PlatformValidationUtils.validateUnassignedOrder(this.order);
+    public Platform(Long p_platformId, Order p_order, Dimension p_dimension, StorageKeys p_locationInRack) {
+        this.platformId = p_platformId;
         this.order = p_order;
+        this.dimension = p_dimension;
+        this.locationInRack = p_locationInRack;
     }
 
-    private void assignOrder(Order p_order) {
-        setOrder(p_order);
-        //p_order.addPlatformUsed(this); //* relación bidireccional
+    // Métodos getters y setters
+    public Long getPlatformId() {
+        return platformId;
+    }
+
+    public void setPlatformId(Long p_platformId) {
+        ValidationUtils.validateGreaterThanZero(p_platformId, "Platform ID");
+        this.platformId = p_platformId;
     }
 
     public Order getOrder() {
         return order;
     }
 
-    public void setPlatformID(int p_platformID) {
-        ValidationUtils.validateGreaterThanZero(p_platformID, "Platform ID");
-        PlatformValidationUtils.validatePlatformID(p_platformID);
-        this.platformID = p_platformID;
+    public void setOrder(Order p_order) {
+        this.order = p_order;
     }
 
-    public int getPlatformID() {
-        return platformID;
+    public StorageKeys getLocationInRack() {
+        return locationInRack;
     }
 
     public void setLocationInRack(StorageKeys p_locationInRack) {
@@ -49,8 +60,8 @@ public class Platform {
         this.locationInRack = p_locationInRack;
     }
 
-    public StorageKeys getLocationInRack() {
-        return locationInRack;
+    public Dimension getDimension() {
+        return dimension;
     }
 
     public void setDimension(Dimension p_dimension) {
@@ -58,19 +69,15 @@ public class Platform {
         this.dimension = p_dimension;
     }
 
-    public Dimension getDimension() {
-        return dimension;
-    }
-
-    public float getLength(){
+    public float getLength() {
         return dimension.getLength();
     }
 
-    public float getWidth(){
+    public float getWidth() {
         return dimension.getWidth();
     }
 
-    public float getHeight(){
+    public float getHeight() {
         return dimension.getHeight();
     }
 }

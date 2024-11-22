@@ -47,8 +47,8 @@ public class ValidationUtils {
     }
 
     public static void validateLocationInRack(StorageKeys locationInRack){
-        if (locationInRack.getRackNumber() == 0 || locationInRack.getCellNumber() == 0) {
-            throw new IllegalArgumentException("Error. Location in rack cannot be null or empty");
+        if(locationInRack == null){
+            throw new IllegalArgumentException("Error. Location in rack cannot be null.");
         }
     }
 
