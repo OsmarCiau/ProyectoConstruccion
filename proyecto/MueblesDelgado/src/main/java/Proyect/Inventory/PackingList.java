@@ -15,6 +15,10 @@ public class PackingList {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private ArrayList<Furniture> products = new ArrayList<>();
 
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private ArrayList<Furniture> idPairOrderFurniture = new ArrayList<>();
+
+
 	@Temporal(TemporalType.DATE)
 	private Date arrivalDate = new Date();
 
@@ -51,5 +55,13 @@ public class PackingList {
 	public void setArrivalDate(Date p_arrivalDate) {
 		ValidationUtils.validateNonNull(p_arrivalDate, "Date");
 		this.arrivalDate = p_arrivalDate;
+	}
+
+	public ArrayList<Furniture> getIdPairOrderFurniture() {
+		return idPairOrderFurniture;
+	}
+
+	public void setIdPairOrderFurniture(ArrayList<Furniture> idPairOrderFurniture) {
+		this.idPairOrderFurniture = idPairOrderFurniture;
 	}
 }
