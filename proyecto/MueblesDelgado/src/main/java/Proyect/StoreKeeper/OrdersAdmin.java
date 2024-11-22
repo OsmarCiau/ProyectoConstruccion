@@ -1,5 +1,7 @@
 package Proyect.StoreKeeper;
 
+import Proyect.Inventory.InventoryAdmin;
+import Proyect.Repositories.IdPairOrderFurnitureRepository;
 import Proyect.Repositories.OrderRepository;
 import Proyect.Validations.ValidationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +14,19 @@ public class OrdersAdmin {
 
     private final OrderRepository orderRepository;
 
+    private IdPairOrderFurnitureRepository idPairOrderFurnitureRepository;
+
+    private InventoryAdmin inventoryAdmin; // Dependencia para gestionar inventario
+
     @Autowired
-    public OrdersAdmin(OrderRepository p_orderRepository) {
+    public OrdersAdmin(
+        OrderRepository p_orderRepository, 
+        IdPairOrderFurnitureRepository p_idPairOrderFurnitureRepository, 
+        InventoryAdmin p_inventoryAdmin) {
+            
         this.orderRepository = p_orderRepository;
+        this.idPairOrderFurnitureRepository = p_idPairOrderFurnitureRepository;
+        this.inventoryAdmin = p_inventoryAdmin;
     }
 
     public Order findByOrderId(int p_orderId) {

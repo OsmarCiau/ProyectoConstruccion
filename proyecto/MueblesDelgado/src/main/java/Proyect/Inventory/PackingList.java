@@ -18,8 +18,11 @@ public class PackingList {
 	@Temporal(TemporalType.DATE)
 	private Date arrivalDate = new Date();
 
-	public PackingList(int p_folio, ArrayList<Furniture> p_products, Date p_arrivalDate) {
+	private int orderID = 0;
+
+	public PackingList(int p_folio, int p_orderID, ArrayList<Furniture> p_products, Date p_arrivalDate) {
 		setFolio(p_folio);
+		setOrderID(p_orderID);
 		setProducts(p_products);
 		setArrivalDate(p_arrivalDate);
 	}
@@ -42,6 +45,15 @@ public class PackingList {
 	public void setFolio(int p_folio) {
 		ValidationUtils.validateGreaterThanZero(p_folio, "Folio");
 		this.folio = p_folio;
+	}
+
+	public int getOrderID() {
+		return orderID;
+	}
+
+	public void setOrderID(int p_orderID) {
+		ValidationUtils.validateGreaterThanZero(p_orderID, "Order ID");
+		this.orderID = p_orderID;
 	}
 
 	public Date getArrivalDate() {
