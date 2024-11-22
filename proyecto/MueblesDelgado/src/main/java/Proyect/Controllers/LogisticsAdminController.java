@@ -4,6 +4,8 @@ import Proyect.Logistics.LogisticsAdminService;
 import Proyect.Logistics.RouteTruckAssignment;
 import Proyect.Logistics.Route;
 import Proyect.StoreKeeper.Order;
+import Proyect.StoreKeeper.OrdersAdmin;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,23 +17,29 @@ import java.util.List;
 public class LogisticsAdminController {
 
     private final LogisticsAdminService logisticsAdminService;
+    private final OrdersAdmin ordersAdminService;
 
     @Autowired
-    public LogisticsAdminController(LogisticsAdminService logisticsAdminService) {
+    public LogisticsAdminController(LogisticsAdminService logisticsAdminService, OrdersAdmin ordersAdminService) {
         this.logisticsAdminService = logisticsAdminService;
+        this.ordersAdminService = ordersAdminService;
     }
 
     // Endpoint para planificar rutas
     @PostMapping("/planRoutes")
-    public ResponseEntity<List<Route>> planRoutes(@RequestBody List<Order> orders) {
+    public ResponseEntity<List<Route>> planRoutes() {
         try {
-            // Planificar rutas para las órdenes recibidas
+            // Obtener las órdenes desde un servicio o base de datos
+            List<Order> orders = ordersAdminService.getAllOrders();
+            
+            // Planificar rutas para las órdenes obtenidas
             List<Route> plannedRoutes = logisticsAdminService.planRoutes(orders);
             return ResponseEntity.ok(plannedRoutes);  // Responde con las rutas planificadas
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(null);  // Responde con un error 400 si ocurre una excepción
         }
     }
+
 
     // Endpoint para asignar rutas a los camiones
     @PostMapping("/assignRoutes")
