@@ -6,7 +6,6 @@ import Proyect.Validations.ValidationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -18,7 +17,7 @@ public class InventoryAdmin {
     @Autowired
     private PackingListRepository packingListRepository;
 
-    public void addFurniture(PackingList p_packingList) {
+    public void addFurnitureToInventory(PackingList p_packingList) {
         packingListRepository.save(p_packingList);
         List<Furniture> productsToAdd = p_packingList.getProducts();
         ValidationUtils.validatesList(productsToAdd, "Products");
@@ -34,7 +33,7 @@ public class InventoryAdmin {
         return packingListRepository.findAll();
     }
 
-    public void removeFurniture(PackingList p_packingList) {
+    public void removeFurnitureFromInventory(PackingList p_packingList) {
         List<Furniture> productsToRemove = p_packingList.getProducts();
         ValidationUtils.validatesList(productsToRemove, "Products");
         furnitureRepository.deleteAll(productsToRemove);
@@ -42,7 +41,7 @@ public class InventoryAdmin {
 
     }
 
-    public void updateFurniture(PackingList p_packingList) {
+    public void updateFurnitureInInventory(PackingList p_packingList) {
         List<Furniture> productsToUpdate = p_packingList.getProducts();
 
         for (Furniture furniture : productsToUpdate) {
