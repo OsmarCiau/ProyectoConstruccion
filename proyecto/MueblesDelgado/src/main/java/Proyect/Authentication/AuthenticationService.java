@@ -13,15 +13,15 @@ public class AuthenticationService {
     @Autowired
     private AdministratorRepository administratorRepository;
 
-//    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    //private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public String authenticate(String name, String password) {
         Administrator admin = administratorRepository.findByName(name)
                 .orElseThrow(() -> new RuntimeException("Invalid credentials"));
 
-//        if (!passwordEncoder.matches(password, admin.getPassword())) {
-//            throw new RuntimeException("Invalid credentials");
-//        }
+        if (!admin.getPassword().equals(password)) {
+            throw new RuntimeException("Invalid credentials");
+        }
 
         return JwtUtil.generateToken(admin.getName());
     }
