@@ -10,6 +10,8 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "orders")
@@ -27,6 +29,7 @@ public class Order {
     private Duration totalAssemblyTime = Duration.ZERO;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference  // Se incluye en la serialización
     private List<Furniture> orderContent = new ArrayList<>();
 
     @ManyToOne

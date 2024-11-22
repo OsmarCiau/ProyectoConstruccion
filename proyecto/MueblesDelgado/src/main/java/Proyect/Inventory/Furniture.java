@@ -2,9 +2,15 @@ package Proyect.Inventory;
 
 import Proyect.Validations.ValidationUtils;
 import jakarta.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import Proyect.StoreKeeper.Order;
 
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "furnitureId")
 public class Furniture {
 
     @Id
@@ -23,6 +29,7 @@ public class Furniture {
     // Relación ManyToOne con Order
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id") // Relación con Order
+    @JsonBackReference  // Evita la serialización recursiva
     private Order order;
 
     // Relación ManyToOne con PackingList (opcional)
