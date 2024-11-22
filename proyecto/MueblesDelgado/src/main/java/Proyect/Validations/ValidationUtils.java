@@ -6,6 +6,7 @@ import Proyect.Container.Container;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ValidationUtils {
     public static void validateGreaterThanZero(int p_number, String p_fieldName) {
@@ -53,6 +54,12 @@ public class ValidationUtils {
     }
 
     public static <T> void validatesArrayList(ArrayList<T> p_list, String fieldName ) {
+        if (p_list == null || p_list.isEmpty()) {
+            throw new IllegalArgumentException("Error. " + fieldName + " is empty or null.");
+        }
+    }
+
+    public static <T> void validatesList(List<T> p_list, String fieldName ) {
         if (p_list == null || p_list.isEmpty()) {
             throw new IllegalArgumentException("Error. " + fieldName + " is empty or null.");
         }

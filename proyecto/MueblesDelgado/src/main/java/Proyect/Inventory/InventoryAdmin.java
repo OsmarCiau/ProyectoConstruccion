@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class InventoryAdmin {
@@ -19,10 +20,18 @@ public class InventoryAdmin {
 
     public void addFurniture(PackingList p_packingList) {
         packingListRepository.save(p_packingList);
-        ArrayList<Furniture> productsToAdd = p_packingList.getProducts();
-        ValidationUtils.validatesArrayList(productsToAdd, "Products");
+        List<Furniture> productsToAdd = p_packingList.getProducts();
+        ValidationUtils.validatesList(productsToAdd, "Products");
         furnitureRepository.saveAll(productsToAdd);
         System.out.println("Added " + productsToAdd.size() + " items to the inventory.");
+    }
+
+    public List<Furniture> retrieveAllFurnitureFromInventory() {
+        return furnitureRepository.findAll();
+    }
+
+    public List<PackingList> getPackingList() {
+        return packingListRepository.findAll();
     }
 
 //    public void addFurniture(PackingList p_packingList) {
@@ -33,8 +42,8 @@ public class InventoryAdmin {
 //    }
 
     public void removeFurniture(PackingList p_packingList) {
-        ArrayList<Furniture> productsToRemove = p_packingList.getProducts();
-        ValidationUtils.validatesArrayList(productsToRemove, "Products");
+        List<Furniture> productsToRemove = p_packingList.getProducts();
+        ValidationUtils.validatesList(productsToRemove, "Products");
         furnitureRepository.deleteAll(productsToRemove);
         System.out.println("Removed " + productsToRemove.size() + " items from the inventory.");
 
@@ -48,8 +57,8 @@ public class InventoryAdmin {
 //    }
 
     public void updateFurniture(PackingList p_packingList) {
-        ArrayList<Furniture> productsToUpdate = p_packingList.getProducts();
-        ValidationUtils.validatesArrayList(productsToUpdate, "Products");
+        List<Furniture> productsToUpdate = p_packingList.getProducts();
+//        ValidationUtils.validatesArrayList(productsToUpdate, "Products");
 
         for (Furniture furniture : productsToUpdate) {
             updateFurnitureItem(furniture);
