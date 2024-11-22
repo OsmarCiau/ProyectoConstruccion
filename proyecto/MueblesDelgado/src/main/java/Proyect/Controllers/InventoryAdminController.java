@@ -19,19 +19,19 @@ public class InventoryAdminController {
 
     @PostMapping("/add_furniture")
     public ResponseEntity<Void> addFurniture(@RequestBody PackingList packingList) {
-        inventoryAdminService.addFurniture(packingList);
+        inventoryAdminService.addFurnitureToInventory(packingList);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/remove_furniture")
     public ResponseEntity<Void> removeFurniture(@RequestBody PackingList packingList) {
-        inventoryAdminService.removeFurniture(packingList);
+        inventoryAdminService.removeFurnitureFromInventory(packingList);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/update_furniture")
     public ResponseEntity<Void> updateFurniture(@RequestBody PackingList packingList) {
-        inventoryAdminService.updateFurniture(packingList);
+        inventoryAdminService.updateFurnitureInInventory(packingList);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
